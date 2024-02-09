@@ -22,14 +22,6 @@
    yarn android
    ```
 
-# Create android release build on local machine using
-
-TBD
-
-# Create ios release build on local machine
-
-TBD
-
 # FAQ
 
 **Fix java command not found issue**  
