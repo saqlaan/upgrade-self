@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "915255267011",
+    "project_id": "upgrade-labs-app",
+    "storage_bucket": "upgrade-labs-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:915255267011:android:b62e8f262e5715c7e71c76",
+        "android_client_info": {
+          "package_name": "com.upgradelabs.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAScl8FC510l0phUOIQfy0n-k2R4Wqpxwk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

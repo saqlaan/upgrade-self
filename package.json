@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios",
+    "ios": "react-native run-ios --simulator 'iPhone 15 Pro'",
     "lint": "eslint .",
     "start": "react-native start",
     "test": "jest",
@@ -13,6 +13,8 @@
     "pod-install": "cd ios && RCT_NEW_ARCH_ENABLED=0 bundle exec pod install && cd .."
   },
   "dependencies": {
+    "@react-native-firebase/app": "^18.8.0",
+    "@react-native-firebase/auth": "^18.8.0",
     "@react-native-masked-view/masked-view": "^0.3.0",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/stack": "^6.3.20",
