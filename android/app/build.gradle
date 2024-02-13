@@ -1,5 +1,6 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
+apply plugin: 'com.google.gms.google-services'
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -75,7 +76,7 @@ android {
 
     namespace "com.upgradelabs"
     defaultConfig {
-        applicationId "com.upgradelabs"
+        applicationId "com.upgradelabs.dev"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
