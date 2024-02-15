@@ -1,20 +1,20 @@
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 
 import { CButton, GoogleSignInButton, Spacer } from "@/components/atoms";
-import { login } from "@/services/firebase/auth";
+import { signup } from "@/services/firebase/auth";
 import firebaseErrors from "@/services/firebase/firebaseErrors";
 import type { ApplicationScreenProps } from "@/types/navigation";
 
-function Login({ navigation }: ApplicationScreenProps) {
+function Signup({ navigation }: ApplicationScreenProps) {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleLogin = () => {
+  const handleSignup = () => {
     setIsLoading(true);
-    login({ email, password })
+    signup({ email, password })
       .then()
       .catch((error) => {
         if (error.code) {
@@ -22,23 +22,13 @@ function Login({ navigation }: ApplicationScreenProps) {
         }
       })
       .finally(() => {
-        resetForm();
         setIsLoading(false);
       });
   };
 
-  const resetForm = useCallback(() => {
-    setEmail("");
-    setPassword("");
-  }, []);
-
-  const handleOnBlur = useCallback(() => {
-    setError("");
-  }, []);
-
   return (
     <View style={styles.container}>
-      <Text style={styles.logo}>Login</Text>
+      <Text style={styles.logo}>Sign Up</Text>
       <View style={styles.inputView}>
         <TextInput
           style={styles.inputText}
@@ -47,8 +37,6 @@ function Login({ navigation }: ApplicationScreenProps) {
           onChangeText={(text) => setEmail(text)}
           autoCapitalize="none"
           inputMode="email"
-          value={email}
-          onBlur={handleOnBlur}
         />
       </View>
       <View style={styles.inputView}>
@@ -58,8 +46,6 @@ function Login({ navigation }: ApplicationScreenProps) {
           placeholder="Password..."
           placeholderTextColor="#003f5c"
           onChangeText={(text) => setPassword(text)}
-          value={password}
-          onBlur={handleOnBlur}
         />
       </View>
       {error && (
@@ -68,15 +54,20 @@ function Login({ navigation }: ApplicationScreenProps) {
           <Spacer marginTop={20} />
         </>
       )}
-      <CButton text="Login" onPress={handleLogin} isLoading={isLoading} />
+      <CButton
+        variant="primary"
+        text="Sign Up"
+        onPress={handleSignup}
+        isLoading={isLoading}
+      />
       <Spacer marginTop={40} />
-      <GoogleSignInButton />
-      <Spacer marginTop={20} />
       <CButton
         variant="default"
-        text="Sign up"
-        onPress={() => navigation.navigate("Signup")}
+        text="Log In"
+        onPress={() => navigation.navigate("Login")}
       />
+      <Spacer marginTop={20} />
+      <GoogleSignInButton />
     </View>
   );
 }
@@ -107,10 +98,23 @@ const styles = StyleSheet.create({
     height: 50,
     color: "#003f5c",
   },
+  loginBtn: {
+    width: "80%",
+    backgroundColor: "#fb5b5a",
+    borderRadius: 25,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 40,
+    marginBottom: 10,
+  },
+  loginText: {
+    color: "white",
+  },
   error: {
     fontSize: 14,
     color: "black",
   },
 });
 
-export default Login;
+export default Signup;

@@ -1,5 +1,6 @@
-import { Example, Startup } from "@/screens";
+import { Example } from "@/screens";
 import Login from "@/screens/Login/Login";
+import Signup from "@/screens/Signup/Signup";
 import { useTheme } from "@/theme";
 import type { ApplicationStackParamList } from "@/types/navigation";
 import auth from "@react-native-firebase/auth";
@@ -35,12 +36,12 @@ const PublicNavigator = () => {
   const { variant, navigationTheme } = useTheme();
   return (
     <Stack.Navigator
-      initialRouteName="Startup"
+      initialRouteName="Login"
       key={variant}
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name="Startup" component={Startup} />
       <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="Signup" component={Signup} />
     </Stack.Navigator>
   );
 };
