@@ -76,7 +76,7 @@ android {
 
     namespace "com.upgradelabs"
     defaultConfig {
-        applicationId "com.upgradelabs.dev"
+        applicationId "com.mobile.upgradelabs.dev"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

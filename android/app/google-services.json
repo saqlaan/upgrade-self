@@ -7,12 +7,25 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:915255267011:android:b62e8f262e5715c7e71c76",
+        "mobilesdk_app_id": "1:915255267011:android:812be5f540ccaf50e71c76",
         "android_client_info": {
-          "package_name": "com.upgradelabs.dev"
+          "package_name": "com.mobile.upgradelabs.dev"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "915255267011-ikipco57klui6gg2ssk4ckto3gnhp161.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mobile.upgradelabs.dev",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "915255267011-d7inuo7udqnbuud0od02asjimin8i392.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAScl8FC510l0phUOIQfy0n-k2R4Wqpxwk"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "915255267011-d7inuo7udqnbuud0od02asjimin8i392.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "915255267011-ff45cnnps42jp58v6lhpva29ds8valeg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dev.upgradelabs.ios"
+              }
+            }
+          ]
         }
       }
     }

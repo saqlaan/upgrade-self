@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "upgradeLabs.app"
-               BlueprintName = "upgradeLabs"
-               ReferencedContainer = "container:upgradeLabs.xcodeproj">
+               BuildableName = "upgradelabs.app"
+               BlueprintName = "upgradelabs"
+               ReferencedContainer = "container:upgradelabs.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "upgradeLabsTests.xctest"
-               BlueprintName = "upgradeLabsTests"
-               ReferencedContainer = "container:upgradeLabs.xcodeproj">
+               BuildableName = "upgradelabsTests.xctest"
+               BlueprintName = "upgradelabsTests"
+               ReferencedContainer = "container:upgradelabs.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "upgradeLabs.app"
-            BlueprintName = "upgradeLabs"
-            ReferencedContainer = "container:upgradeLabs.xcodeproj">
+            BuildableName = "upgradelabs.app"
+            BlueprintName = "upgradelabs"
+            ReferencedContainer = "container:upgradelabs.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "upgradeLabs.app"
-            BlueprintName = "upgradeLabs"
-            ReferencedContainer = "container:upgradeLabs.xcodeproj">
+            BuildableName = "upgradelabs.app"
+            BlueprintName = "upgradelabs"
+            ReferencedContainer = "container:upgradelabs.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
