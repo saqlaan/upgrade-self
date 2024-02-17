@@ -1,10 +1,14 @@
-import React, { useCallback, useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
-
-import { CButton, GoogleSignInButton, Spacer } from "@/components/atoms";
+import {
+  AppleSignIn,
+  CButton,
+  GoogleSignInButton,
+  Spacer,
+} from "@/components/atoms";
 import { login } from "@/services/firebase/auth";
 import firebaseErrors from "@/services/firebase/firebaseErrors";
 import type { ApplicationScreenProps } from "@/types/navigation";
+import React, { useCallback, useState } from "react";
+import { StyleSheet, Text, TextInput, View } from "react-native";
 
 function Login({ navigation }: ApplicationScreenProps) {
   const [email, setEmail] = useState<string>("");
@@ -71,6 +75,8 @@ function Login({ navigation }: ApplicationScreenProps) {
       <CButton text="Login" onPress={handleLogin} isLoading={isLoading} />
       <Spacer marginTop={40} />
       <GoogleSignInButton />
+      <Spacer marginTop={20} />
+      <AppleSignIn />
       <Spacer marginTop={20} />
       <CButton
         variant="default"
