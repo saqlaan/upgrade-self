@@ -19,3 +19,7 @@ export const login = ({
 }) => {
   return auth().signInWithEmailAndPassword(email, password);
 };
+
+export const forgotPassword = (email: string) => {
+  return auth().sendPasswordResetEmail(email);
+};

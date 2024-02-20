@@ -8,7 +8,9 @@ import { login } from "@/services/firebase/auth";
 import firebaseErrors from "@/services/firebase/firebaseErrors";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import React, { useCallback, useState } from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { Image, StyleSheet, Text, TextInput, View } from "react-native";
+
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 function Login({ navigation }: ApplicationScreenProps) {
   const [email, setEmail] = useState<string>("");
@@ -31,6 +33,10 @@ function Login({ navigation }: ApplicationScreenProps) {
       });
   };
 
+  const handleForgotPassword = useCallback(() => {
+    navigation.navigate("ForgotPassword");
+  }, []);
+
   const resetForm = useCallback(() => {
     setEmail("");
     setPassword("");
@@ -42,6 +48,10 @@ function Login({ navigation }: ApplicationScreenProps) {
 
   return (
     <View style={styles.container}>
+      <Image
+        style={{ width: "60%", objectFit: "contain" }}
+        source={require("../../theme/assets/images/upgrade-labs-logo.png")}
+      />
       <Text style={styles.logo}>Login</Text>
       <View style={styles.inputView}>
         <TextInput
@@ -72,8 +82,15 @@ function Login({ navigation }: ApplicationScreenProps) {
           <Spacer marginTop={20} />
         </>
       )}
-      <CButton text="Login" onPress={handleLogin} isLoading={isLoading} />
-      <Spacer marginTop={40} />
+      <CButton text="Sign In" onPress={handleLogin} isLoading={isLoading} />
+      <Spacer marginTop={20} />
+      <TouchableOpacity
+        style={styles.forgotPasswordRow}
+        onPress={handleForgotPassword}
+      >
+        <Text>Forgot your password?</Text>
+      </TouchableOpacity>
+      <Spacer marginTop={20} />
       <GoogleSignInButton />
       <Spacer marginTop={20} />
       <AppleSignIn />
@@ -116,6 +133,11 @@ const styles = StyleSheet.create({
   error: {
     fontSize: 14,
     color: "black",
+  },
+  forgotPasswordRow: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    // alignItems: "flex-end",
   },
 });
 

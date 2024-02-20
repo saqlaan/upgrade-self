@@ -1,4 +1,3 @@
-import { useTheme } from "@/theme";
 import {
   ActivityIndicator,
   StyleSheet,
@@ -14,8 +13,6 @@ type Props = TouchableOpacityProps & {
 };
 
 function CButton({ isLoading, text, variant = "primary", ...props }: Props) {
-  const {} = useTheme();
-
   const getButtonStyle = () => {
     switch (variant) {
       case "primary":

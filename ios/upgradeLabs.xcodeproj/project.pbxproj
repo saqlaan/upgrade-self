@@ -512,6 +512,8 @@
 				DEVELOPMENT_TEAM = BE9Z8N6UC7;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = upgradelabs/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Upgrade Labs";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -543,6 +545,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BE9Z8N6UC7;
 				INFOPLIST_FILE = upgradelabs/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Upgrade Labs";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
