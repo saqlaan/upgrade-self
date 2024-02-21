@@ -1,4 +1,4 @@
-import { Example } from "@/screens";
+import { Home, Startup } from "@/screens";
 import ForgotPassword from "@/screens/ForgotPassword/ForgotPassword";
 import Login from "@/screens/Login/Login";
 import Signup from "@/screens/Signup/Signup";
@@ -34,9 +34,10 @@ function ApplicationNavigator() {
 const PublicNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Login"
+      initialRouteName="Startup"
       screenOptions={{ headerShown: false }}
     >
+      <Stack.Screen name="Startup" component={Startup} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Signup" component={Signup} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
@@ -47,10 +48,10 @@ const PublicNavigator = () => {
 const PrivateNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Example"
+      initialRouteName="Home"
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name="Example" component={Example} />
+      <Stack.Screen name="Home" component={Home} />
     </Stack.Navigator>
   );
 };

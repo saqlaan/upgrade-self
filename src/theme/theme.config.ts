@@ -8,5 +8,8 @@ export const theme = {
     secondary: "#ffa400",
     tertiary: "#2b2b2b",
     primaryText: "#333333",
+    background: "#ffff",
+    inputBackground: "#efefef",
+    textColor: "#333",
   },
 };

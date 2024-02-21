@@ -1,7 +1,9 @@
-import { CButton } from "@/components/atoms";
 import auth from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import React, { useState } from "react";
+import { Image } from "react-native";
+import { Text, useTheme } from "react-native-paper";
+import CButton from "../CButton/CButton";
 
 GoogleSignin.configure({
   scopes: ["https://www.googleapis.com/auth/drive.readonly"], // what API you want to access on behalf of the user, default is email and profile
@@ -21,6 +23,7 @@ type Props = {
 };
 
 function GoogleSignInButton({ onError }: Props) {
+  const { colors } = useTheme();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleGoogleSignIn = async () => {
@@ -38,11 +41,18 @@ function GoogleSignInButton({ onError }: Props) {
 
   return (
     <CButton
-      variant="default"
-      text="Google Log in"
+      buttonColor={colors.inputBackground}
+      icon={({ size, color }) => (
+        <Image
+          source={require("../../../theme/assets/images/google-icon.png")}
+          style={{ width: 25, height: 25 }}
+        />
+      )}
       onPress={handleGoogleSignIn}
-      isLoading={isLoading}
-    />
+      loading={isLoading}
+    >
+      <Text variant={"bodyMedium"}>Continue with google</Text>
+    </CButton>
   );
 }
 
