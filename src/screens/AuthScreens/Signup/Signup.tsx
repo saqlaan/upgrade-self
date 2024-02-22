@@ -1,12 +1,17 @@
-import { CButton, CustomTextInput, Spacer } from "@/components/atoms";
+import {
+  BackButton,
+  CButton,
+  CustomTextInput,
+  Spacer,
+} from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
 import { loginSchema } from "@/schema";
-import { login } from "@/services/firebase/auth";
+import { onSignup, signup } from "@/services/firebase/auth";
 import firebaseErrors from "@/services/firebase/firebaseErrors";
+import { Images } from "@/theme/assets/images";
 import type { ApplicationScreenProps } from "@/types/navigation";
-import auth from "@react-native-firebase/auth";
 import { FormikHelpers, useFormik } from "formik";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import {
   Image,
   ScrollView,
@@ -17,12 +22,12 @@ import {
 import { HelperText, Text, useTheme } from "react-native-paper";
 import SocialLogin from "../components/SocialLogin/SocialLogin";
 
-type LoginFormValues = {
+type SignupFormValues = {
   email: string;
   password: string;
 };
 
-function Login({ navigation }: ApplicationScreenProps) {
+function Signup({ navigation }: ApplicationScreenProps) {
   const { colors } = useTheme();
   const [firebaseError, setFirebaseError] = useState<string>("");
 
@@ -45,15 +50,14 @@ function Login({ navigation }: ApplicationScreenProps) {
   });
 
   function handleLogin(
-    values: LoginFormValues,
-    { setSubmitting, resetForm }: FormikHelpers<LoginFormValues>
+    values: SignupFormValues,
+    { setSubmitting, resetForm }: FormikHelpers<SignupFormValues>
   ) {
-    login({ ...values })
+    signup({ ...values })
       .then(() => {
-        const user = auth().currentUser;
-        if (!user?.emailVerified) {
-          resetForm();
-        }
+        resetForm();
+        onSignup();
+        navigation.navigate("EmailVerification");
       })
       .catch((error) => {
         if (error.code) {
@@ -65,26 +69,24 @@ function Login({ navigation }: ApplicationScreenProps) {
       });
   }
 
-  const handleForgotPassword = useCallback(() => {
-    navigation.navigate("ForgotPassword");
-  }, []);
-
   return (
     <SafeScreen>
       <ScrollView>
+        <BackButton />
         <View style={styles.container}>
           <Image
             style={{ width: "100%", objectFit: "contain" }}
-            source={require("../../theme/assets/images/upgrade-labs-logo.png")}
+            source={Images.AppLogo}
           />
           <Spacer marginBottom={10} />
           <Text
             style={{ color: colors.secondary, fontWeight: "600" }}
             variant={"headlineLarge"}
           >
-            Welcome Back
+            Sign Up
           </Text>
-          <Text variant={"titleMedium"}>Log in to Your Account</Text>
+          <Spacer marginBottom={10} />
+          <Text variant={"titleMedium"}>Create your account</Text>
           <Spacer marginBottom={40} />
           <CustomTextInput
             placeholder="Username/Email"
@@ -104,19 +106,13 @@ function Login({ navigation }: ApplicationScreenProps) {
             onBlur={handleBlur("password")}
             error={touched.password && errors.password}
           />
-          <Spacer marginTop={20} />
-          <View style={styles.forgotPasswordRow}>
-            <TouchableOpacity onPress={handleForgotPassword}>
-              <Text>Forgot password?</Text>
-            </TouchableOpacity>
-          </View>
           <Spacer marginTop={30} />
           <CButton
             disabled={!isValid || isSubmitting}
             onPress={handleSubmit}
             loading={isSubmitting}
           >
-            Sign In
+            Sign Up
           </CButton>
           {firebaseError && (
             <HelperText type="error" visible>
@@ -125,10 +121,10 @@ function Login({ navigation }: ApplicationScreenProps) {
           )}
           <SocialLogin />
           <TouchableOpacity
-            onPress={() => navigation.navigate("Signup")}
+            onPress={() => navigation.navigate("Login")}
             style={styles.center}
           >
-            <Text>Don't have an account? Signup</Text>
+            <Text>Already have an account? Login</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -156,4 +152,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default Signup;

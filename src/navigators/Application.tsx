@@ -1,7 +1,7 @@
 import { EmailVerification, Home, Startup } from "@/screens";
-import ForgotPassword from "@/screens/ForgotPassword/ForgotPassword";
-import Login from "@/screens/Login/Login";
-import Signup from "@/screens/Signup/Signup";
+import ForgotPassword from "@/screens/AuthScreens/ForgotPassword/ForgotPassword";
+import Login from "@/screens/AuthScreens/Login/Login";
+import Signup from "@/screens/AuthScreens/Signup/Signup";
 import type { ApplicationStackParamList } from "@/types/navigation";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { NavigationContainer } from "@react-navigation/native";

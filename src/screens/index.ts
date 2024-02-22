@@ -1,6 +1,6 @@
-export { default as EmailVerification } from "./EmailVerification/EmailVerification";
-export { default as ForgotPassword } from "./ForgotPassword/ForgotPassword";
-export { default as Home } from "./Home/Home";
-export { default as Login } from "./Login/Login";
-export { default as Signup } from "./Signup/Signup";
-export { default as Startup } from "./Startup/Startup";
+export { default as EmailVerification } from "./AuthScreens/EmailVerification/EmailVerification";
+export { default as ForgotPassword } from "./AuthScreens/ForgotPassword/ForgotPassword";
+export { default as Home } from "./AuthScreens/Home/Home";
+export { default as Login } from "./AuthScreens/Login/Login";
+export { default as Signup } from "./AuthScreens/Signup/Signup";
+export { default as Startup } from "./AuthScreens/Startup/Startup";

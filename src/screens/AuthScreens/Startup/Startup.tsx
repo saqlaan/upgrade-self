@@ -1,4 +1,5 @@
 import { CButton, Spacer } from "@/components/atoms";
+import { Images } from "@/theme/assets/images";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import React from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
@@ -10,7 +11,7 @@ function Startup({ navigation }: ApplicationScreenProps) {
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={require("../../theme/assets/images/startup-img.png")}
+        source={Images.StartUpImage}
         resizeMode={"cover"}
         style={styles.image}
       >
@@ -38,20 +39,6 @@ function Startup({ navigation }: ApplicationScreenProps) {
               >
                 Get Started
               </CButton>
-              {/* <Button
-                style={{ width: "100%", borderRadius: 50 }}
-                contentStyle={{
-                  height: 50,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: 40,
-                  width: "100%",
-                }}
-                mode="contained"
-                
-              >
-                Get Started
-              </Button> */}
             </View>
           </View>
         </SafeAreaView>
