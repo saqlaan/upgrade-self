@@ -4,7 +4,8 @@ import { loginSchema } from "@/schema";
 import { login } from "@/services/firebase/auth";
 import firebaseErrors from "@/services/firebase/firebaseErrors";
 import type { ApplicationScreenProps } from "@/types/navigation";
-import { useFormik } from "formik";
+import auth from "@react-native-firebase/auth";
+import { FormikHelpers, useFormik } from "formik";
 import React, { useCallback, useState } from "react";
 import {
   Image,
@@ -15,6 +16,11 @@ import {
 } from "react-native";
 import { HelperText, Text, useTheme } from "react-native-paper";
 import SocialLogin from "../components/SocialLogin/SocialLogin";
+
+type LoginFormValues = {
+  email: string;
+  password: string;
+};
 
 function Login({ navigation }: ApplicationScreenProps) {
   const { colors } = useTheme();
@@ -38,13 +44,23 @@ function Login({ navigation }: ApplicationScreenProps) {
     onSubmit: handleLogin,
   });
 
-  function handleLogin(values, { setSubmitting }) {
+  function handleLogin(
+    values: LoginFormValues,
+    { setSubmitting, resetForm }: FormikHelpers<LoginFormValues>
+  ) {
     login({ ...values })
-      .then()
+      .then(() => {
+        const user = auth().currentUser;
+        if (!user?.emailVerified) {
+          resetForm();
+        }
+      })
       .catch((error) => {
         if (error.code) {
           setFirebaseError(firebaseErrors[error.code]);
         }
+      })
+      .finally(() => {
         setSubmitting(false);
       });
   }
@@ -91,26 +107,22 @@ function Login({ navigation }: ApplicationScreenProps) {
           <Spacer marginTop={20} />
           <View style={styles.forgotPasswordRow}>
             <TouchableOpacity onPress={handleForgotPassword}>
-              <Text
-                style={{ fontWeight: "500", color: colors.textColor }}
-                variant="bodySmall"
-                onPress={handleForgotPassword}
-              >
-                Forgot password?
-              </Text>
+              <Text>Forgot password?</Text>
             </TouchableOpacity>
           </View>
-          <HelperText type="error" visible={!!firebaseError}>
-            {firebaseError}
-          </HelperText>
           <Spacer marginTop={30} />
           <CButton
-            disabled={!isValid}
+            disabled={!isValid || isSubmitting}
             onPress={handleSubmit}
             loading={isSubmitting}
           >
             Sign In
           </CButton>
+          {firebaseError && (
+            <HelperText type="error" visible>
+              {firebaseError}
+            </HelperText>
+          )}
           <SocialLogin />
           <TouchableOpacity
             onPress={() => navigation.navigate("Signup")}

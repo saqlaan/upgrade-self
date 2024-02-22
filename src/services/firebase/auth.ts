@@ -23,3 +23,11 @@ export const login = ({
 export const forgotPassword = (email: string) => {
   return auth().sendPasswordResetEmail(email);
 };
+
+export const onSignup = async () => {
+  return sendEmailConfirmation();
+};
+
+export const sendEmailConfirmation = async () => {
+  return await auth().currentUser?.sendEmailVerification();
+};

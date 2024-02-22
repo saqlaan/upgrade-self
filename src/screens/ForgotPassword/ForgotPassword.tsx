@@ -1,80 +1,94 @@
-import { Spacer } from "@/components/atoms";
+import {
+  BackButton,
+  CButton,
+  CustomTextInput,
+  Spacer,
+} from "@/components/atoms";
+import { SafeScreen } from "@/components/template";
 import { forgotPasswordSchema } from "@/schema";
 import { forgotPassword } from "@/services/firebase/auth";
 import type { ApplicationScreenProps } from "@/types/navigation";
-import { useFormik } from "formik";
+import { FormikHelpers, useFormik } from "formik";
+import React, { useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { HelperText, Text } from "react-native-paper";
 
-import React from "react";
-import { StyleSheet, Text, TextInput, View } from "react-native";
-import { Button, useTheme } from "react-native-paper";
-
-interface ForgotPasswordType {
+interface ForgotPassworkFormValues {
   email: string;
 }
 
-function ForgotPassword({ navigation }: ApplicationScreenProps) {
-  const { colors } = useTheme();
-  const { errors, isValid, handleChange, values, handleBlur, handleSubmit } =
-    useFormik({
-      initialValues: {
-        email: "",
-      },
-      validationSchema: forgotPasswordSchema,
-      onSubmit: handleForgotPassword,
-    });
+function Login({ navigation }: ApplicationScreenProps) {
+  const [message, setMessage] = useState<string>("");
 
-  function handleForgotPassword() {
+  const {
+    errors,
+    isValid,
+    handleChange,
+    values,
+    handleBlur,
+    handleSubmit,
+    isSubmitting,
+    touched,
+    resetForm,
+  } = useFormik({
+    initialValues: {
+      email: "",
+    },
+    validationSchema: forgotPasswordSchema,
+    onSubmit: handleForgotPassword,
+  });
+
+  function handleForgotPassword(
+    values: ForgotPassworkFormValues,
+    { setSubmitting, resetForm }: FormikHelpers<ForgotPassworkFormValues>
+  ) {
     // if(isValid)
     forgotPassword(values.email)
-      .then(() =>
-        setMessage("Password Reset Email Sent. Please check your inbox.")
-      )
+      .then(() => {
+        resetForm();
+        setMessage("Password reset email sent. Please check your inbox");
+      })
       .catch((error) => {
-        console.log(error);
-      });
+        setMessage("Something went wrong. Please try again latter.");
+      })
+      .finally(() => setSubmitting(false));
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={[styles.logo, { color: colors.primary }]}>
-        Forgot Password
-      </Text>
-      <Spacer marginBottom={20} />
-      <Text style={[{ color: colors.primary }]}>Reset your password</Text>
-      <Text style={[{ color: colors.secondary }]}>
-        Recover access to your account
-      </Text>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.inputText}
-          placeholder="Registered email address"
-          placeholderTextColor="#003f5c"
-          onChangeText={handleChange("email")}
-          autoCapitalize="none"
-          inputMode="email"
-          value={values.email}
-          onBlur={handleBlur("email")}
-        />
-      </View>
-
-      {/* {error && (
-          <>
-            <Text style={styles.error}>{error}</Text>
-            <Spacer marginTop={20} />
-          </>
-        )} */}
-      <Button mode="contained" onPress={handleSubmit}>
-        Reset password
-      </Button>
-      {/* <CButton
-        text="Reset Password"
-        onPress={handleSubmit}
-        // isLoading={isLoading}
-        disabled={!isValid}
-      /> */}
-      <Spacer marginTop={20} />
-      <Text>{errors.email}</Text>
-    </View>
+    <SafeScreen>
+      <ScrollView>
+        <BackButton title="Forgot Password" />
+        <View style={styles.container}>
+          <Spacer marginBottom={20} />
+          <Text variant={"titleMedium"}>Reset your password</Text>
+          <Spacer marginBottom={5} />
+          <Text>Recover access to your account</Text>
+          <Spacer marginBottom={20} />
+          <CustomTextInput
+            placeholder="Registered Email Address"
+            onChangeText={handleChange("email")}
+            value={values.email}
+            textContentType={"emailAddress"}
+            onBlur={handleBlur("email")}
+            error={touched.email && errors.email}
+          />
+          <Spacer marginTop={30} />
+          <CButton
+            disabled={!isValid || isSubmitting}
+            onPress={handleSubmit}
+            loading={isSubmitting}
+          >
+            Reset Password
+          </CButton>
+          <Spacer marginTop={20} />
+          {message && (
+            <HelperText type="info" visible>
+              {message}
+            </HelperText>
+          )}
+        </View>
+      </ScrollView>
+    </SafeScreen>
   );
 }
 
@@ -82,35 +96,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  logo: {
-    fontWeight: "bold",
-    fontSize: 32,
-  },
-  inputView: {
-    width: "80%",
-    backgroundColor: "#ccc",
-    borderRadius: 25,
-    height: 50,
-    marginBottom: 20,
-    justifyContent: "center",
     padding: 20,
-  },
-  inputText: {
-    height: 50,
-    color: "#003f5c",
-  },
-  error: {
-    fontSize: 14,
-    color: "black",
-  },
-  forgotPasswordRow: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    // alignItems: "flex-end",
   },
 });
 
-export default ForgotPassword;
+export default Login;

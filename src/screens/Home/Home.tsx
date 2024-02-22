@@ -2,10 +2,17 @@ import { CButton } from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import auth from "@react-native-firebase/auth";
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet } from "react-native";
 
-function Login({ navigation }: ApplicationScreenProps) {
+function Home({ navigation }: ApplicationScreenProps) {
+  useEffect(() => {
+    const user = auth().currentUser;
+
+    console.log({ user });
+    // user?.sendEmailVerification();
+  }, []);
+
   return (
     <SafeScreen>
       <CButton onPress={() => auth().signOut()}>Logout</CButton>
@@ -33,4 +40,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Login;
+export default Home;

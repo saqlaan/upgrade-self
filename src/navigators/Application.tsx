@@ -1,20 +1,20 @@
-import { Home, Startup } from "@/screens";
+import { EmailVerification, Home, Startup } from "@/screens";
 import ForgotPassword from "@/screens/ForgotPassword/ForgotPassword";
 import Login from "@/screens/Login/Login";
 import Signup from "@/screens/Signup/Signup";
 import type { ApplicationStackParamList } from "@/types/navigation";
-import auth from "@react-native-firebase/auth";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const Stack = createStackNavigator<ApplicationStackParamList>();
 
 function ApplicationNavigator() {
   const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState<FirebaseAuthTypes.User>();
 
-  function onAuthStateChanged(user) {
+  function onAuthStateChanged(user: FirebaseAuthTypes.User) {
     setUser(user);
     if (initializing) setInitializing(false);
   }
@@ -24,11 +24,13 @@ function ApplicationNavigator() {
     return subscriber; // unsubscribe on unmount
   }, []);
 
-  return (
-    <NavigationContainer>
-      {user ? <PrivateNavigator /> : <PublicNavigator />}
-    </NavigationContainer>
-  );
+  const getNavigator = useCallback(() => {
+    if (user && user.emailVerified) return <PrivateNavigator />;
+    else if (user && !user.emailVerified) return <UnverifiedEmailNavigator />;
+    else return <PublicNavigator />;
+  }, [user]);
+
+  return <NavigationContainer>{getNavigator()}</NavigationContainer>;
 }
 
 const PublicNavigator = () => {
@@ -41,6 +43,17 @@ const PublicNavigator = () => {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Signup" component={Signup} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+    </Stack.Navigator>
+  );
+};
+
+const UnverifiedEmailNavigator = () => {
+  return (
+    <Stack.Navigator
+      initialRouteName="EmailVerification"
+      screenOptions={{ headerShown: false }}
+    >
+      <Stack.Screen name="EmailVerification" component={EmailVerification} />
     </Stack.Navigator>
   );
 };

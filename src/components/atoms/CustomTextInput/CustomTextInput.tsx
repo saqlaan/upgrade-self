@@ -8,7 +8,6 @@ interface CustomTextInputProps extends TextInputProps {
 
 const CustomTextInput: React.FC<CustomTextInputProps> = ({
   placeholder,
-  value,
   onChangeText,
   inputMode = "text",
   autoCapitalize = "none",
