@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CLIENT_ID</key>
+	<string>915255267011-0qn23iosp2am2ttcnbt7ct2clh1hk9s5.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.915255267011-0qn23iosp2am2ttcnbt7ct2clh1hk9s5</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>915255267011-csqq8ult7sst3ms45g5qscgihpfm7m56.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyDHph5MNJzmNeJQL_XoCosPyk5HLhvu9iI</string>
 	<key>GCM_SENDER_ID</key>
@@ -9,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>dev.upgradelabs.ios</string>
+	<string>ios.upgradelabs.dev</string>
 	<key>PROJECT_ID</key>
 	<string>upgrade-labs-app</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:915255267011:ios:4d00670a9189edebe71c76</string>
+	<string>1:915255267011:ios:a4dfbc92a1b28ce1e71c76</string>
 </dict>
 </plist>
