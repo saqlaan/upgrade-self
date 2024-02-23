@@ -14,7 +14,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		7699B88040F8A987B510C191 /* libPods-upgradelabs-upgradelabsTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19F6CBCC0A4E27FBF8BF4A61 /* libPods-upgradelabs-upgradelabsTests.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		846FCCF02B80651400AE2FBB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 846FCCEF2B80651400AE2FBB /* GoogleService-Info.plist */; };
+		84849E652B8912C5003C5BAA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84849E642B8912C5003C5BAA /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,7 +44,7 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-upgradelabs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-upgradelabs.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = upgradelabs/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		846FCCEE2B804C9D00AE2FBB /* upgradelabs.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = upgradelabs.entitlements; path = upgradelabs/upgradelabs.entitlements; sourceTree = "<group>"; };
-		846FCCEF2B80651400AE2FBB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		84849E642B8912C5003C5BAA /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		89C6BE57DB24E9ADA2F236DE /* Pods-upgradelabs-upgradelabsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-upgradelabs-upgradelabsTests.release.xcconfig"; path = "Target Support Files/Pods-upgradelabs-upgradelabsTests/Pods-upgradelabs-upgradelabsTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -89,7 +89,7 @@
 		13B07FAE1A68108700A75B9A /* upgradelabs */ = {
 			isa = PBXGroup;
 			children = (
-				846FCCEF2B80651400AE2FBB /* GoogleService-Info.plist */,
+				84849E642B8912C5003C5BAA /* GoogleService-Info.plist */,
 				846FCCEE2B804C9D00AE2FBB /* upgradelabs.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
@@ -250,7 +250,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				846FCCF02B80651400AE2FBB /* GoogleService-Info.plist in Resources */,
+				84849E652B8912C5003C5BAA /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
