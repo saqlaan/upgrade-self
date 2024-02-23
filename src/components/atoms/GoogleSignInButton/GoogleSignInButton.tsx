@@ -1,3 +1,4 @@
+import { Images } from "@/theme/assets/images";
 import auth from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import React, { useState } from "react";
@@ -43,10 +44,7 @@ function GoogleSignInButton({ onError }: Props) {
     <CButton
       buttonColor={colors.inputBackground}
       icon={({ size, color }) => (
-        <Image
-          source={require("../../../theme/assets/images/google-icon.png")}
-          style={{ width: 25, height: 25 }}
-        />
+        <Image source={Images.GoogleIcon} style={{ width: 25, height: 25 }} />
       )}
       onPress={handleGoogleSignIn}
       loading={isLoading}

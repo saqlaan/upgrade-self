@@ -1,4 +1,5 @@
 import { CButton } from "@/components/atoms";
+import { Images } from "@/theme/assets/images";
 import { appleAuth } from "@invertase/react-native-apple-authentication";
 import auth from "@react-native-firebase/auth";
 import React, { useCallback, useState } from "react";
@@ -42,10 +43,7 @@ function AppleSignInButton({ onError }: Props) {
       <CButton
         buttonColor={colors.inputBackground}
         icon={({ size, color }) => (
-          <Image
-            source={require("../../../theme/assets/images/apple-icon.png")}
-            style={{ width: 30, height: 30 }}
-          />
+          <Image source={Images.AppleIcon} style={{ width: 30, height: 30 }} />
         )}
         onPress={handleAppleSignIn}
         loading={isLoading}
