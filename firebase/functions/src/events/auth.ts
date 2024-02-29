@@ -1,19 +1,37 @@
-import * as functions from "firebase-functions";
+import "dotenv/config";
 import { getFirestore } from "firebase-admin/firestore";
-import { UserRecord } from "firebase-functions/v1/auth";
-import 'dotenv/config'
+import * as functions from "firebase-functions";
 
-const firestore = getFirestore()
+const firestore = getFirestore();
 
-export const onUserCreated = functions.auth.user().onCreate(async (user: UserRecord) => {
-  const {uid, email, emailVerified, displayName, photoURL, phoneNumber, disabled, } = user
-  console.log(`New user created: ${email}`);
+export const onUserCreated = functions.auth.user().onCreate(async (user) => {
+  const {
+    uid,
+    email,
+    emailVerified,
+    displayName,
+    photoURL,
+    phoneNumber,
+    disabled,
+  } = user;
   try {
-    await firestore.collection('users').doc(user.uid).set({
-        uid, email, emailVerified, displayName, photoURL, phoneNumber, disabled
-    })
-} catch (error) {
-  console.log(error)
-}
+    await firestore.collection("users").doc(uid).set({
+      uid,
+      email,
+      emailVerified,
+      displayName,
+      photoURL,
+      phoneNumber,
+      disabled,
+      onboardingCompleted: false,
+    });
+    console.log(`User ${uid} added to Firestore successfully.`);
+  } catch (error) {
+    console.error("Error adding user to Firestore:", error);
+    throw new functions.https.HttpsError(
+      "internal",
+      "Failed to add user to Firestore."
+    );
+  }
   return null;
 });
