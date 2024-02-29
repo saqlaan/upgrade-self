@@ -5,7 +5,7 @@ export interface AllOrganizationCentersType {
 
 export interface CentersType {
   centers: [CenterType];
-  error: {};
+  error: object;
   requested_centers: [CenterType];
   page_info: {
     total: number;
@@ -22,10 +22,10 @@ export interface CenterType {
   description: string;
   online_booking_start_date: string;
   enable_parallel_services_at_center: boolean;
-  country: {};
-  state: {};
-  location: {};
-  currency: {};
+  country: object;
+  state: object;
+  location: object;
+  currency: object;
   address_info: {
     address_1: string;
     address_2: string;
@@ -33,9 +33,9 @@ export interface CenterType {
     zip_code: string;
   };
   settings: any;
-  contact_info: {};
+  contact_info: object;
   working_hours: Array<any>;
-  additional_info: {};
+  additional_info: object;
   culture_code_at_center: string;
   is_fbe_enabled: boolean;
 }

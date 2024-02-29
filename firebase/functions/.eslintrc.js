@@ -10,7 +10,6 @@ module.exports = {
     "plugin:import/warnings",
     "plugin:import/typescript",
     "plugin:@typescript-eslint/recommended",
-    "google",
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -22,7 +21,14 @@ module.exports = {
   ],
   plugins: ["@typescript-eslint", "import"],
   rules: {
+    // "object-curly-spacing": ["error", "always"],
     quotes: ["error", "double"],
     indent: ["error", 2],
+    "import/no-unresolved": [
+      "error",
+      {
+        ignore: ["^firebase-admin/.+"],
+      },
+    ],
   },
 };

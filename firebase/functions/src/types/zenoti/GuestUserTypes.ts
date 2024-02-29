@@ -45,7 +45,7 @@ export interface GuestType {
   personal_info: PersonalInfoType;
   address_info?: AddressInfoType;
   preferences?: PreferencesType;
-  tags?: any;
-  referral?: any;
-  primary_employee?: any;
+  tags?: string;
+  referral?: string;
+  primary_employee?: string;
 }

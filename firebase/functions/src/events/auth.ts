@@ -30,7 +30,7 @@ export const onUserCreated = functions.auth.user().onCreate(async (user) => {
     console.error("Error adding user to Firestore:", error);
     throw new functions.https.HttpsError(
       "internal",
-      "Failed to add user to Firestore."
+      "Failed to add user to Firestore.",
     );
   }
   return null;
