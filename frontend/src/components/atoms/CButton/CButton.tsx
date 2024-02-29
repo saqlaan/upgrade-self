@@ -13,7 +13,7 @@ function CButton({ children, ...props }: Props) {
       style={styles.style}
       contentStyle={styles.contentStyles}
       mode="contained"
-      buttonColor={colors.secondary}
+      buttonColor={colors.primary}
       {...props}
     >
       {children}

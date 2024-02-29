@@ -1,13 +1,15 @@
 import { CButton, Spacer } from "@/components/atoms";
 import { Images } from "@/theme/assets/images";
 import type { ApplicationScreenProps } from "@/types/navigation";
+import { AppTheme } from "@/types/theme";
 import React from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 function Startup({ navigation }: ApplicationScreenProps) {
-  const { colors } = useTheme();
+  const { colors } = useTheme<AppTheme>();
+  
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -35,7 +37,6 @@ function Startup({ navigation }: ApplicationScreenProps) {
               <CButton
                 mode="contained"
                 onPress={() => navigation.navigate("Login")}
-                buttonColor={colors.secondary}
               >
                 Get Started
               </CButton>
