@@ -1,45 +1,115 @@
-import { CButton, Spacer } from "@/components/atoms";
+import {
+  AppleSignIn,
+  CButton,
+  GoogleSignInButton,
+  Spacer,
+} from "@/components/atoms";
 import { Images } from "@/theme/assets/images";
+import colors from "@/theme/colors";
+import { TextVariants } from "@/theme/fonts";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { AppTheme } from "@/types/theme";
 import React from "react";
-import { ImageBackground, StyleSheet, View } from "react-native";
+import { ImageBackground, Pressable, StyleSheet, View } from "react-native";
+import LinearGradient from "react-native-linear-gradient";
 import { Text, useTheme } from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 function Startup({ navigation }: ApplicationScreenProps) {
   const { colors } = useTheme<AppTheme>();
-  
+  const { bottom } = useSafeAreaInsets();
+
   return (
     <View style={styles.container}>
       <ImageBackground
-        source={Images.StartUpImage}
+        source={Images.StartBgImage}
         resizeMode={"cover"}
         style={styles.image}
       >
-        <SafeAreaView style={styles.safeContainer}>
-          <View>
-            <Text
-              style={{ color: colors.secondary, fontWeight: "600" }}
-              variant={"displayMedium"}
+        <SafeAreaView edges={["top"]} style={styles.safeContainer}>
+          <LinearGradient
+            colors={[
+              "#FFFFFF",
+              "#FFFFFF",
+              "#FFFFFF",
+              "rgba(255, 255, 255, 0.80)",
+              "rgba(255, 255, 255, 0.30)",
+              "rgba(255, 255, 255, 0.00)",
+            ]}
+            start={{ x: 0, y: 1 }}
+            end={{ x: 0, y: 0 }}
+          >
+            <View style={[styles.welcomeSection]}>
+              <Text
+                variant={TextVariants["display-xs-bold"]}
+                style={styles.headingText}
+              >
+                Welcome to the Upgrade Labs app!
+              </Text>
+              <Spacer marginBottom={10} />
+              <Text
+                style={[styles.headingText, { color: colors["black-300"] }]}
+                variant={TextVariants["text-md-medium"]}
+              >
+                Engage with the Biohacking Experience
+              </Text>
+            </View>
+          </LinearGradient>
+          <View
+            style={[
+              styles.bottomSection,
+              { backgroundColor: colors.white, paddingBottom: bottom },
+            ]}
+          >
+            <View style={styles.socialButtonsSections}>
+              <View style={{ flex: 1 }}>
+                <GoogleSignInButton />
+              </View>
+              <View style={{ flex: 1 }}>
+                <AppleSignIn />
+              </View>
+            </View>
+            <CButton
+              mode="contained"
+              onPress={() => navigation.navigate("Signup")}
             >
-              Welcome to ULF
-            </Text>
-            <Spacer marginBottom={10} />
-            <Text
-              style={{ color: colors.background }}
-              variant={"headlineMedium"}
-            >
-              Engage with the Biohacking Experience
-            </Text>
-            <Spacer marginBottom={40} />
-            <View style={{ flexDirection: "row" }}>
-              <CButton
-                mode="contained"
-                onPress={() => navigation.navigate("Login")}
+              <Text
+                variant={TextVariants["text-md-semi-bold"]}
+                style={{ color: colors.white }}
               >
                 Get Started
-              </CButton>
+              </Text>
+            </CButton>
+            <Spacer marginBottom={24} />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Text
+                variant={TextVariants["text-sm-regular"]}
+                style={{
+                  textAlign: "center",
+                  color: colors["black-200"],
+                  marginRight: 2,
+                }}
+              >
+                Already have an account?
+              </Text>
+              <Pressable onPress={() => navigation.navigate("Login")}>
+                <Text
+                  variant={TextVariants["text-md-bold"]}
+                  style={{ color: colors.secondary }}
+                >
+                  Log in
+                </Text>
+              </Pressable>
+              <Spacer marginBottom={36} />
             </View>
           </View>
         </SafeAreaView>
@@ -53,46 +123,30 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
-  textContainer: {
-    flex: 1,
-    justifyContent: "center",
-  },
   image: {
     flex: 1,
   },
   safeContainer: {
     flex: 1,
-    padding: 20,
-    backgroundColor: "#00000075",
     justifyContent: "flex-end",
   },
-  logo: {
-    fontWeight: "bold",
-    fontSize: 50,
-    color: "#fb5b5a",
-    marginBottom: 40,
+  welcomeSection: {
+    padding: 25,
+    paddingTop: 80,
+    paddingBottom: 10,
   },
-  inputView: {
-    width: "80%",
-    backgroundColor: "#ccc",
-    borderRadius: 25,
-    height: 50,
-    marginBottom: 20,
-    justifyContent: "center",
-    padding: 20,
+  bottomSection: {
+    padding: 16,
   },
-  inputText: {
-    height: 50,
-    color: "#003f5c",
+  headingText: {
+    color: colors["black-900"],
+    textAlign: "center",
   },
-  error: {
-    fontSize: 14,
-    color: "black",
-  },
-  forgotPasswordRow: {
+  socialButtonsSections: {
     flexDirection: "row",
-    justifyContent: "flex-end",
-    // alignItems: "flex-end",
+    gap: 16,
+    justifyContent: "space-between",
+    marginBottom: 24,
   },
 });
 

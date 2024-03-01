@@ -1,5 +1,7 @@
 import { CButton } from "@/components/atoms";
 import { Images } from "@/theme/assets/images";
+import { TextVariants } from "@/theme/fonts";
+import { AppTheme } from "@/types/theme";
 import { appleAuth } from "@invertase/react-native-apple-authentication";
 import auth from "@react-native-firebase/auth";
 import React, { useCallback, useState } from "react";
@@ -12,7 +14,7 @@ type Props = {
 
 function AppleSignInButton({ onError }: Props) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { colors } = useTheme();
+  const { colors } = useTheme<AppTheme>();
 
   const handleAppleSignIn = useCallback(async () => {
     setIsLoading(true);
@@ -41,16 +43,14 @@ function AppleSignInButton({ onError }: Props) {
   if (Platform.OS === "ios") {
     return (
       <CButton
-        buttonColor={colors.inputBackground}
+        buttonColor={colors["grey-300"]}
         icon={({ size, color }) => (
-          <Image source={Images.AppleIcon} style={{ width: 30, height: 30 }} />
+          <Image source={Images.AppleIcon} style={{ width: 24, height: 24 }} />
         )}
         onPress={handleAppleSignIn}
         loading={isLoading}
       >
-        <>
-          <Text variant={"bodyMedium"}>Continue with apple</Text>
-        </>
+        <Text variant={TextVariants["text-md-semi-bold"]}>Apple</Text>
       </CButton>
     );
   } else {

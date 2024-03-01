@@ -25,14 +25,14 @@ export default CButton;
 
 const styles = StyleSheet.create({
   contentStyles: {
-    height: 50,
+    height: 52,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 40,
-    width: "100%",
+    position: "relative",
   },
   style: {
-    width: "100%",
-    borderRadius: 50,
+    borderRadius: 8,
+    position: "relative",
   },
 });

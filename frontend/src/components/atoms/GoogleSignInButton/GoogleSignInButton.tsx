@@ -1,4 +1,6 @@
 import { Images } from "@/theme/assets/images";
+import { TextVariants } from "@/theme/fonts";
+import { AppTheme } from "@/types/theme";
 import auth from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import React, { useState } from "react";
@@ -24,7 +26,7 @@ type Props = {
 };
 
 function GoogleSignInButton({ onError }: Props) {
-  const { colors } = useTheme();
+  const { colors } = useTheme<AppTheme>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleGoogleSignIn = async () => {
@@ -42,14 +44,14 @@ function GoogleSignInButton({ onError }: Props) {
 
   return (
     <CButton
-      buttonColor={colors.inputBackground}
+      buttonColor={colors["grey-300"]}
       icon={({ size, color }) => (
-        <Image source={Images.GoogleIcon} style={{ width: 25, height: 25 }} />
+        <Image source={Images.GoogleIcon} style={{ width: 24, height: 24 }} />
       )}
       onPress={handleGoogleSignIn}
       loading={isLoading}
     >
-      <Text variant={"bodyMedium"}>Continue with google</Text>
+      <Text variant={TextVariants["text-md-semi-bold"]}>Google</Text>
     </CButton>
   );
 }
