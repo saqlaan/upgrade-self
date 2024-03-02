@@ -1,6 +1,6 @@
 import { AppleSignIn, GoogleSignInButton } from "@/components/atoms";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 
 function SocialLogin() {
   return (
@@ -8,9 +8,11 @@ function SocialLogin() {
       <View style={{ flex: 1 }}>
         <GoogleSignInButton />
       </View>
-      <View style={{ flex: 1 }}>
-        <AppleSignIn />
-      </View>
+      {Platform.OS === "ios" && (
+        <View style={{ flex: 1 }}>
+          <AppleSignIn />
+        </View>
+      )}
     </View>
   );
 }

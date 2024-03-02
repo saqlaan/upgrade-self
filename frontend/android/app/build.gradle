@@ -91,9 +91,9 @@ android {
         }
         release {
             storeFile file('upgrade_labs_dev.keystore')
-            storePassword System.console().readLine("\nKeystore password:")
-            keyAlias System.console().readLine("\nAlias: ")
-            keyPassword System.console().readLine("\nAlias password: ")
+            storePassword 'qwerty@123'
+            keyAlias 'upgrade_labs_dev'
+            keyPassword 'qwerty@123'
         }
     }
     buildTypes {
