@@ -64,7 +64,7 @@ const sizeStyles = {
   },
 };
 
-const variantFamily = {
+export const variantFamily = {
   regular: "Manrope-Regular",
   medium: "Manrope-Medium",
   "semi-bold": "Manrope-SemiBold",

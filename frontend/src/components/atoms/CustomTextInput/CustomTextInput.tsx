@@ -1,9 +1,24 @@
-import React, { useCallback, useState } from "react";
-import { StyleSheet, TextInput, TextInputProps, View } from "react-native";
-import { HelperText, useTheme } from "react-native-paper";
+import { EnvelopeSolidIcon } from "@/theme/assets/icons";
+import colors from "@/theme/colors";
+import { TextVariants, variantFamily } from "@/theme/fonts";
+import { spacing } from "@/theme/spacing";
+import { AppTheme } from "@/types/theme";
+import React, { ReactNode, useCallback, useState } from "react";
+import {
+  Pressable,
+  StyleSheet,
+  TextInput,
+  TextInputProps,
+  View,
+} from "react-native";
+import { Icon, Text, useTheme } from "react-native-paper";
+import Spacer from "../Spacer/Spacer";
 
 interface CustomTextInputProps extends TextInputProps {
   error: string | undefined;
+  label?: string;
+  icon?: ReactNode;
+  inputHints?: string[];
 }
 
 const CustomTextInput: React.FC<CustomTextInputProps> = ({
@@ -13,10 +28,17 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   autoCapitalize = "none",
   onBlur,
   error,
+  label,
+  icon,
+  textContentType,
+  inputHints,
   ...props
 }) => {
-  const { colors } = useTheme();
+  const { colors, spacing } = useTheme<AppTheme>();
   const [isFocused, setIsFocused] = useState(false);
+  const [isTextSecured, setIsTextSecured] = useState(
+    textContentType === "password" ? true : false
+  );
 
   const handleOnFocused = useCallback(() => {
     setIsFocused(true);
@@ -27,17 +49,27 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
     if (onBlur) onBlur(e);
   }, []);
 
+  const toggleSecureText = useCallback(() => {
+    setIsTextSecured((value) => !value);
+  }, []);
+
   return (
     <>
-      <View
-        style={[
-          styles.inputView,
-          { backgroundColor: colors.inputBackground },
-          isFocused && { borderWidth: 2 },
-        ]}
-      >
+      <View>
+        {label && (
+          <Text
+            style={{ color: colors["black-300"] }}
+            variant={TextVariants["text-sm-medium"]}
+          >
+            {label}
+          </Text>
+        )}
+        <Spacer marginBottom={spacing[2]} />
+      </View>
+      <View style={[styles.inputView]}>
+        {icon}
         <TextInput
-          style={[styles.inputText, { color: colors.primary }]}
+          style={[styles.inputText]}
           placeholder={placeholder}
           placeholderTextColor={"#707070"}
           cursorColor={colors.primary}
@@ -46,13 +78,43 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           autoCorrect={false}
           onBlur={handleOnBlur}
           onFocus={handleOnFocused}
+          secureTextEntry={isTextSecured}
           {...props}
         />
+        {textContentType === "password" && (
+          <Pressable onPress={toggleSecureText}>
+            {isTextSecured ? (
+              <EnvelopeSolidIcon />
+            ) : (
+              <Icon color="#656565" size={spacing[6]} source={"eye"} />
+            )}
+          </Pressable>
+        )}
       </View>
+      <Spacer marginTop={spacing[2]} />
+      {inputHints && !error && props.value == "" && (
+        <View>
+          {inputHints.map((hint, index) => (
+            <View key={index} style={styles.hintRow}>
+              <Icon
+                size={spacing[3]}
+                color={colors["black-300"]}
+                source={"circle-medium"}
+              />
+              <Text
+                style={{ color: colors["black-300"] }}
+                variant={TextVariants["text-sm-medium"]}
+              >
+                {hint}
+              </Text>
+            </View>
+          ))}
+        </View>
+      )}
       {error && (
-        <HelperText type="error" visible={true}>
-          {error}
-        </HelperText>
+        <>
+          <Text style={{ color: colors.error }}>{error}</Text>
+        </>
       )}
     </>
   );
@@ -61,17 +123,29 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
 const styles = StyleSheet.create({
   inputView: {
     width: "100%",
-    borderRadius: 15,
-    height: 50,
-    padding: 20,
+    borderRadius: 8,
+    paddingHorizontal: spacing[4],
     justifyContent: "center",
-    borderBlockColor: "#cfd0d6",
-    borderLeftColor: "#cfd0d6",
-    borderRightColor: "#cfd0d6",
+    alignItems: "center",
+    gap: spacing[4],
+    borderWidth: 1.5,
+    borderBlockColor: colors["grey-500"],
+    borderLeftColor: colors["grey-500"],
+    borderRightColor: colors["grey-500"],
+    flexDirection: "row",
   },
   inputText: {
-    height: 50,
-    fontWeight: "500",
+    height: 52,
+    fontSize: 16,
+    fontFamily: variantFamily["semi-bold"],
+    color: colors["black-400"],
+    flex: 1,
+  },
+  hintRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing[2],
+    marginBottom: spacing[2],
   },
 });
 

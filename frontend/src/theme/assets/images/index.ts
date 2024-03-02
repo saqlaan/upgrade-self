@@ -3,4 +3,5 @@ export const Images = {
   StartBgImage: require("./startup-bg.png"),
   GoogleIcon: require("./google_icon.png"),
   AppleIcon: require("./apple_icon.png"),
+  LoginTopSectionBg: require("./login-top-section-bg.jpg"),
 };

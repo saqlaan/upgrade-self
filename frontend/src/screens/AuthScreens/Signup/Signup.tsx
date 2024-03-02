@@ -5,30 +5,26 @@ import {
   Spacer,
 } from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
-import { loginSchema } from "@/schema";
+import { signupSchema } from "@/schema";
 import { onSignup, signup } from "@/services/firebase/auth";
 import firebaseErrors from "@/services/firebase/firebaseErrors";
-import { Images } from "@/theme/assets/images";
+import { LetterIcon, LockIcon } from "@/theme/assets/icons";
+import { TextVariants } from "@/theme/fonts";
 import type { ApplicationScreenProps } from "@/types/navigation";
+import { AppTheme } from "@/types/theme";
 import { FormikHelpers, useFormik } from "formik";
 import React, { useState } from "react";
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { HelperText, Text, useTheme } from "react-native-paper";
-import SocialLogin from "../components/SocialLogin/SocialLogin";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Text, useTheme } from "react-native-paper";
 
 type SignupFormValues = {
   email: string;
   password: string;
+  confirmPassword: string;
 };
 
 function Signup({ navigation }: ApplicationScreenProps) {
-  const { colors } = useTheme();
+  const { colors, spacing } = useTheme<AppTheme>();
   const [firebaseError, setFirebaseError] = useState<string>("");
 
   const {
@@ -44,8 +40,9 @@ function Signup({ navigation }: ApplicationScreenProps) {
     initialValues: {
       email: "",
       password: "",
+      confirmPassword: "",
     },
-    validationSchema: loginSchema,
+    validationSchema: signupSchema,
     onSubmit: handleLogin,
   });
 
@@ -72,62 +69,76 @@ function Signup({ navigation }: ApplicationScreenProps) {
   return (
     <SafeScreen>
       <ScrollView>
-        <BackButton />
         <View style={styles.container}>
-          <Image
-            style={{ width: "100%", objectFit: "contain" }}
-            source={Images.AppLogo}
-          />
-          <Spacer marginBottom={10} />
-          <Text
-            style={{ color: colors.secondary, fontWeight: "600" }}
-            variant={"headlineLarge"}
-          >
-            Sign Up
-          </Text>
-          <Spacer marginBottom={10} />
-          <Text variant={"titleMedium"}>Create your account</Text>
-          <Spacer marginBottom={40} />
+          <View style={{ flexDirection: "row" }}>
+            <BackButton color={colors.primary} />
+          </View>
+          <Spacer marginBottom={spacing[4]} />
+          <Text variant={TextVariants["display-xs-bold"]}>Sign up</Text>
+          <Spacer marginBottom={spacing[4]} />
           <CustomTextInput
+            label="Email address"
             placeholder="Username/Email"
             onChangeText={handleChange("email")}
             value={values.email}
             textContentType={"emailAddress"}
             onBlur={handleBlur("email")}
             error={touched.email && errors.email}
+            icon={<LetterIcon width={spacing[6]} height={spacing[6]} />}
           />
-          <Spacer marginTop={20} />
+          <Spacer marginBottom={spacing[4]} />
           <CustomTextInput
+            label="Password"
             placeholder="Password"
             onChangeText={handleChange("password")}
             value={values.password}
             textContentType={"password"}
-            secureTextEntry
             onBlur={handleBlur("password")}
             error={touched.password && errors.password}
+            icon={<LockIcon width={spacing[6]} height={spacing[6]} />}
+            inputHints={[
+              "Minimum of 8 characters",
+              "Uppercase, Lowercase letters, and one number",
+            ]}
           />
-          <Spacer marginTop={30} />
-          <CButton
-            disabled={!isValid || isSubmitting}
-            onPress={handleSubmit}
-            loading={isSubmitting}
-          >
-            Sign Up
-          </CButton>
-          {firebaseError && (
-            <HelperText type="error" visible>
-              {firebaseError}
-            </HelperText>
-          )}
-          <SocialLogin />
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Login")}
-            style={styles.center}
-          >
-            <Text>Already have an account? Login</Text>
-          </TouchableOpacity>
+          <Spacer marginBottom={spacing[4]} />
+          <CustomTextInput
+            label="Confirm password"
+            placeholder="Password"
+            onChangeText={handleChange("confirmPassword")}
+            value={values.confirmPassword}
+            textContentType={"password"}
+            onBlur={handleBlur("confirmPassword")}
+            error={touched.confirmPassword && errors.confirmPassword}
+            icon={<LockIcon width={spacing[6]} height={spacing[6]} />}
+          />
         </View>
       </ScrollView>
+      <View
+        style={{ paddingHorizontal: spacing[5], paddingBottom: spacing[5] }}
+      >
+        {firebaseError && (
+          <Text
+            style={{ color: colors.error, textAlign: "center" }}
+            variant={TextVariants["text-xs-bold"]}
+          >
+            {firebaseError}
+          </Text>
+        )}
+        <Spacer marginBottom={spacing[2]} />
+        <CButton
+          disabled={!isValid || isSubmitting}
+          onPress={handleSubmit}
+          loading={isSubmitting}
+        >
+          <Text
+            style={{ color: colors.white }}
+            variant={TextVariants["text-md-semi-bold"]}
+          >
+            Sign Up
+          </Text>
+        </CButton>
+      </View>
     </SafeScreen>
   );
 }

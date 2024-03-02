@@ -1,6 +1,54 @@
-import { MD3Theme } from "react-native-paper"
-import { Colors } from "./colors"
+import { MD3Theme } from "react-native-paper";
+import { Colors } from "./colors";
+import { Spacing } from "./spacing";
 
 export type AppTheme = MD3Theme & {
-  colors: Colors,
-}
+  colors: Colors;
+  spacing: Spacing;
+  // fonts: MD3Typescale & {
+  //   "display-2xl-bold": MD3Type;
+  //   "display-2xl-medium": MD3Type;
+  //   "display-2xl-regular": MD3Type;
+  //   "display-2xl-semi-bold": MD3Type;
+  //   "display-lg-bold": MD3Type;
+  //   "display-lg-medium": MD3Type;
+  //   "display-lg-regular": MD3Type;
+  //   "display-lg-semi-bold": MD3Type;
+  //   "display-md-bold": MD3Type;
+  //   "display-md-medium": MD3Type;
+  //   "display-md-regular": MD3Type;
+  //   "display-md-semi-bold": MD3Type;
+  //   "display-sm-bold": MD3Type;
+  //   "display-sm-medium": MD3Type;
+  //   "display-sm-regular": MD3Type;
+  //   "display-sm-semi-bold": MD3Type;
+  //   "display-xl-bold": MD3Type;
+  //   "display-xl-medium": MD3Type;
+  //   "display-xl-regular": MD3Type;
+  //   "display-xl-semi-bold": MD3Type;
+  //   "display-xs-bold": MD3Type;
+  //   "display-xs-medium": MD3Type;
+  //   "display-xs-regular": MD3Type;
+  //   "display-xs-semi-bold": MD3Type;
+  //   "text-lg-bold": MD3Type;
+  //   "text-lg-medium": MD3Type;
+  //   "text-lg-regular": MD3Type;
+  //   "text-lg-semi-bold": MD3Type;
+  //   "text-md-bold": MD3Type;
+  //   "text-md-medium": MD3Type;
+  //   "text-md-regular": MD3Type;
+  //   "text-md-semi-bold": MD3Type;
+  //   "text-sm-bold": MD3Type;
+  //   "text-sm-medium": MD3Type;
+  //   "text-sm-regular": MD3Type;
+  //   "text-sm-semi-bold": MD3Type;
+  //   "text-xl-bold": MD3Type;
+  //   "text-xl-medium": MD3Type;
+  //   "text-xl-regular": MD3Type;
+  //   "text-xl-semi-bold": MD3Type;
+  //   "text-xs-bold": MD3Type;
+  //   "text-xs-medium": MD3Type;
+  //   "text-xs-regular": MD3Type;
+  //   "text-xs-semi-bold": MD3Type;
+  // };
+};

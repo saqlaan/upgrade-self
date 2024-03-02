@@ -1,9 +1,5 @@
-import {
-  AppleSignIn,
-  CButton,
-  GoogleSignInButton,
-  Spacer,
-} from "@/components/atoms";
+import { IconButton, Spacer } from "@/components/atoms";
+import { ArrowRight } from "@/theme/assets/icons";
 import { Images } from "@/theme/assets/images";
 import colors from "@/theme/colors";
 import { TextVariants } from "@/theme/fonts";
@@ -17,9 +13,10 @@ import {
   SafeAreaView,
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
+import SocialLogin from "../components/SocialLogin/SocialLogin";
 
 function Startup({ navigation }: ApplicationScreenProps) {
-  const { colors } = useTheme<AppTheme>();
+  const { colors, spacing } = useTheme<AppTheme>();
   const { bottom } = useSafeAreaInsets();
 
   return (
@@ -49,7 +46,7 @@ function Startup({ navigation }: ApplicationScreenProps) {
               >
                 Welcome to the Upgrade Labs app!
               </Text>
-              <Spacer marginBottom={10} />
+              <Spacer marginBottom={spacing[2]} />
               <Text
                 style={[styles.headingText, { color: colors["black-300"] }]}
                 variant={TextVariants["text-md-medium"]}
@@ -64,17 +61,12 @@ function Startup({ navigation }: ApplicationScreenProps) {
               { backgroundColor: colors.white, paddingBottom: bottom },
             ]}
           >
-            <View style={styles.socialButtonsSections}>
-              <View style={{ flex: 1 }}>
-                <GoogleSignInButton />
-              </View>
-              <View style={{ flex: 1 }}>
-                <AppleSignIn />
-              </View>
-            </View>
-            <CButton
+            <SocialLogin />
+            <Spacer marginBottom={spacing[6]} />
+            <IconButton
               mode="contained"
               onPress={() => navigation.navigate("Signup")}
+              icon={<ArrowRight width={24} height={24} />}
             >
               <Text
                 variant={TextVariants["text-md-semi-bold"]}
@@ -82,13 +74,14 @@ function Startup({ navigation }: ApplicationScreenProps) {
               >
                 Get Started
               </Text>
-            </CButton>
-            <Spacer marginBottom={24} />
+            </IconButton>
+            <Spacer marginBottom={spacing[6]} />
             <View
               style={{
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "center",
+                paddingBottom: spacing[6],
               }}
             >
               <Text
@@ -109,7 +102,6 @@ function Startup({ navigation }: ApplicationScreenProps) {
                   Log in
                 </Text>
               </Pressable>
-              <Spacer marginBottom={36} />
             </View>
           </View>
         </SafeAreaView>
@@ -125,6 +117,7 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
+    top: -3,
   },
   safeContainer: {
     flex: 1,
@@ -141,12 +134,6 @@ const styles = StyleSheet.create({
   headingText: {
     color: colors["black-900"],
     textAlign: "center",
-  },
-  socialButtonsSections: {
-    flexDirection: "row",
-    gap: 16,
-    justifyContent: "space-between",
-    marginBottom: 24,
   },
 });
 
