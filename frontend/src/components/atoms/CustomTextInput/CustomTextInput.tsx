@@ -1,18 +1,12 @@
-import { EnvelopeSolidIcon } from "@/theme/assets/icons";
 import colors from "@/theme/colors";
 import { TextVariants, variantFamily } from "@/theme/fonts";
 import { spacing } from "@/theme/spacing";
 import { AppTheme } from "@/types/theme";
 import React, { ReactNode, useCallback, useState } from "react";
-import {
-  Pressable,
-  StyleSheet,
-  TextInput,
-  TextInputProps,
-  View,
-} from "react-native";
+import { StyleSheet, TextInput, TextInputProps, View } from "react-native";
 import { Icon, Text, useTheme } from "react-native-paper";
 import Spacer from "../Spacer/Spacer";
+import InputRightIcon from "./InputRightIcon";
 
 interface CustomTextInputProps extends TextInputProps {
   error: string | undefined;
@@ -66,7 +60,18 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
         )}
         <Spacer marginBottom={spacing[2]} />
       </View>
-      <View style={[styles.inputView]}>
+      <View
+        style={[
+          styles.inputView,
+          error
+            ? {
+                borderBlockColor: colors.error,
+                borderLeftColor: colors.error,
+                borderRightColor: colors.error,
+              }
+            : {},
+        ]}
+      >
         {icon}
         <TextInput
           style={[styles.inputText]}
@@ -81,15 +86,12 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           secureTextEntry={isTextSecured}
           {...props}
         />
-        {textContentType === "password" && (
-          <Pressable onPress={toggleSecureText}>
-            {isTextSecured ? (
-              <EnvelopeSolidIcon />
-            ) : (
-              <Icon color="#656565" size={spacing[6]} source={"eye"} />
-            )}
-          </Pressable>
-        )}
+        <InputRightIcon
+          isPassword={textContentType === "password"}
+          isTextSecured={isTextSecured}
+          onPressSecureIcon={toggleSecureText}
+          isError={error}
+        />
       </View>
       <Spacer marginTop={spacing[2]} />
       {inputHints && !error && props.value == "" && (
@@ -103,7 +105,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
               />
               <Text
                 style={{ color: colors["black-300"] }}
-                variant={TextVariants["text-sm-medium"]}
+                variant={TextVariants["text-sm-regular"]}
               >
                 {hint}
               </Text>

@@ -26,7 +26,6 @@ function ApplicationNavigator() {
 
   const getNavigator = useCallback(() => {
     if (user && user.emailVerified) return <PrivateNavigator />;
-    else if (user && !user.emailVerified) return <UnverifiedEmailNavigator />;
     else return <PublicNavigator />;
   }, [user]);
 
@@ -43,6 +42,7 @@ const PublicNavigator = () => {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Signup" component={Signup} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+      <Stack.Screen name="EmailVerification" component={EmailVerification} />
     </Stack.Navigator>
   );
 };

@@ -48,10 +48,11 @@ function Signup({ navigation }: ApplicationScreenProps) {
 
   function handleLogin(
     values: SignupFormValues,
-    { setSubmitting, resetForm }: FormikHelpers<SignupFormValues>
+    { setSubmitting, resetForm, setTouched }: FormikHelpers<SignupFormValues>
   ) {
     signup({ ...values })
       .then(() => {
+        setTouched({ email: false, password: false });
         resetForm();
         onSignup();
         navigation.navigate("EmailVerification");

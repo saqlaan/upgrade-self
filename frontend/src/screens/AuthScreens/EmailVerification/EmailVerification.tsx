@@ -1,6 +1,7 @@
-import { CButton, Spacer } from "@/components/atoms";
+import { BackButton, CButton, Spacer } from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
 import { sendEmailConfirmation } from "@/services/firebase/auth";
+import { CreateAccountMailIcon } from "@/theme/assets/icons";
 import { TextVariants } from "@/theme/fonts";
 import { spacing } from "@/theme/spacing";
 import type { ApplicationScreenProps } from "@/types/navigation";
@@ -9,7 +10,7 @@ import auth from "@react-native-firebase/auth";
 import React, { useCallback, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { openInbox } from "react-native-email-link";
-import { Button, Icon, Text, useTheme } from "react-native-paper";
+import { Button, Text, useTheme } from "react-native-paper";
 
 function EmailVerification({ navigation }: ApplicationScreenProps) {
   const { colors } = useTheme<AppTheme>();
@@ -32,11 +33,14 @@ function EmailVerification({ navigation }: ApplicationScreenProps) {
 
   return (
     <SafeScreen>
+      <View style={{ flexDirection: "row", paddingHorizontal: 20 }}>
+        <BackButton color={colors.primary} />
+      </View>
       <View style={styles.container}>
-        <Icon size={100} source={"check"} color={colors.secondary}></Icon>
+        <CreateAccountMailIcon width={spacing[12]} height={spacing[12]} />
         <Spacer marginBottom={50} />
         <Text variant={TextVariants["display-xs-bold"]}>Check your email!</Text>
-        <Spacer marginBottom={spacing[2]} />
+        <Spacer marginBottom={spacing[6]} />
         <Text
           style={{
             color: colors["black-300"],
@@ -47,12 +51,12 @@ function EmailVerification({ navigation }: ApplicationScreenProps) {
           {`We've just sent an email to you at ${user?.email || ""}. Tap on the
   link to verify you account`}
         </Text>
-        <Spacer marginBottom={spacing[2]} />
+        <Spacer marginBottom={spacing[6]} />
         <View style={styles.forgotPasswordRow}>
           <Button disabled={isDisabled} mode="text" onPress={handleResendEmail}>
             <Text
               style={{ color: colors.secondary }}
-              variant={TextVariants["text-md-semi-bold"]}
+              variant={TextVariants["text-md-medium"]}
             >
               {isDisabled
                 ? "Sent again. Try again in 30s"
@@ -66,10 +70,10 @@ function EmailVerification({ navigation }: ApplicationScreenProps) {
       >
         <Button disabled={isDisabled} mode="text" onPress={handleOnLogin}>
           <Text
-            style={{ color: colors.secondary }}
-            variant={TextVariants["text-md-semi-bold"]}
+            style={{ color: colors["black-200"] }}
+            variant={TextVariants["text-md-medium"]}
           >
-            Verified? Back to login
+            Already verified?
           </Text>
         </Button>
         <Spacer marginBottom={spacing[2]} />

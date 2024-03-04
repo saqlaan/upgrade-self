@@ -61,13 +61,15 @@ function Login({ navigation }: ApplicationScreenProps) {
 
   function handleLogin(
     values: LoginFormValues,
-    { setSubmitting, resetForm }: FormikHelpers<LoginFormValues>
+    { setSubmitting, resetForm, setTouched }: FormikHelpers<LoginFormValues>
   ) {
     login({ ...values })
       .then(() => {
         const user = auth().currentUser;
         if (!user?.emailVerified) {
+          setTouched({ password: false });
           resetForm();
+          navigation.navigate("EmailVerification");
         }
       })
       .catch((error) => {
