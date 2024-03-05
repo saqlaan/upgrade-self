@@ -136,7 +136,7 @@ function Signup({ navigation }: ApplicationScreenProps) {
             style={{ color: colors.white }}
             variant={TextVariants["text-md-semi-bold"]}
           >
-            Sign Up
+            Next
           </Text>
         </CButton>
       </View>

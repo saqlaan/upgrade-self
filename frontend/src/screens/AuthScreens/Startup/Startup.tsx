@@ -65,7 +65,7 @@ function Startup({ navigation }: ApplicationScreenProps) {
             <Spacer marginBottom={spacing[6]} />
             <IconButton
               mode="contained"
-              onPress={() => navigation.navigate("Signup")}
+              onPress={() => navigation.navigate("TOS")}
               icon={<ArrowRight width={24} height={24} />}
             >
               <Text

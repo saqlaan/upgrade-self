@@ -1,4 +1,4 @@
-const sizes = [
+const sizes: string[] = [
   "display-2xl",
   "display-xl",
   "display-lg",
@@ -11,7 +11,7 @@ const sizes = [
   "text-sm",
   "text-xs",
 ];
-const variants = ["regular", "medium", "semi-bold", "bold"];
+const variants: string[] = ["regular", "medium", "semi-bold", "bold"];
 
 const sizeStyles = {
   "display-2xl": {
@@ -86,6 +86,7 @@ function createFontStylesObject() {
 }
 
 export const fontConfig = createFontStylesObject();
+
 export const TextVariants = {
   "display-2xl-bold": "display-2xl-bold",
   "display-2xl-medium": "display-2xl-medium",
@@ -132,3 +133,31 @@ export const TextVariants = {
   "text-xs-regular": "text-xs-regular",
   "text-xs-semi-bold": "text-xs-semi-bold",
 };
+
+type VariantSize = "xs" | "sm" | "md" | "lg" | "xl" | "2xl";
+type VariantWeight = "bold" | "medium" | "regular" | "semi-bold";
+
+type VariantKey<S extends string, W extends string> = `${S}-${W}`;
+
+type TextVariants<S extends VariantSize, W extends VariantWeight> = {
+  [K in VariantKey<S, W>]: string;
+};
+
+const generateVariants = <S extends VariantSize, W extends VariantWeight>(
+  sizes: S[],
+  weights: W[]
+): TextVariants<S, W> => {
+  const variants: Partial<TextVariants<S, W>> = {};
+
+  sizes.forEach((size) => {
+    weights.forEach((weight) => {
+      const key = `${size}-${weight}` as VariantKey<S, W>;
+      variants[key] = key;
+    });
+  });
+
+  return variants as TextVariants<S, W>;
+};
+
+const TextVariantsExample = generateVariants(sizes, variants);
+console.log(TextVariantsExample);

@@ -6,9 +6,9 @@ export type ApplicationStackParamList = {
   ForgotPassword: undefined;
   Startup: undefined;
   Home: undefined;
-  EmailVerification: {
-    email: string;
-  };
+  EmailVerification: undefined;
+  TOS: undefined;
+  Locations: undefined;
 };
 
 export type ApplicationScreenProps =

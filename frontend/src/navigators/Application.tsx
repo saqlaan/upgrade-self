@@ -1,9 +1,10 @@
-import { EmailVerification, Home, Startup } from "@/screens";
+import { EmailVerification, Home, Locations, Startup, TOS } from "@/screens";
 import ForgotPassword from "@/screens/AuthScreens/ForgotPassword/ForgotPassword";
 import Login from "@/screens/AuthScreens/Login/Login";
 import Signup from "@/screens/AuthScreens/Signup/Signup";
 import type { ApplicationStackParamList } from "@/types/navigation";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useCallback, useEffect, useState } from "react";
@@ -21,11 +22,14 @@ function ApplicationNavigator() {
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
+    return subscriber;
   }, []);
 
   const getNavigator = useCallback(() => {
+    const usersCollection = firestore().collection("users");
+
     if (user && user.emailVerified) return <PrivateNavigator />;
+    // else if(user && user.emailVerified && )
     else return <PublicNavigator />;
   }, [user]);
 
@@ -39,6 +43,7 @@ const PublicNavigator = () => {
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="Startup" component={Startup} />
+      <Stack.Screen name="TOS" component={TOS} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Signup" component={Signup} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
@@ -47,13 +52,13 @@ const PublicNavigator = () => {
   );
 };
 
-const UnverifiedEmailNavigator = () => {
+const OnboardingNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="EmailVerification"
+      initialRouteName="Locations"
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name="EmailVerification" component={EmailVerification} />
+      <Stack.Screen name="Locations" component={Locations} />
     </Stack.Navigator>
   );
 };
@@ -61,9 +66,10 @@ const UnverifiedEmailNavigator = () => {
 const PrivateNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Home"
+      initialRouteName="Locations"
       screenOptions={{ headerShown: false }}
     >
+      <Stack.Screen name="Locations" component={Locations} />
       <Stack.Screen name="Home" component={Home} />
     </Stack.Navigator>
   );
