@@ -1,8 +1,10 @@
 import { Box, CButton, Text } from "@/components/atoms";
+import { getAllCentersData } from "@/services/zenoti/centers";
 import { GrimReaperIcon } from "@/theme/assets/icons";
 import { Images } from "@/theme/assets/images";
 import { spacing } from "@/theme/spacing";
 import type { ApplicationScreenProps } from "@/types/navigation";
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -10,6 +12,19 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 function Welcome({ navigation }: ApplicationScreenProps) {
   const { t } = useTranslation(["welcome", "common"]);
   const { top, bottom } = useSafeAreaInsets();
+
+  useEffect(() => {
+    getAllCenterData();
+  }, []);
+
+  const getAllCenterData = async () => {
+    try {
+      const data = await getAllCentersData();
+      console.log(data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <ImageBackground source={Images.primaryBgLines} style={{ flex: 1 }}>

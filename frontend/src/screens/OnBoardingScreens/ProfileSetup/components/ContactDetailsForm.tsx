@@ -75,6 +75,7 @@ function ContactDetails() {
               onChangeText={handleChange("zipcode")}
               value={values.zipcode}
               textContentType={"postalCode"}
+              keyboardType="number-pad"
               onBlur={handleBlur("zipcode")}
               error={touched.zipcode ? errors.zipcode : ""}
             />

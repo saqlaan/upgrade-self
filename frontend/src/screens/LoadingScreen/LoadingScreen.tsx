@@ -21,7 +21,7 @@ function Startup({ navigation }: ApplicationScreenProps) {
     if (user?.onboardingCompleted) {
       navigation.replace("Home");
     } else {
-      navigation.replace("Welcome");
+      navigation.replace("Locations");
     }
   };
 
