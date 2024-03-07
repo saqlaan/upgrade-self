@@ -1,39 +1,67 @@
-import { BackButton, Box, Text } from "@/components/atoms";
-import { SafeScreen } from "@/components/template";
+import { Box, CButton, Text } from "@/components/atoms";
+import { GrimReaperIcon } from "@/theme/assets/icons";
+import { Images } from "@/theme/assets/images";
+import { spacing } from "@/theme/spacing";
 import type { ApplicationScreenProps } from "@/types/navigation";
-import { AppTheme } from "@/types/theme";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
+import { ImageBackground, StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 function Welcome({ navigation }: ApplicationScreenProps) {
-  const { colors } = useTheme<AppTheme>();
-  const { t } = useTranslation(["locations", "common"]);
-  const [selectedLocation, setSelectedLocation] = useState("");
+  const { t } = useTranslation(["welcome", "common"]);
+  const { top, bottom } = useSafeAreaInsets();
 
   return (
-    <SafeScreen>
-      {navigation.canGoBack() && (
-        <Box px="5" pt="5" row>
-          <BackButton color={colors.primary} />
+    <ImageBackground source={Images.primaryBgLines} style={{ flex: 1 }}>
+      <View
+        style={[
+          styles.container,
+          {
+            paddingTop: top,
+            paddingBottom: bottom,
+          },
+        ]}
+      >
+        <Box flex={1} px="8" pt="12">
+          <Text color="white" align="center" variant={"display-xs-bold"}>
+            {t("welcome:title")}
+          </Text>
         </Box>
-      )}
-      <Box px="5" py="5">
-        <Text variant={"display-xs-bold"} mb={"2"}>
-          Welcome
-        </Text>
-      </Box>
-    </SafeScreen>
+        <Box style={styles.iconWrapper} bgColor="white">
+          <GrimReaperIcon />
+        </Box>
+        <Box px="5" py="5">
+          <Text color="white" align="center" variant={"text-md-medium"} mb="5">
+            {t("welcome:note")}
+          </Text>
+          <CButton
+            onPress={() => navigation.navigate("ProfileSetup")}
+            variant={"default"}
+          >
+            <Text color={"black-900"} variant="text-md-semi-bold">
+              {t("welcome:buttonText")}
+            </Text>
+          </CButton>
+        </Box>
+      </View>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    padding: 20,
-    paddingTop: 0,
+    position: "relative",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  iconWrapper: {
+    width: spacing["10"],
+    height: spacing["10"],
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: spacing["10"],
+    position: "absolute",
   },
 });
 

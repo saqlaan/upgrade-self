@@ -5,4 +5,5 @@ export const Images = {
   AppleIcon: require("./apple_icon.png"),
   LoginTopSectionBg: require("./login-top-section-bg.jpg"),
   SplashBg: require("../../../../assets/images/splash/ios/splash-screen-bg.png"),
+  primaryBgLines: require("./primary-bg-lines.png"),
 };

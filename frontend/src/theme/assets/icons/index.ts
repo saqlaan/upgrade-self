@@ -5,6 +5,7 @@ import CreateAccountMailIcon from "./create-account-mail.svg";
 import DangerCircle from "./danger-circle.svg";
 import EnvelopeSolidIcon from "./envelope-solid.svg";
 import FemaleIcon from "./female.svg";
+import GrimReaperIcon from "./grim-reaper.svg";
 import LetterIcon from "./letter.svg";
 import LockIcon from "./lock.svg";
 import MaleIcon from "./male.svg";
@@ -18,6 +19,7 @@ export {
   DangerCircle,
   EnvelopeSolidIcon,
   FemaleIcon,
+  GrimReaperIcon,
   LetterIcon,
   LockIcon,
   MaleIcon,

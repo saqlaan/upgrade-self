@@ -69,5 +69,4 @@ const styles = StyleSheet.create({
   defaultContentStyle: {
     borderColor: colors["grey-500"],
   },
-  // outlined,
 });
