@@ -1,14 +1,17 @@
-import { BackButton, Box, CButton, Spacer, Text } from "@/components/atoms";
+import { BackButton, Box, CButton, Text } from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { AppTheme } from "@/types/theme";
+import { Picker } from "@react-native-picker/picker";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
 
 function Locations({ navigation }: ApplicationScreenProps) {
-  const { colors, spacing } = useTheme<AppTheme>();
+  const { colors } = useTheme<AppTheme>();
   const { t } = useTranslation(["locations", "common"]);
+  const [selectedLocation, setSelectedLocation] = useState("");
 
   return (
     <SafeScreen>
@@ -21,15 +24,29 @@ function Locations({ navigation }: ApplicationScreenProps) {
         <Text variant={"display-xs-bold"} mb={"2"}>
           {t("locations:title")}
         </Text>
-        <Text color={colors["black-300"]} variant={"text-md-medium"} mb={"2"}>
+        <Text color={"black-300"} variant={"text-md-medium"} mb={"2"}>
           {t("locations:subtitle")}
         </Text>
       </Box>
-      <Spacer marginBottom={spacing[4]} />
-      <ScrollView style={styles.container}></ScrollView>
+      <Box style={styles.container}>
+        <Picker
+          selectedValue={selectedLocation}
+          onValueChange={(itemValue, itemIndex) =>
+            setSelectedLocation(itemValue)
+          }
+          itemStyle={{ fontSize: 16, fontFamily: "Manrope-SemiBold" }}
+        >
+          <Picker.Item label={t("locations:selectLabel")} value="" />
+          <Picker.Item label="Coeur d'Alene" value="Coeur d'Alene" />
+          <Picker.Item label="Coeur d'Alene 1" value="Coeur d'Alene 1" />
+        </Picker>
+      </Box>
       <Box px="5" py="5">
-        <CButton onPress={() => navigation.navigate("Signup")}>
-          <Text color={colors.white} variant="text-md-semi-bold">
+        <CButton
+          onPress={() => navigation.navigate("ProfileSetup")}
+          disabled={selectedLocation === ""}
+        >
+          <Text color={"white"} variant="text-md-semi-bold">
             {t("common:appName.next")}
           </Text>
         </CButton>

@@ -160,4 +160,3 @@ const generateVariants = <S extends VariantSize, W extends VariantWeight>(
 };
 
 const TextVariantsExample = generateVariants(sizes, variants);
-console.log(TextVariantsExample);

@@ -9,6 +9,9 @@ export type ApplicationStackParamList = {
   EmailVerification: undefined;
   TOS: undefined;
   Locations: undefined;
+  LoadingScreen: undefined;
+  ProfileSetup: undefined;
+  Welcome: undefined;
 };
 
 export type ApplicationScreenProps =

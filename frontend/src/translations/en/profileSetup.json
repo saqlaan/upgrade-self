@@ -1,0 +1,18 @@
+{
+  "title": "Personal details",
+  "subtitle": "Manage your personal information",
+  "title1": "Contact details",
+  "subtitle1": "Manage your contact Information",
+  "firstname": "First name",
+  "lastname": "Last name",
+  "dob": "Date of birth",
+  "gender": "Gender",
+  "male": "Male",
+  "female": "Female",
+  "address1": "Address 1",
+  "address2": "Address 2 (optional)",
+  "city": "City",
+  "state": "State",
+  "zipcode": "Zip Code",
+  "phone": "Phone"
+}

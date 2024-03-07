@@ -1,10 +1,18 @@
-import { EmailVerification, Home, Locations, Startup, TOS } from "@/screens";
+import {
+  EmailVerification,
+  Home,
+  LoadingScreen,
+  Locations,
+  ProfileSetup,
+  Startup,
+  TOS,
+  Welcome,
+} from "@/screens";
 import ForgotPassword from "@/screens/AuthScreens/ForgotPassword/ForgotPassword";
 import Login from "@/screens/AuthScreens/Login/Login";
 import Signup from "@/screens/AuthScreens/Signup/Signup";
 import type { ApplicationStackParamList } from "@/types/navigation";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useCallback, useEffect, useState } from "react";
@@ -26,10 +34,7 @@ function ApplicationNavigator() {
   }, []);
 
   const getNavigator = useCallback(() => {
-    const usersCollection = firestore().collection("users");
-
     if (user && user.emailVerified) return <PrivateNavigator />;
-    // else if(user && user.emailVerified && )
     else return <PublicNavigator />;
   }, [user]);
 
@@ -66,11 +71,14 @@ const OnboardingNavigator = () => {
 const PrivateNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Locations"
+      initialRouteName="LoadingScreen"
       screenOptions={{ headerShown: false }}
     >
+      <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
       <Stack.Screen name="Locations" component={Locations} />
+      <Stack.Screen name="ProfileSetup" component={ProfileSetup} />
       <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Welcome" component={Welcome} />
     </Stack.Navigator>
   );
 };

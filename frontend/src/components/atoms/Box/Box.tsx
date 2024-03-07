@@ -52,7 +52,7 @@ function Box({ children, ...props }: BoxProps) {
   } = props;
 
   const dynamicStyles = [
-    bgColor && { backgroundColor: bgColor },
+    bgColor && { backgroundColor: colors[bgColor] },
     justifyContent && { justifyContent: justifyContent },
     alignItems && { alignItems: alignItems },
     row && { flexDirection: "row" },

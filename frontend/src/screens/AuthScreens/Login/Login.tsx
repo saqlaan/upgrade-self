@@ -67,7 +67,7 @@ function Login({ navigation }: ApplicationScreenProps) {
       .then(() => {
         const user = auth().currentUser;
         if (!user?.emailVerified) {
-          setTouched({ password: false });
+          setTouched({ password: false, email: false });
           resetForm();
           navigation.navigate("EmailVerification");
         }

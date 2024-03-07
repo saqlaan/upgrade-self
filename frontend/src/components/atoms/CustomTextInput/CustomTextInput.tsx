@@ -9,7 +9,7 @@ import Spacer from "../Spacer/Spacer";
 import InputRightIcon from "./InputRightIcon";
 
 interface CustomTextInputProps extends TextInputProps {
-  error: string | undefined;
+  error?: string;
   label?: string;
   icon?: ReactNode;
   inputHints?: string[];
@@ -47,6 +47,8 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
     setIsTextSecured((value) => !value);
   }, []);
 
+  const hasError = error !== undefined && error !== "";
+
   return (
     <>
       <View>
@@ -63,7 +65,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
       <View
         style={[
           styles.inputView,
-          error
+          hasError
             ? {
                 borderBlockColor: colors.error,
                 borderLeftColor: colors.error,
@@ -90,11 +92,11 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           isPassword={textContentType === "password"}
           isTextSecured={isTextSecured}
           onPressSecureIcon={toggleSecureText}
-          isError={error}
+          isError={hasError}
         />
       </View>
       <Spacer marginTop={spacing[2]} />
-      {inputHints && !error && props.value == "" && (
+      {inputHints && !hasError && props.value == "" && (
         <View>
           {inputHints.map((hint, index) => (
             <View key={index} style={styles.hintRow}>
@@ -113,7 +115,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           ))}
         </View>
       )}
-      {error && (
+      {hasError && (
         <>
           <Text style={{ color: colors.error }}>{error}</Text>
         </>
@@ -135,6 +137,7 @@ const styles = StyleSheet.create({
     borderLeftColor: colors["grey-500"],
     borderRightColor: colors["grey-500"],
     flexDirection: "row",
+    height: 52,
   },
   inputText: {
     height: 52,

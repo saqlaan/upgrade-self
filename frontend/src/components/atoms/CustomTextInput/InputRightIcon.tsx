@@ -3,7 +3,7 @@ import colors from "@/theme/colors";
 import { variantFamily } from "@/theme/fonts";
 import { spacing } from "@/theme/spacing";
 import { AppTheme } from "@/types/theme";
-import React, { useState } from "react";
+import React from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { Icon, useTheme } from "react-native-paper";
 
@@ -21,18 +21,19 @@ const InputRightIcon = ({
   isTextSecured,
   ...props
 }: InputRightIconProps) => {
-  const { colors, spacing } = useTheme<AppTheme>();
-  const [isFocused, setIsFocused] = useState(false);
+  const { spacing } = useTheme<AppTheme>();
 
   if (isError) return <DangerCircle width={spacing[6]} height={spacing[6]} />;
   else if (isPassword)
-    <Pressable onPress={onPressSecureIcon}>
-      {isTextSecured ? (
-        <EnvelopeSolidIcon />
-      ) : (
-        <Icon color="#656565" size={spacing[6]} source={"eye"} />
-      )}
-    </Pressable>;
+    return (
+      <Pressable onPress={onPressSecureIcon}>
+        {isTextSecured ? (
+          <EnvelopeSolidIcon />
+        ) : (
+          <Icon color="#656565" size={spacing[6]} source={"eye"} />
+        )}
+      </Pressable>
+    );
 };
 
 const styles = StyleSheet.create({
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: spacing[4],
     borderWidth: 1.5,
-    borderBlockColor: colors["grey-500"],
+    borderColor: colors["grey-500"],
     borderLeftColor: colors["grey-500"],
     borderRightColor: colors["grey-500"],
     flexDirection: "row",
