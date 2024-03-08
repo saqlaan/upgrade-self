@@ -1,4 +1,5 @@
-import auth from "@react-native-firebase/auth";
+import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import { updateUser } from "./collections/user";
 
 export const signup = ({
   email,
@@ -30,4 +31,8 @@ export const onSignup = async () => {
 
 export const sendEmailConfirmation = async () => {
   return await auth().currentUser?.sendEmailVerification();
+};
+
+export const syncDataOnAppStart = async (authUser: FirebaseAuthTypes.User) => {
+  return updateUser(authUser);
 };

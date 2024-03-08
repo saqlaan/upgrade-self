@@ -1,25 +1,22 @@
 import { getUser } from "@/services/firebase";
 import { Images } from "@/theme/assets/images";
 import type { ApplicationScreenProps } from "@/types/navigation";
-import { AppTheme } from "@/types/theme";
 import { firebase } from "@react-native-firebase/auth";
 import React, { useEffect } from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
-import { ActivityIndicator, Button, useTheme } from "react-native-paper";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { ActivityIndicator, Button } from "react-native-paper";
 
 function Startup({ navigation }: ApplicationScreenProps) {
-  const { colors, spacing } = useTheme<AppTheme>();
-  const { bottom } = useSafeAreaInsets();
-
   useEffect(() => {
     onUserLogin();
   }, []);
 
   const onUserLogin = async () => {
     const user = await getUser();
-    if (user?.onboardingCompleted) {
-      navigation.replace("Home");
+    if (user?.onBoardingStep === 0) {
+      navigation.replace("Locations");
+    } else if (user?.onBoardingStep === 1) {
+      navigation.replace("Welcome");
     } else {
       navigation.replace("Locations");
     }

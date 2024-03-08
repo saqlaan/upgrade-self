@@ -1,25 +1,18 @@
 import { Box, CButton, Text } from "@/components/atoms";
-import { updateUser } from "@/services/firebase";
 import { UseUserStore } from "@/store/user.store";
 import { GrimReaperIcon } from "@/theme/assets/icons";
 import { Images } from "@/theme/assets/images";
 import { spacing } from "@/theme/spacing";
 import type { ApplicationScreenProps } from "@/types/navigation";
-import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { ImageBackground, StatusBar, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-function Welcome({ navigation }: ApplicationScreenProps) {
+function QuestionStep({ navigation }: ApplicationScreenProps) {
   const { t } = useTranslation(["welcome", "common"]);
   const { top, bottom } = useSafeAreaInsets();
   const { user } = UseUserStore();
 
-  const _submit = useCallback(() => {
-    updateUser({
-      onboardingCompleted: true,
-    });
-  }, []);
   return (
     <ImageBackground source={Images.primaryBgLines} style={{ flex: 1 }}>
       <StatusBar barStyle={"light-content"} />
@@ -34,9 +27,7 @@ function Welcome({ navigation }: ApplicationScreenProps) {
       >
         <Box flex={1} px="8" pt="12">
           <Text color="white" align="center" variant={"display-xs-bold"}>
-            {t("welcome:title", {
-              name: `${user?.firstName} ${user?.lastName}`,
-            })}
+            Question step
           </Text>
         </Box>
         <Box style={styles.iconWrapper} bgColor="white">
@@ -46,7 +37,10 @@ function Welcome({ navigation }: ApplicationScreenProps) {
           <Text color="white" align="center" variant={"text-md-medium"} mb="5">
             {t("welcome:note")}
           </Text>
-          <CButton onPress={_submit} variant={"default"}>
+          <CButton
+            onPress={() => navigation.navigate("ProfileSetup")}
+            variant={"default"}
+          >
             <Text color={"black-900"} variant="text-md-semi-bold">
               {t("welcome:buttonText")}
             </Text>
@@ -74,4 +68,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Welcome;
+export default QuestionStep;

@@ -3,7 +3,7 @@
   "compilerOptions": {
     "types": ["jest", "node"],
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["./src/*"]
     }
   },
   "include": [
@@ -14,6 +14,7 @@
     "jest.setup.js",
     "jest.config.js",
     "babel.config.js",
-    "index.js"
+    "index.js",
+    "src/navigators/PrivateStack/.tsx"
   ]
 }

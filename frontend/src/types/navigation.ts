@@ -12,6 +12,7 @@ export type ApplicationStackParamList = {
   LoadingScreen: undefined;
   ProfileSetup: undefined;
   Welcome: undefined;
+  QuestionStep: undefined;
 };
 
 export type ApplicationScreenProps =

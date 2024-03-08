@@ -142,21 +142,3 @@ type VariantKey<S extends string, W extends string> = `${S}-${W}`;
 type TextVariants<S extends VariantSize, W extends VariantWeight> = {
   [K in VariantKey<S, W>]: string;
 };
-
-const generateVariants = <S extends VariantSize, W extends VariantWeight>(
-  sizes: S[],
-  weights: W[]
-): TextVariants<S, W> => {
-  const variants: Partial<TextVariants<S, W>> = {};
-
-  sizes.forEach((size) => {
-    weights.forEach((weight) => {
-      const key = `${size}-${weight}` as VariantKey<S, W>;
-      variants[key] = key;
-    });
-  });
-
-  return variants as TextVariants<S, W>;
-};
-
-const TextVariantsExample = generateVariants(sizes, variants);

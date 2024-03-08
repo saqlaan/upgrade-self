@@ -14,7 +14,6 @@ import { TextVariants } from "@/theme/fonts";
 import { spacing } from "@/theme/spacing";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { AppTheme } from "@/types/theme";
-import auth from "@react-native-firebase/auth";
 import { FormikHelpers, useFormik } from "formik";
 import React, { useCallback, useState } from "react";
 import {
@@ -64,11 +63,10 @@ function Login({ navigation }: ApplicationScreenProps) {
     { setSubmitting, resetForm, setTouched }: FormikHelpers<LoginFormValues>
   ) {
     login({ ...values })
-      .then(() => {
-        const user = auth().currentUser;
+      .then(({ user }) => {
         if (!user?.emailVerified) {
-          setTouched({ password: false, email: false });
           resetForm();
+          setTouched({ password: false, email: false });
           navigation.navigate("EmailVerification");
         }
       })

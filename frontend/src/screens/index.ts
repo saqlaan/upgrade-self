@@ -8,4 +8,5 @@ export { default as TOS } from "./AuthScreens/TOS/TOS";
 export { default as LoadingScreen } from "./LoadingScreen/LoadingScreen";
 export { default as Locations } from "./OnBoardingScreens/Locations/Locations";
 export { default as ProfileSetup } from "./OnBoardingScreens/ProfileSetup/ProfileSetup";
+export { default as QuestionStep } from "./OnBoardingScreens/QuestionStep/QuestionStep";
 export { default as Welcome } from "./OnBoardingScreens/Welcome/Welcome";

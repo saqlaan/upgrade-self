@@ -1,8 +1,8 @@
 import { object, string } from "yup";
 
 const signupDetailsSchema = object({
-  firstname: string().required("First name is required"),
-  lastname: string().required("Last name is required"),
+  firstName: string().required("First name is required"),
+  lastName: string().required("Last name is required"),
   dob: string().required("Date of birth is required"),
   gender: string().required("Gender is required"),
   address1: string().required("Primary address is required"),

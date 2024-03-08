@@ -1,16 +1,15 @@
 import colors from "@/theme/colors";
 import { spacing } from "@/theme/spacing";
 import { AppTheme } from "@/types/theme";
-import { Colors } from "@/types/theme/colors";
 import { useNavigation } from "@react-navigation/native";
 import { Pressable, StyleSheet } from "react-native";
 import { Icon, useTheme } from "react-native-paper";
 
 type Props = {
-  color?: Colors;
+  color?: keyof typeof colors;
 };
 
-function BackButton({ color = colors.white }: Props) {
+function BackButton({ color = "white" }: Props) {
   const { colors } = useTheme<AppTheme>();
   const navigation = useNavigation();
   return (

@@ -1,43 +1,23 @@
 import { CButton } from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
+import { UseUserStore } from "@/store/user.store";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import auth from "@react-native-firebase/auth";
-import React, { useEffect } from "react";
-import { StyleSheet } from "react-native";
+import React from "react";
 
 function Home({ navigation }: ApplicationScreenProps) {
-  useEffect(() => {
-    const user = auth().currentUser;
+  const { clearUser } = UseUserStore();
 
-    console.log({ user });
-    // user?.sendEmailVerification();
-  }, []);
+  const handleLogout = () => {
+    auth().signOut();
+    clearUser();
+  };
 
   return (
     <SafeScreen>
-      <CButton onPress={() => auth().signOut()}>Logout</CButton>
+      <CButton onPress={handleLogout}>Logout</CButton>
     </SafeScreen>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    padding: 20,
-    paddingTop: 20,
-  },
-  error: {
-    fontSize: 14,
-    color: "black",
-  },
-  forgotPasswordRow: {
-    justifyContent: "flex-end",
-    flexDirection: "row",
-  },
-  center: {
-    alignItems: "center",
-  },
-});
 
 export default Home;

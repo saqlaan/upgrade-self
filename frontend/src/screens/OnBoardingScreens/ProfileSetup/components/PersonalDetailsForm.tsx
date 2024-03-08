@@ -43,22 +43,22 @@ function PersonalDetails() {
           <Box row gap="4">
             <Box flex={1}>
               <CustomTextInput
-                label={t("profileSetup:firstname")}
-                onChangeText={handleChange("firstname")}
-                value={values.firstname}
+                label={t("profileSetup:firstName")}
+                onChangeText={handleChange("firstName")}
+                value={values.firstName}
                 textContentType={"name"}
-                onBlur={handleBlur("firstname")}
-                error={touched.firstname ? errors.firstname : ""}
+                onBlur={handleBlur("firstName")}
+                error={touched.firstName ? errors.firstName : ""}
               />
             </Box>
             <Box flex={1}>
               <CustomTextInput
-                label={t("profileSetup:lastname")}
-                onChangeText={handleChange("lastname")}
-                value={values.lastname}
+                label={t("profileSetup:lastName")}
+                onChangeText={handleChange("lastName")}
+                value={values.lastName}
                 textContentType={"name"}
-                onBlur={handleBlur("lastname")}
-                error={touched.lastname ? errors.lastname : ""}
+                onBlur={handleBlur("lastName")}
+                error={touched.lastName ? errors.lastName : ""}
               />
             </Box>
           </Box>
