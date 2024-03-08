@@ -7,13 +7,18 @@ import { Icon, useTheme } from "react-native-paper";
 
 type Props = {
   color?: keyof typeof colors;
+  onPress?: () => void;
 };
 
-function BackButton({ color = "white" }: Props) {
+function BackButton({ color = "white", onPress }: Props) {
   const { colors } = useTheme<AppTheme>();
   const navigation = useNavigation();
+  if (!navigation.canGoBack()) return null;
   return (
-    <Pressable style={styles.backButton} onPress={() => navigation.goBack()}>
+    <Pressable
+      style={styles.backButton}
+      onPress={onPress ? onPress : () => navigation.goBack()}
+    >
       <Icon color={color} source={"chevron-left"} size={spacing[6]} />
     </Pressable>
   );

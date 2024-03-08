@@ -21,7 +21,7 @@ export type BoxProps = ViewProps & {
   row?: true;
   col?: true;
   alignItems?: FlexAlignType;
-  justifyContent?: FlexAlignType;
+  justifyContent?: string;
   bgColor?: keyof typeof colors;
   children?: ReactNode;
 };

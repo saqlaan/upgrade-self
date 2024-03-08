@@ -1,0 +1,128 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "question": "What do you value the most regarding your health and well-being?",
+      "options": [
+        { "id": 1, "value": "Quality sleep" },
+        { "id": 2, "value": "Sexual performance" },
+        { "id": 3, "value": "Weight loss" }
+      ]
+    },
+    {
+      "id": 2,
+      "question": "Which of the two do you prioritize more?",
+      "options": [
+        { "id": 4, "value": "Sleep improvement" },
+        { "id": 5, "value": "Sexual performance improvement" }
+      ]
+    },
+    {
+      "id": 3,
+      "question": "What about these two?",
+      "options": [
+        { "id": 6, "value": "Weight loss" },
+        { "id": 7, "value": "Sleep improvement" }
+      ]
+    },
+    {
+      "id": 4,
+      "question": "In terms of your daily grind, what matters most to you?",
+      "options": [
+        { "id": 8, "value": "Sleep improvement" },
+        { "id": 9, "value": "Sexual performance improvement" },
+        { "id": 10, "value": "Cognitive function improvement" }
+      ]
+    },
+    {
+      "id": 5,
+      "question": "Which is more important to you?",
+      "options": [
+        { "id": 11, "value": "A sharper mind" },
+        { "id": 12, "value": "Intimate connections" }
+      ]
+    },
+    {
+      "id": 6,
+      "question": "What’s your main priority when it comes to your fitness routine?",
+      "options": [
+        { "id": 13, "value": "Strength" },
+        { "id": 14, "value": "Muscle mass" },
+        { "id": 15, "value": "Energy level improvement" }
+      ]
+    },
+    {
+      "id": 7,
+      "question": "Which do you value more?",
+      "options": [
+        { "id": 16, "value": "Heart health" },
+        { "id": 17, "value": "Muscle mass" }
+      ]
+    },
+    {
+      "id": 8,
+      "question": "What about these two?",
+      "options": [
+        { "id": 18, "value": "Energy level improvement" },
+        { "id": 19, "value": "Strength" }
+      ]
+    },
+    {
+      "id": 9,
+      "question": "In terms of your holistic well-being, what’s most important?",
+      "options": [
+        { "id": 20, "value": "Sexual performance" },
+        { "id": 21, "value": "Cognitive function improvement" },
+        { "id": 22, "value": "Quality sleep" }
+      ]
+    },
+    {
+      "id": 10,
+      "question": "What’s more important to you?",
+      "options": [
+        { "id": 23, "value": "A sharper mind" },
+        { "id": 24, "value": "Restful sleep" }
+      ]
+    },
+    {
+      "id": 11,
+      "question": "What about these two?",
+      "options": [
+        { "id": 25, "value": "Sexual performance" },
+        { "id": 26, "value": "Restful sleep" }
+      ]
+    },
+    {
+      "id": 12,
+      "question": "Which of the two do you prioritize more?",
+      "options": [
+        { "id": 27, "value": "Heart health" },
+        { "id": 28, "value": "Cognitive function" }
+      ]
+    },
+    {
+      "id": 13,
+      "question": "What about these two?",
+      "options": [
+        { "id": 29, "value": "Energy level improvement" },
+        { "id": 30, "value": "Heart health" }
+      ]
+    },
+    {
+      "id": 14,
+      "question": "What’s more important to you?",
+      "options": [
+        { "id": 31, "value": "Restful sleep" },
+        { "id": 32, "value": "Energy levels" }
+      ]
+    },
+    {
+      "id": 15,
+      "question": "Which takes precedence in your life?",
+      "options": [
+        { "id": 33, "value": "Sexual performance and intimate connections" },
+        { "id": 34, "value": "Sleep improvement" }
+      ]
+    }
+  ]
+}

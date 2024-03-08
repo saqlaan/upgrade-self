@@ -1,3 +1,4 @@
+import { AppTheme } from "@/types/theme";
 import { ReactNode } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { Button, ButtonProps, useTheme } from "react-native-paper";
@@ -9,14 +10,20 @@ type Props = ButtonProps & {
 
 function IconButton({ icon, children, ...props }: Props) {
   const { colors } = useTheme();
+  const { fonts } = useTheme<AppTheme>();
+
   return (
     <View style={styles.IconButtonWrapper}>
       <Button
-        style={styles.style}
         contentStyle={styles.contentStyles}
         mode="contained"
         buttonColor={colors.primary}
+        // text-md-semi-bold
         {...props}
+        labelStyle={[
+          fonts["text-md-semi-bold"],
+          props.labelStyle && props.labelStyle,
+        ]}
       >
         {children}
       </Button>

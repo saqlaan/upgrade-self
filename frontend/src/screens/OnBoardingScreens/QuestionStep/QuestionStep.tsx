@@ -1,71 +1,142 @@
-import { Box, CButton, Text } from "@/components/atoms";
-import { UseUserStore } from "@/store/user.store";
-import { GrimReaperIcon } from "@/theme/assets/icons";
-import { Images } from "@/theme/assets/images";
-import { spacing } from "@/theme/spacing";
+import { BackButton, Box, CButton, Text } from "@/components/atoms";
+import { SafeScreen } from "@/components/template";
+import { QuestionType } from "@/types";
 import type { ApplicationScreenProps } from "@/types/navigation";
+import { AppTheme } from "@/types/theme";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ImageBackground, StatusBar, StyleSheet, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { FlatList, Pressable } from "react-native";
+import { useTheme } from "react-native-paper";
+import { Bar } from "react-native-progress";
+
+import { updateUser } from "@/services/firebase";
+import { useOnBoardingQuestionsStore } from "@/store/onBoardingQuestion.stores";
+import { useMutation } from "@tanstack/react-query";
+import Question from "./components/Question";
+import questionsData from "./questions.json";
 
 function QuestionStep({ navigation }: ApplicationScreenProps) {
-  const { t } = useTranslation(["welcome", "common"]);
-  const { top, bottom } = useSafeAreaInsets();
-  const { user } = UseUserStore();
+  const { colors } = useTheme<AppTheme>();
+  const scrollRef = useRef<FlatList>();
+  const { t } = useTranslation(["locations", "common"]);
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
+  const { selections } = useOnBoardingQuestionsStore();
+  const { mutateAsync, isPending, error, isError } = useMutation({
+    mutationFn: updateUser,
+  });
+
+  const isLast = useMemo(() => {
+    return currentStepIndex === questionsData.questions.length - 1;
+  }, [currentStepIndex]);
+
+  const formatResults = () => {
+    const data = Object.entries(selections).map((selection) => {
+      const questionId = selection[0];
+      const answerId = selection[1];
+
+      const question = questionsData.questions.find(
+        (question) => question.id == questionId
+      );
+      const option = question?.options.find((option) => option.id == answerId);
+      return {
+        question: {
+          id: question?.id,
+          name: question?.question,
+        },
+        value: option,
+      };
+    });
+    return data;
+  };
+
+  const _submit = useCallback(async () => {
+    const results: [] = formatResults();
+    try {
+      if (results.length > 0) {
+        await mutateAsync({ questions: results });
+      }
+      navigation.navigate("FinishOnBoarding");
+    } catch {
+      console.error(error);
+    }
+  }, [selections]);
+
+  const handleNext = useCallback(() => {
+    if (questionsData.questions[currentStepIndex + 1]) {
+      scrollRef?.current?.scrollToIndex({
+        animated: true,
+        index: currentStepIndex + 1,
+      });
+      setCurrentStepIndex((state: number) => state + 1);
+    }
+  }, [currentStepIndex]);
+
+  const handleBackPress = useCallback(() => {
+    if (currentStepIndex === 0) {
+      navigation.goBack();
+    } else {
+      scrollRef?.current?.scrollToIndex({
+        animated: true,
+        index: currentStepIndex - 1,
+      });
+      setCurrentStepIndex((state: number) => state - 1);
+    }
+  }, [currentStepIndex]);
 
   return (
-    <ImageBackground source={Images.primaryBgLines} style={{ flex: 1 }}>
-      <StatusBar barStyle={"light-content"} />
-      <View
-        style={[
-          styles.container,
-          {
-            paddingTop: top,
-            paddingBottom: bottom,
-          },
-        ]}
-      >
-        <Box flex={1} px="8" pt="12">
-          <Text color="white" align="center" variant={"display-xs-bold"}>
-            Question step
-          </Text>
+    <SafeScreen>
+      <Box px="5" pt="5" row alignItems="center" justifyContent="space-between">
+        <BackButton onPress={handleBackPress} color={colors.primary} />
+        <Box px="10">
+          <Bar
+            color={colors.secondary}
+            progress={currentStepIndex / (questionsData.questions.length - 1)}
+          />
         </Box>
-        <Box style={styles.iconWrapper} bgColor="white">
-          <GrimReaperIcon />
-        </Box>
-        <Box px="5" py="5">
-          <Text color="white" align="center" variant={"text-md-medium"} mb="5">
-            {t("welcome:note")}
-          </Text>
-          <CButton
-            onPress={() => navigation.navigate("ProfileSetup")}
-            variant={"default"}
-          >
-            <Text color={"black-900"} variant="text-md-semi-bold">
-              {t("welcome:buttonText")}
+        {!isLast ? (
+          <Pressable onPress={handleNext}>
+            <Text variant="text-md-bold">Skip</Text>
+          </Pressable>
+        ) : (
+          <Box />
+        )}
+      </Box>
+      <Box py="5" flex={1}>
+        <FlatList
+          ref={scrollRef}
+          horizontal
+          data={questionsData.questions}
+          renderItem={({ item }) => <Question item={item} />}
+          contentContainerStyle={{
+            alignItems: "stretch",
+          }}
+          scrollEnabled={false}
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item: QuestionType) => item.id}
+          initialNumToRender={5}
+          windowSize={5}
+        />
+      </Box>
+      <Box px="5" py="5">
+        {isLast ? (
+          <CButton onPress={_submit} loading={isPending}>
+            <Text color={"white"} variant="text-md-semi-bold">
+              {t("common:finish")}
             </Text>
           </CButton>
-        </Box>
-      </View>
-    </ImageBackground>
+        ) : (
+          <CButton
+            onPress={handleNext}
+            disabled={currentStepIndex === questionsData.questions.length - 1}
+          >
+            <Text color={"white"} variant="text-md-semi-bold">
+              {t("common:appName.next")}
+            </Text>
+          </CButton>
+        )}
+      </Box>
+    </SafeScreen>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    position: "relative",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  iconWrapper: {
-    width: spacing["10"],
-    height: spacing["10"],
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: spacing["10"],
-    position: "absolute",
-  },
-});
 
 export default QuestionStep;

@@ -12,7 +12,7 @@ type Props = Omit<ButtonProps, "children"> & {
 };
 
 function CButton({ variant = "primary", text, children, ...props }: Props) {
-  const { colors } = useTheme<AppTheme>();
+  const { colors, fonts } = useTheme<AppTheme>();
 
   if (variant === "default")
     return (
@@ -22,6 +22,10 @@ function CButton({ variant = "primary", text, children, ...props }: Props) {
         mode="outlined"
         buttonColor={colors.white}
         {...props}
+        labelStyle={[
+          fonts["text-md-semi-bold"],
+          props.labelStyle && props.labelStyle,
+        ]}
       >
         {text ? (
           <Text color={colors["black-900"]} variant="text-md-semi-bold">
@@ -40,6 +44,10 @@ function CButton({ variant = "primary", text, children, ...props }: Props) {
         mode="contained"
         buttonColor={colors.primary}
         {...props}
+        labelStyle={[
+          fonts["text-md-semi-bold"],
+          props.labelStyle && props.labelStyle,
+        ]}
       >
         {text ? (
           <Text color={colors.white} variant="text-md-semi-bold">

@@ -1,4 +1,5 @@
 import {
+  FinishOnBoarding,
   LoadingScreen,
   Locations,
   ProfileSetup,
@@ -21,6 +22,7 @@ const OnBoardingStackNavigator = () => {
       <Stack.Screen name="ProfileSetup" component={ProfileSetup} />
       <Stack.Screen name="Welcome" component={Welcome} />
       <Stack.Screen name="QuestionStep" component={QuestionStep} />
+      <Stack.Screen name="FinishOnBoarding" component={FinishOnBoarding} />
     </Stack.Navigator>
   );
 };

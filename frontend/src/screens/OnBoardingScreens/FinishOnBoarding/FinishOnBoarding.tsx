@@ -1,21 +1,28 @@
 import { Box, CButton, Text } from "@/components/atoms";
-import { UseUserStore } from "@/store/user.store";
-import { GrimReaperIcon } from "@/theme/assets/icons";
+import { updateUser } from "@/services/firebase";
+import { CheckCircleIcon } from "@/theme/assets/icons";
 import { Images } from "@/theme/assets/images";
 import { spacing } from "@/theme/spacing";
 import type { ApplicationScreenProps } from "@/types/navigation";
+import { useMutation } from "@tanstack/react-query";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { ImageBackground, StatusBar, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-function Welcome({ navigation }: ApplicationScreenProps) {
-  const { t } = useTranslation(["welcome", "common"]);
-  const { top, bottom } = useSafeAreaInsets();
-  const { user } = UseUserStore();
+function FinishOnBoarding({ navigation }: ApplicationScreenProps) {
+  const { t } = useTranslation(["common", "finishOnBoarding"]);
+  const { bottom } = useSafeAreaInsets();
+  const { mutateAsync, isPending, error, isError } = useMutation({
+    mutationFn: updateUser,
+  });
 
   const _submit = useCallback(() => {
-    navigation.navigate("QuestionStep");
+    try {
+      mutateAsync({ onBoardingStep: 2, onboardingCompleted: true });
+    } catch {
+      console.error(error);
+    }
   }, []);
 
   return (
@@ -25,28 +32,24 @@ function Welcome({ navigation }: ApplicationScreenProps) {
         style={[
           styles.container,
           {
-            paddingTop: top,
             paddingBottom: bottom,
           },
         ]}
       >
-        <Box flex={1} px="8" pt="12">
-          <Text color="white" align="center" variant={"display-xs-bold"}>
-            {t("welcome:title", {
-              name: `${user?.firstName} ${user?.lastName}`,
-            })}
-          </Text>
-        </Box>
+        <Box flex={1} px="8" pt="12"></Box>
         <Box style={styles.iconWrapper} bgColor="white">
-          <GrimReaperIcon />
+          <CheckCircleIcon />
         </Box>
         <Box px="5" py="5">
-          <Text color="white" align="center" variant={"text-md-medium"} mb="5">
-            {t("welcome:note")}
+          <Text color="white" align="center" variant={"display-xs-bold"} mb="6">
+            {t("finishOnBoarding:title")}
           </Text>
-          <CButton onPress={_submit} variant={"default"}>
+          <Text color="white" align="center" variant={"text-md-medium"} mb="5">
+            {t("finishOnBoarding:note")}
+          </Text>
+          <CButton loading={isPending} onPress={_submit} variant={"default"}>
             <Text color={"black-900"} variant="text-md-semi-bold">
-              {t("welcome:buttonText")}
+              {t("common:continue")}
             </Text>
           </CButton>
         </Box>
@@ -72,4 +75,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Welcome;
+export default FinishOnBoarding;
