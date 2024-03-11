@@ -3,7 +3,7 @@ import { SafeScreen } from "@/components/template";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { AppTheme } from "@/types/theme";
 import { useTranslation } from "react-i18next";
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView, StatusBar, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
 
 function TOS({ navigation }: ApplicationScreenProps) {
@@ -34,6 +34,7 @@ function TOS({ navigation }: ApplicationScreenProps) {
 
   return (
     <SafeScreen>
+      <StatusBar backgroundColor={"white"} />
       <Box px="5" pt="5" row>
         <BackButton color={colors.primary} />
       </Box>

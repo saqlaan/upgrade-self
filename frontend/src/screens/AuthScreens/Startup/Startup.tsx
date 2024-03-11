@@ -5,8 +5,15 @@ import colors from "@/theme/colors";
 import { TextVariants } from "@/theme/fonts";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { AppTheme } from "@/types/theme";
+import { isAndroid } from "@/utils/functions";
 import React from "react";
-import { ImageBackground, Pressable, StyleSheet, View } from "react-native";
+import {
+  ImageBackground,
+  Pressable,
+  StatusBar,
+  StyleSheet,
+  View,
+} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import { Text, useTheme } from "react-native-paper";
 import {
@@ -21,6 +28,9 @@ function Startup({ navigation }: ApplicationScreenProps) {
 
   return (
     <View style={styles.container}>
+      {isAndroid && (
+        <StatusBar backgroundColor={"white"} barStyle={"dark-content"} />
+      )}
       <ImageBackground
         source={Images.StartBgImage}
         resizeMode={"cover"}

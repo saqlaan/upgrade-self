@@ -17,8 +17,6 @@ function ApplicationNavigator() {
     SplashScreen.hide();
   }, []);
 
-  console.log(authUser);
-
   const getNavigator = useCallback(() => {
     if (!authUser || !authUser.emailVerified) {
       return <PublicStackNavigator />;

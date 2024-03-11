@@ -13,7 +13,7 @@ const PublicStackNavigator = () => {
       initialRouteName="Startup"
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name="Startup" component={Startup} />
+      <Stack.Screen name="Startup" component={Startup} options={{}} />
       <Stack.Screen name="TOS" component={TOS} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Signup" component={Signup} />

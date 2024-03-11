@@ -14,7 +14,7 @@ import type { ApplicationScreenProps } from "@/types/navigation";
 import { AppTheme } from "@/types/theme";
 import { FormikHelpers, useFormik } from "formik";
 import React, { useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StatusBar, StyleSheet, View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 
 type SignupFormValues = {
@@ -70,6 +70,7 @@ function Signup({ navigation }: ApplicationScreenProps) {
   return (
     <SafeScreen>
       <ScrollView>
+        <StatusBar backgroundColor={"white"} />
         <View style={styles.container}>
           <View style={{ flexDirection: "row" }}>
             <BackButton color={colors.primary} />

@@ -20,7 +20,7 @@ export const UseUserStore = create<UserState>(
       clearUser: () => set((state) => ({ user: null })),
     }),
     {
-      name: "user-auth", // unique name
+      name: "user-auth",
       storage: createJSONStorage(() => AsyncStorage),
     }
   )

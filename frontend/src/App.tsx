@@ -11,10 +11,6 @@ const queryClient = new QueryClient();
 export const storage = new MMKV();
 
 function App() {
-  // useEffect(() => {
-  //   SplashScreen.hide();
-  // }, []);
-
   return (
     <PaperProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
