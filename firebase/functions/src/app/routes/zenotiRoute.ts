@@ -1,5 +1,4 @@
-const express = require("express");
-import { Request, Response } from "express";
+import express, { Request, Response } from "express";
 import { getAllCentersAsync } from "../controllers/zenotiController";
 const router = express.Router();
 

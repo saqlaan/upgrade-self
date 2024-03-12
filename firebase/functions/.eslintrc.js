@@ -9,7 +9,6 @@ module.exports = {
     "plugin:import/errors",
     "plugin:import/warnings",
     "plugin:import/typescript",
-    "plugin:@typescript-eslint/recommended",
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
@@ -30,5 +29,6 @@ module.exports = {
         ignore: ["^firebase-admin/.+"],
       },
     ],
+    // "no-unsafe-optional-chaining":["warning"]
   },
 };

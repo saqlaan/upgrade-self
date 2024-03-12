@@ -1,12 +1,12 @@
-const cookieParser = require("cookie-parser");
+import cookieParser from "cookie-parser";
+import cors from "cors";
 import express, { Request, Response } from "express";
 import { https } from "firebase-functions";
 import { validateFirebaseIdToken } from "./middleware";
 import { zenotiRoutes } from "./routes";
-const cors = require("cors")({ origin: true });
 const api = express();
 
-api.use(cors);
+api.use(cors({ origin: true }));
 api.use(cookieParser());
 api.use("/zenoti", validateFirebaseIdToken);
 api.get("/", (req: Request, res: Response) => {

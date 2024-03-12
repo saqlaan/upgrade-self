@@ -11,7 +11,6 @@ export const validateFirebaseIdToken = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req.headers);
   if (
     (!req.headers.authorization ||
       !req.headers.authorization.startsWith("Bearer ")) &&
@@ -20,23 +19,19 @@ export const validateFirebaseIdToken = async (
     console.error(
       "No Firebase ID token was passed as a Bearer token in the Authorization header.",
       "Make sure you authorize your request by providing the following HTTP header:",
-      "Authorization: Bearer <Firebase ID Token>",
-      'or by passing a "__session" cookie.'
+      "Authorization: Bearer <Firebase ID Token>"
     );
     res.status(403).send("Unauthorized");
     return;
   }
-  console.log("Hye token at 2");
   let idToken;
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer ")
   ) {
-    console.log('Found "Authorization" header');
     // Read the ID Token from the Authorization header.
     idToken = req.headers.authorization.split("Bearer ")[1];
   } else if (req.cookies) {
-    console.log("Found session cookie");
     // Read the ID Token from cookie.
     idToken = req.cookies.__session;
   } else {
@@ -46,9 +41,7 @@ export const validateFirebaseIdToken = async (
   }
 
   try {
-    console.log({ idToken });
     const decodedIdToken = await admin.auth().verifyIdToken(idToken);
-    console.log("ID Token correctly decoded", decodedIdToken);
     req.user = decodedIdToken;
     next();
     return;

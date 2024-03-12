@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@stylistic/eslint-plugin-js": "^1.6.2",
+    "@types/cookie-parser": "^1.4.7",
     "@typescript-eslint/eslint-plugin": "^5.12.0",
     "@typescript-eslint/parser": "^5.0.1",
     "eslint": "^8.52.0",

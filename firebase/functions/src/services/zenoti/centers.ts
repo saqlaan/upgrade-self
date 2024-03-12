@@ -10,12 +10,18 @@ export const getCenters = async (organization: Organization) => {
 
 export const getAllCentersData = async (): Promise<CenterType[] | null> => {
   try {
-    let allCenters = [];
+    const allCenters = [];
     let result = null;
     result = await getCenters(Organization.US);
-    allCenters.push(...result.data?.centers);
+    // Check if result.data and result.data.centers are not null or undefined
+    if (result.data?.centers) {
+        allCenters.push(...result.data.centers);
+    }
     result = await getCenters(Organization.CANADA);
-    allCenters.push(...result.data?.centers);
+    // Check if result.data and result.data.centers are not null or undefined
+    if (result.data?.centers) {
+        allCenters.push(...result.data.centers);
+    }
     return allCenters;
   } catch (error) {
     console.log(error);
