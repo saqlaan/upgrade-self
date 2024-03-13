@@ -22,7 +22,13 @@ export interface CenterType {
   description: string;
   online_booking_start_date: string;
   enable_parallel_services_at_center: boolean;
-  country: object;
+  country: {
+    id: string;
+    code: string;
+    name: string;
+    phone_code: number;
+    nationality: string;
+  };
   state: object;
   location: object;
   currency: object;

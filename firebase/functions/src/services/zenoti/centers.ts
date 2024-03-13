@@ -15,12 +15,12 @@ export const getAllCentersData = async (): Promise<CenterType[] | null> => {
     result = await getCenters(Organization.US);
     // Check if result.data and result.data.centers are not null or undefined
     if (result.data?.centers) {
-        allCenters.push(...result.data.centers);
+      allCenters.push(...result.data.centers);
     }
-    result = await getCenters(Organization.CANADA);
+    result = await getCenters(Organization.CA);
     // Check if result.data and result.data.centers are not null or undefined
     if (result.data?.centers) {
-        allCenters.push(...result.data.centers);
+      allCenters.push(...result.data.centers);
     }
     return allCenters;
   } catch (error) {

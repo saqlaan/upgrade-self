@@ -10,8 +10,8 @@ const GenderBox = ({
   type,
   value,
 }: {
-  type: "male" | "female";
-  value: "male" | "female" | string;
+  type: "male" | "female" | "other";
+  value: "male" | "female" | "other" | string;
 }) => {
   const { colors, spacing } = useTheme<AppTheme>();
   const isSelected = value === type;

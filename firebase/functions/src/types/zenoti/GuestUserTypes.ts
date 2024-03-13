@@ -4,7 +4,7 @@ export interface PersonalInfoType {
   last_name: string;
   middle_name?: string;
   email: string;
-  mobile_phone: {
+  mobile_phone?: {
     country_code: number;
     number: string;
   };
