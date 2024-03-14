@@ -17,20 +17,6 @@ export const getAllCentersAsync = async (req: Request, res: Response) => {
   return;
 };
 
-const mapGender = (gender: string): number => {
-  const lowerCaseGender = gender.toLowerCase();
-  switch (lowerCaseGender) {
-    case "male":
-      return 1;
-    case "female":
-      return 0;
-    case "other":
-      return 3;
-    default:
-      throw new Error("Invalid gender specified");
-  }
-};
-
 export const signupUserInZenoti = async (user: FirestoreUserType) => {
   try {
     if (
@@ -57,12 +43,12 @@ export const signupUserInZenoti = async (user: FirestoreUserType) => {
         email: user.email,
         first_name: user.firstName,
         last_name: user.lastName,
-        gender: mapGender(user.gender),
+        gender: user.gender,
         date_of_birth: user.dob,
-        // mobile_phone: {
-        //   country_code: -1,
-        //   number: user.phoneNumber || "",
-        // },
+        mobile_phone: {
+          country_code: user.phone.code,
+          number: user.phone.number,
+        },
       },
       address_info: {
         address_1: user.address1,
@@ -102,7 +88,7 @@ export const signupUserInZenoti = async (user: FirestoreUserType) => {
       guestAccounts: centersSignupData,
     };
 
-    return await firestore.collection("zenotiGuests").doc().set(document);
+    await firestore.collection("zenotiGuests").doc().set(document);
   } catch (error) {
     console.error("Error during user signup in zenoti:", error);
     throw error;

@@ -12,12 +12,15 @@ export type UserQuestionType = {
 };
 
 export type FirestoreUserType = UserInfo & {
-  gender: string;
+  gender: number;
   firstName: string;
   lastName: string;
   onBoardingStep: number;
   onboardingCompleted: boolean;
-  phone: string;
+  phone: {
+    number: string;
+    code: number;
+  };
   questions: UserQuestionType[];
   state: string;
   zipcode: string;
@@ -25,4 +28,7 @@ export type FirestoreUserType = UserInfo & {
   address1: string;
   address2: string;
   city: string;
+  zenotiIntegration: {
+    signedUp: boolean;
+  };
 };
