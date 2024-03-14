@@ -18,11 +18,14 @@ const OnBoardingStackNavigator = () => {
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
-      <Stack.Screen name="Locations" component={Locations} />
-      <Stack.Screen name="ProfileSetup" component={ProfileSetup} />
-      <Stack.Screen name="Welcome" component={Welcome} />
-      <Stack.Screen name="QuestionStep" component={QuestionStep} />
-      <Stack.Screen name="FinishOnBoarding" component={FinishOnBoarding} />
+      <Stack.Screen name="LocationsScreen" component={Locations} />
+      <Stack.Screen name="ProfileSetupScreen" component={ProfileSetup} />
+      <Stack.Screen name="WelcomeScreen" component={Welcome} />
+      <Stack.Screen name="QuestionStepScreen" component={QuestionStep} />
+      <Stack.Screen
+        name="FinishOnBoardingScreen"
+        component={FinishOnBoarding}
+      />
     </Stack.Navigator>
   );
 };

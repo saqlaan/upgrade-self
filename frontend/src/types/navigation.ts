@@ -1,19 +1,19 @@
 import type { StackScreenProps } from "@react-navigation/stack";
 
 export type ApplicationStackParamList = {
-  Login: undefined;
-  Signup: undefined;
-  ForgotPassword: undefined;
-  Startup: undefined;
-  Home: undefined;
-  EmailVerification: undefined;
-  TOS: undefined;
-  Locations: undefined;
+  LoginScreen: undefined;
+  SignupScreen: undefined;
+  ForgotPasswordScreen: undefined;
+  StartupScreen: undefined;
+  HomeScreen: undefined;
+  EmailVerificationScreen: undefined;
+  TOSScreen: undefined;
+  LocationsScreen: undefined;
   LoadingScreen: undefined;
-  ProfileSetup: undefined;
-  Welcome: undefined;
-  QuestionStep: undefined;
-  FinishOnBoarding: undefined;
+  ProfileSetupScreen: undefined;
+  WelcomeScreen: undefined;
+  QuestionStepScreen: undefined;
+  FinishOnBoardingScreen: undefined;
 };
 
 export type ApplicationScreenProps =

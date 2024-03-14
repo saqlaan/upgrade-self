@@ -1,7 +1,7 @@
 import { EmailVerification, Startup, TOS } from "@/screens";
-import ForgotPassword from "@/screens/AuthScreens/ForgotPassword/ForgotPassword";
-import Login from "@/screens/AuthScreens/Login/Login";
-import Signup from "@/screens/AuthScreens/Signup/Signup";
+import ForgotPassword from "@/screens/AuthScreens/ForgotPasswordScreen/ForgotPasswordScreen";
+import Login from "@/screens/AuthScreens/LoginScreen/LoginScreen";
+import Signup from "@/screens/AuthScreens/SignupScreen/SignupScreen";
 import { ApplicationStackParamList } from "@/types/navigation";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -10,15 +10,18 @@ const Stack = createStackNavigator<ApplicationStackParamList>();
 const PublicStackNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Startup"
+      initialRouteName="StartupScreen"
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name="Startup" component={Startup} options={{}} />
-      <Stack.Screen name="TOS" component={TOS} />
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="Signup" component={Signup} />
-      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-      <Stack.Screen name="EmailVerification" component={EmailVerification} />
+      <Stack.Screen name="StartupScreen" component={Startup} options={{}} />
+      <Stack.Screen name="TOSScreen" component={TOS} />
+      <Stack.Screen name="LoginScreen" component={Login} />
+      <Stack.Screen name="SignupScreen" component={Signup} />
+      <Stack.Screen name="ForgotPasswordScreen" component={ForgotPassword} />
+      <Stack.Screen
+        name="EmailVerificationScreen"
+        component={EmailVerification}
+      />
     </Stack.Navigator>
   );
 };

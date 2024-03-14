@@ -7,10 +7,10 @@ const Stack = createStackNavigator<ApplicationStackParamList>();
 const PrivateStackNavigator = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Startup"
+      initialRouteName="StartupScreen"
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="HomeScreen" component={Home} />
     </Stack.Navigator>
   );
 };
