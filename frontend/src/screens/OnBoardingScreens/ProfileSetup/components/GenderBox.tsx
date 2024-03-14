@@ -5,14 +5,9 @@ import { AppTheme } from "@/types/theme";
 import { useTranslation } from "react-i18next";
 import { StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
+import { Gender } from "../ProfileSetup";
 
-const GenderBox = ({
-  type,
-  value,
-}: {
-  type: "male" | "female" | "other";
-  value: "male" | "female" | "other" | string;
-}) => {
+const GenderBox = ({ type, value }: { type: Gender; value: Gender }) => {
   const { colors, spacing } = useTheme<AppTheme>();
   const isSelected = value === type;
   const { t } = useTranslation(["profileSetup"]);
@@ -26,7 +21,7 @@ const GenderBox = ({
       style={styles.genderBox}
     >
       <>
-        {type === "male" ? (
+        {type === Gender.Male ? (
           <MaleIcon
             width={spacing[6]}
             height={spacing[6]}
@@ -40,7 +35,9 @@ const GenderBox = ({
           variant="text-md-regular"
           mt="3"
         >
-          {type === "male" ? t("profileSetup:male") : t("profileSetup:female")}
+          {type === Gender.Male
+            ? t("profileSetup:male")
+            : t("profileSetup:female")}
         </Text>
       </>
     </Box>

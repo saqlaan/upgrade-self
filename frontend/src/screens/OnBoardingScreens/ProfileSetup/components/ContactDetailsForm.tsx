@@ -7,15 +7,29 @@ import {
 import colors from "@/theme/colors";
 import { spacing } from "@/theme/spacing";
 import { useFormikContext } from "formik";
+import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet } from "react-native";
 import { FormValues } from "../ProfileSetup";
 
 function ContactDetails() {
   const { t } = useTranslation(["profileSetup", "common"]);
+  const phoneInputRef = useRef();
 
   const { errors, handleChange, values, handleBlur, touched } =
     useFormikContext<FormValues>();
+
+  useEffect(() => {
+    const countryCode = phoneInputRef.current.getCountryCode();
+    if (countryCode) {
+      handleChange({
+        target: {
+          name: "phoneNumberCode",
+          value: countryCode,
+        },
+      });
+    }
+  }, [phoneInputRef.current, values.phone, touched]);
 
   return (
     <>
@@ -84,7 +98,10 @@ function ContactDetails() {
             <PhoneNumberInput
               label={t("profileSetup:phone")}
               onChangePhoneNumber={handleChange("phone")}
-              error={errors.phone || ""}
+              error={touched.phone ? errors.phone : ""}
+              value={values.phone}
+              inputRef={phoneInputRef}
+              onBlur={handleBlur("phone")}
             />
           </Box>
         </Box>

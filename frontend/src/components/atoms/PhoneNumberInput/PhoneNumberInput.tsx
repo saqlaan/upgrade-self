@@ -3,7 +3,7 @@ import colors from "@/theme/colors";
 import { variantFamily } from "@/theme/fonts";
 import { spacing } from "@/theme/spacing";
 import { AppTheme } from "@/types/theme";
-import React, { ReactNode } from "react";
+import React, { ReactNode, Ref } from "react";
 import { Image, StyleSheet, TextInputProps, View } from "react-native";
 import { useTheme } from "react-native-paper";
 import PhoneInput from "react-native-phone-input";
@@ -15,10 +15,12 @@ interface CustomTextInputProps extends TextInputProps {
   error?: string;
   label?: string;
   icon?: ReactNode;
-  onChangePhoneNumber: (value: string) => void;
+  onChangePhoneNumber: (value: any) => void;
+  inputRef?: Ref<object>;
 }
 
 const PhoneNumberInput: React.FC<CustomTextInputProps> = ({
+  inputRef = null,
   placeholder,
   onChangeText,
   inputMode = "text",
@@ -42,6 +44,7 @@ const PhoneNumberInput: React.FC<CustomTextInputProps> = ({
         <Spacer marginBottom={spacing[2]} />
       </View>
       <PhoneInput
+        ref={inputRef}
         style={{
           flexDirection: "row",
         }}
@@ -57,6 +60,10 @@ const PhoneNumberInput: React.FC<CustomTextInputProps> = ({
               }
             : {},
         ]}
+        textProps={{
+          onBlur: props.onBlur,
+          value: props.value,
+        }}
         renderFlag={({ imageSource }) => {
           return (
             <Box
@@ -81,6 +88,7 @@ const PhoneNumberInput: React.FC<CustomTextInputProps> = ({
             </Box>
           );
         }}
+        {...props}
       />
       {hasError && (
         <>

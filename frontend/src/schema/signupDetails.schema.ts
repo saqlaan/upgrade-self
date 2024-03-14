@@ -11,11 +11,9 @@ const signupDetailsSchema = object({
   state: string().required("State is required"),
   zipcode: string().required("ZIP code is required"),
   phone: string()
-    .matches(
-      /^(?:\+?1[-. ]?)?\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
-      "Invalid phone number"
-    )
-    .required("Phone number is required"),
+    .required("Phone number is required")
+    .min(12, "Invalid phone number")
+    .max(12, "Invalid phone number"),
 });
 
 export default signupDetailsSchema;

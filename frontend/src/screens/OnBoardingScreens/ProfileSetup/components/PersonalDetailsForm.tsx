@@ -10,7 +10,7 @@ import { subYears } from "date-fns";
 import { useFormikContext } from "formik";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet } from "react-native";
-import { FormValues } from "../ProfileSetup";
+import { FormValues, Gender } from "../ProfileSetup";
 import GenderBox from "./GenderBox";
 
 function PersonalDetails() {
@@ -19,7 +19,7 @@ function PersonalDetails() {
   const { errors, handleChange, values, handleBlur, touched } =
     useFormikContext<FormValues>();
 
-  const handleGenderChange = (value: string) => {
+  const handleGenderChange = (value: Gender) => {
     handleChange({
       target: {
         name: "gender",
@@ -79,16 +79,16 @@ function PersonalDetails() {
             </Text>
             <Box row gap="2" pt="2">
               <Pressable
-                onPress={() => handleGenderChange("male")}
+                onPress={() => handleGenderChange(Gender.Male)}
                 style={{ flex: 1 }}
               >
-                <GenderBox type="male" value={values.gender} />
+                <GenderBox type={Gender.Male} value={values.gender} />
               </Pressable>
               <Pressable
-                onPress={() => handleGenderChange("female")}
+                onPress={() => handleGenderChange(Gender.Female)}
                 style={{ flex: 1 }}
               >
-                <GenderBox type="female" value={values.gender} />
+                <GenderBox type={Gender.Female} value={values.gender} />
               </Pressable>
             </Box>
           </Box>

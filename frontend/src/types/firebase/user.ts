@@ -6,9 +6,12 @@ export interface UserType {
   firstName?: string;
   lastName?: string;
   photoURL?: string;
-  phoneNumber?: string;
   disabled?: boolean;
   onboardingCompleted?: boolean;
   centers?: string[];
   onBoardingStep: number;
+  phone?: {
+    number: string;
+    code: string;
+  };
 }

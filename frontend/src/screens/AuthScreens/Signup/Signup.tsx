@@ -52,10 +52,8 @@ function Signup({ navigation }: ApplicationScreenProps) {
   ) {
     signup({ ...values })
       .then(() => {
-        setTouched({ email: false, password: false });
-        resetForm();
         onSignup();
-        navigation.navigate("EmailVerification");
+        navigation.replace("EmailVerification");
       })
       .catch((error) => {
         if (error.code) {

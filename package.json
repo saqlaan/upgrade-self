@@ -1,0 +1,10 @@
+{
+  "name": "UpgradeLabs",
+  "version": "1.0.0",
+  "description": "Upgrade Labs Projects",
+  "private": true,
+  "workspaces": [
+    "firebase/*",
+    "frontend/*"
+  ]
+}

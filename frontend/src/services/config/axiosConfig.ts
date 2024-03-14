@@ -12,7 +12,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
   function (config) {
     // Log the request before sending
-    console.log("Request:", config);
+    // console.log("Request:", config);
     // Optionally, modify the request configuration
     return config;
   },
@@ -26,7 +26,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   function (response) {
     // Log the response after receiving
-    console.log("Response:", response);
+    // console.log("Response:", response);
     // Optionally, modify the response data
     return response;
   },
