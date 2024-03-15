@@ -6,4 +6,5 @@ export const Images = {
   LoginTopSectionBg: require("./login-top-section-bg.jpg"),
   SplashBg: require("../../../../assets/images/splash/ios/splash-screen-bg.png"),
   primaryBgLines: require("./primary-bg-lines.png"),
+  visa: require("./visa.png"),
 };

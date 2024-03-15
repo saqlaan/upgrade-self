@@ -1,4 +1,4 @@
-import { Home } from "@/screens";
+import { Home, PaymentScreen } from "@/screens";
 import { ApplicationStackParamList } from "@/types/navigation";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -11,6 +11,7 @@ const PrivateStackNavigator = () => {
       screenOptions={{ headerShown: false }}
     >
       <Stack.Screen name="HomeScreen" component={Home} />
+      <Stack.Screen name="PaymentScreen" component={PaymentScreen} />
     </Stack.Navigator>
   );
 };

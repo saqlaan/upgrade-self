@@ -14,6 +14,7 @@ export type ApplicationStackParamList = {
   WelcomeScreen: undefined;
   QuestionStepScreen: undefined;
   FinishOnBoardingScreen: undefined;
+  PaymentScreen: undefined;
 };
 
 export type ApplicationScreenProps =

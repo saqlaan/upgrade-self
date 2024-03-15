@@ -1,0 +1,8 @@
+{
+  "title": "Payment",
+  "inputLabel": "Payment",
+  "addNewPayment": "Add new payment method",
+  "selectLabel": "Select location",
+  "note": "Note: You will not be charged until you have attended the class",
+  "buttonText": "Confirm your payment"
+}

@@ -1,4 +1,6 @@
+import AddSquareRoundedIcon from "./add-square-rounded.svg";
 import AltArrowDownIcon from "./alt-arrow-down.svg";
+import ArrowDownIcon from "./arrow-down.svg";
 import ArrowRight from "./arrow-right.svg";
 import CalendarIcon from "./calendar.svg";
 import CheckCircleIcon from "./check-circle.svg";
@@ -14,7 +16,9 @@ import OptionSelectedIcon from "./option-selected.svg";
 import OptionUnSelectedIcon from "./option-unselected.svg";
 import UlAppIconSingle from "./ul-app-single-icon.svg";
 export {
+  AddSquareRoundedIcon,
   AltArrowDownIcon,
+  ArrowDownIcon,
   ArrowRight,
   CalendarIcon,
   CheckCircleIcon,
