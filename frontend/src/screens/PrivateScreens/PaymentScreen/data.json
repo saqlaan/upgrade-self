@@ -1,0 +1,24 @@
+{
+  "cards": [
+    {
+      "id": 1,
+      "card_number": "2310",
+      "card_holder_name": "John Doe",
+      "expiration_date": "12/26",
+      "card_type": "Visa"
+    },
+    {
+      "id": 2,
+      "card_number": "2311",
+      "card_holder_name": "Jane Smith",
+      "expiration_date": "10/25",
+      "card_type": "Mastercard"
+    },
+    {
+      "id": 3,
+      "card_number": "2312",
+      "expiration_date": "03/28",
+      "card_type": "American Express"
+    }
+  ]
+}

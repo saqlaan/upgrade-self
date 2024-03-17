@@ -1,10 +1,10 @@
-import { UseUserStore } from "@/store/user.store";
-import { COLLECTIONS } from "@/types";
 import firestore, {
   FirebaseFirestoreTypes,
 } from "@react-native-firebase/firestore";
 import { useEffect } from "react";
 import { useAuthState } from "./useAuthState";
+import { COLLECTIONS } from "@/types";
+import { UseUserStore } from "@/store/user.store";
 
 export const useFirebaseSnapshots = () => {
   const { updateUser } = UseUserStore();
@@ -24,7 +24,7 @@ export const useFirebaseSnapshots = () => {
   }, [user]);
 
   const handleUserSnapshot = (
-    documentSnapShot: FirebaseFirestoreTypes.DocumentSnapshot
+    documentSnapShot: FirebaseFirestoreTypes.DocumentSnapshot,
   ) => {
     if (documentSnapShot.exists) updateUser(documentSnapShot.data());
   };

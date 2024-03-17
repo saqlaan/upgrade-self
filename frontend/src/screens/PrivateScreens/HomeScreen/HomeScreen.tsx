@@ -14,7 +14,8 @@ function Home({ navigation }: ApplicationScreenProps) {
   };
 
   const navigateToPayment = () => {
-    navigation.navigate("PaymentScreen");
+    // navigation.navigate("PaymentScreen");
+    navigation.navigate("PaymentScreen")
   };
 
   return (

@@ -1,60 +1,34 @@
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import React, { useCallback, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Pressable, StyleSheet } from "react-native";
+import { useTheme } from "react-native-paper";
+import PaymentCardItem from "./components/PaymentCardItem";
+import BottomPaymentCardItem from "./components/BottomSheetPaymentCardItem";
+import PaymentBottomSheetModal from "./components/PaymentBottomSheetModal";
+import data from "./data.json";
 import { BackButton, Box, CButton, Text } from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
-import { updateUser } from "@/services/firebase";
-import { fetchAllCentersData } from "@/services/zenoti/centers";
-import { UseUserStore } from "@/store/user.store";
-import { AddSquareRoundedIcon, ArrowDownIcon } from "@/theme/assets/icons";
-import { Images } from "@/theme/assets/images";
-import colors from "@/theme/colors";
+import { AddSquareRoundedIcon } from "@/theme/assets/icons";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { AppTheme } from "@/types/theme";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { Image, Pressable, StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
 
 function PaymentScreen({ navigation }: ApplicationScreenProps) {
   const { colors } = useTheme<AppTheme>();
   const { t } = useTranslation(["locations", "common", "payment"]);
-  const { user } = UseUserStore();
-  const [selectedLocation, setSelectedLocation] = useState();
-
-  const { data: locations } = useQuery({
-    queryKey: ["repoData"],
-    queryFn: fetchAllCentersData,
+  const [selectedCard, setSelectedCard] = useState({
+    cardNumber: data.cards[0].card_number,
   });
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 
-  const { isPending } = useMutation({
-    mutationFn: updateUser,
-  });
+  const handlePresentModalPress = useCallback(() => {
+    bottomSheetModalRef.current?.present();
+  }, []);
 
-  const PaymentCardItem = ({ label = "Payment" }: { label: string }) => {
-    return (
-      <Box>
-        <Text variant="text-sm-medium" color={"black-300"}>
-          {label}
-        </Text>
-        <Box
-          gap="3"
-          mt="2"
-          alignItems="center"
-          px="4"
-          style={styles.itemWrapper}
-        >
-          <Box>
-            <Image source={Images.visa} />
-          </Box>
-          <Box flex={1}>
-            <Text color="black-500" variant={"text-md-semi-bold"}>
-              Visa ending in 2310
-            </Text>
-          </Box>
-          <ArrowDownIcon />
-        </Box>
-      </Box>
-    );
-  };
+  const handleCardSelection = useCallback((item) => {
+    setSelectedCard(item);
+    bottomSheetModalRef.current?.close();
+  }, []);
 
   return (
     <SafeScreen>
@@ -67,9 +41,12 @@ function PaymentScreen({ navigation }: ApplicationScreenProps) {
         </Box>
       )}
       <Box mt="5" style={styles.container}>
-        <PaymentCardItem />
+        <PaymentCardItem
+          cardNumber={selectedCard.cardNumber}
+          onPress={() => handlePresentModalPress()}
+        />
         <Box mt="6">
-          <Pressable onPress={() => alert("Add new payment method")}>
+          <Pressable>
             <Box row alignItems={"center"} justifyContent={"center"} gap="2">
               <AddSquareRoundedIcon />
               <Text variant={"text-md-semi-bold"}>
@@ -84,16 +61,24 @@ function PaymentScreen({ navigation }: ApplicationScreenProps) {
         <Text align="center" variant={"text-md-medium"} mb="5">
           {t("payment:note")}
         </Text>
-        <CButton
-          loading={isPending}
-          onPress={() => null}
-          disabled={selectedLocation === ""}
-        >
+        <CButton onPress={() => null}>
           <Text color={"white"} variant="text-md-semi-bold">
             {t("payment:buttonText")}
           </Text>
         </CButton>
       </Box>
+      <PaymentBottomSheetModal bottomSheetRef={bottomSheetModalRef}>
+        <Box px="5">
+          {data.cards.map(({ card_number, id }) => (
+            <BottomPaymentCardItem
+              key={id}
+              onPress={handleCardSelection}
+              cardNumber={card_number}
+              selectedCard={selectedCard}
+            />
+          ))}
+        </Box>
+      </PaymentBottomSheetModal>
     </SafeScreen>
   );
 }
@@ -110,13 +95,6 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     justifyContent: "center",
-  },
-  itemWrapper: {
-    borderRadius: 8,
-    borderWidth: 1.5,
-    borderColor: colors["grey-500"],
-    flexDirection: "row",
-    height: 52,
   },
 });
 
