@@ -3,6 +3,7 @@ import { getFirestore } from "firebase-admin/firestore";
 import { Organization } from "../../config/zenotiConfig";
 import { getAllCentersData, guestSignup } from "../../services/zenoti";
 import { FirestoreUserType, GuestType } from "../../types";
+import { CountryCodes } from "../../types/enums/countryCode";
 
 const firestore = getFirestore();
 
@@ -27,14 +28,10 @@ export const signupUserInZenoti = async (user: FirestoreUserType) => {
       !user.dob ||
       !user.address1 ||
       !user.city ||
-      !user.zipcode
+      !user.zipcode ||
+      !user.centers
     ) {
       throw new Error("Missing required user data");
-    }
-    // Get all the centers
-    const centers = await getAllCentersData();
-    if (!centers) {
-      throw new Error("Failed to retrieve center data");
     }
 
     const data: GuestType = {
@@ -58,24 +55,40 @@ export const signupUserInZenoti = async (user: FirestoreUserType) => {
       },
     };
 
+    let centers: { centerId: string; countryCode: string }[] = [];
+    if (user.centers[0].countryCode === CountryCodes.US) {
+      centers = [
+        user.centers[0],
+        {
+          centerId: process.env.CA_CENTER_ID || "",
+          countryCode: CountryCodes.CA,
+        },
+      ];
+      centers.push();
+    } else {
+      centers = [
+        user.centers[0],
+        {
+          centerId: process.env.US_CENTER_ID || "",
+          countryCode: CountryCodes.US,
+        },
+      ];
+    }
+
+    if (!centers) {
+      throw new Error("Failed to retrieve center data");
+    }
+
     // Make signup request for each center
     const promises = centers.map(async (center) => {
-      const {
-        id: center_id,
-        country: { code: countryCode },
-      } = center;
       const result = await guestSignup(
-        { ...data, center_id },
-        countryCode as Organization
+        { ...data, center_id: center.centerId },
+        center.countryCode as Organization,
       );
       const { center_id: centerId, id } = result?.data as GuestType;
-      const matchedCenter = centers.find((center) => center.id === centerId);
-      if (!matchedCenter) {
-        throw new Error("Failed to find matched center");
-      }
       return {
-        centerId: matchedCenter.id,
-        countryCode: matchedCenter.country.code,
+        centerId: centerId,
+        countryCode: center.countryCode,
         guestId: id,
       };
     });

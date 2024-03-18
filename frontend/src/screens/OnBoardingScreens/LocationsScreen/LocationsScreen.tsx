@@ -1,3 +1,9 @@
+import { Picker } from "@react-native-picker/picker";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import React, { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { StyleSheet } from "react-native";
+import { useTheme } from "react-native-paper";
 import { BackButton, Box, CButton, Text } from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
 import { updateUser } from "@/services/firebase";
@@ -5,21 +11,23 @@ import { fetchAllCentersData } from "@/services/zenoti/centers";
 import { UseUserStore } from "@/store/user.store";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { AppTheme } from "@/types/theme";
-import { Picker } from "@react-native-picker/picker";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useCallback, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
 
 function Locations({ navigation }: ApplicationScreenProps) {
   const { colors } = useTheme<AppTheme>();
   const { t } = useTranslation(["locations", "common"]);
   const { user } = UseUserStore();
-  const [selectedLocation, setSelectedLocation] = useState();
+  const [selectedLocation, setSelectedLocation] = useState<{
+    centerId: string;
+    countryCode: string;
+  } | null>(null);
 
   useEffect(() => {
-    if (user?.centers?.length > 0) setSelectedLocation(user?.centers[0]);
+    console.log({ selectedLocation });
+  }, [selectedLocation]);
+
+  useEffect(() => {
+    if (user?.centers && user.centers.length > 0)
+      setSelectedLocation(user?.centers[0]);
   }, [user]);
 
   const { data: locations } = useQuery({
@@ -27,9 +35,26 @@ function Locations({ navigation }: ApplicationScreenProps) {
     queryFn: fetchAllCentersData,
   });
 
+  console.log({ locations });
+
   const { mutateAsync: updateLocationsAsync, isPending } = useMutation({
     mutationFn: updateUser,
   });
+
+  const handlePickerChange = useCallback(
+    (centerId: string, index: number) => {
+      if (locations && locations.length > 0) {
+        const selection = locations[index - 1];
+        if (selection)
+          setSelectedLocation({
+            centerId: selection.id,
+            countryCode: selection.country.code,
+          });
+        else setSelectedLocation(null);
+      }
+    },
+    [locations],
+  );
 
   const _submit = useCallback(async () => {
     try {
@@ -40,7 +65,7 @@ function Locations({ navigation }: ApplicationScreenProps) {
     } catch (e) {
       console.log(e);
     }
-  }, [selectedLocation]);
+  }, [navigation, selectedLocation, updateLocationsAsync]);
 
   return (
     <SafeScreen>
@@ -59,10 +84,8 @@ function Locations({ navigation }: ApplicationScreenProps) {
       </Box>
       <Box style={styles.container}>
         <Picker
-          selectedValue={selectedLocation}
-          onValueChange={(itemValue, itemIndex) =>
-            setSelectedLocation(itemValue)
-          }
+          selectedValue={selectedLocation?.centerId}
+          onValueChange={handlePickerChange}
           itemStyle={{ fontSize: 16, fontFamily: "Manrope-SemiBold" }}
           hitSlop={true}
         >
@@ -81,7 +104,7 @@ function Locations({ navigation }: ApplicationScreenProps) {
         <CButton
           loading={isPending}
           onPress={_submit}
-          disabled={selectedLocation === ""}
+          disabled={selectedLocation === null}
         >
           <Text color={"white"} variant="text-md-semi-bold">
             {t("common:appName.next")}

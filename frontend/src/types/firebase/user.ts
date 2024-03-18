@@ -8,7 +8,10 @@ export interface UserType {
   photoURL?: string;
   disabled?: boolean;
   onboardingCompleted?: boolean;
-  centers?: string[];
+  centers?: {
+    centerId: string;
+    countryCode: "US" | "CA";
+  }[];
   onBoardingStep: number;
   phone?: {
     number: string;

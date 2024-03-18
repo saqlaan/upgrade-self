@@ -4,7 +4,7 @@ import { GuestType } from "../../types";
 
 export const guestSignup = async (
   user: GuestType,
-  organization: Organization
+  organization: Organization,
 ) => {
   try {
     return axios.post("/guests", user, {
