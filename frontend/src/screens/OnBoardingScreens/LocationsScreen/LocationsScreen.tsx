@@ -7,7 +7,7 @@ import { useTheme } from "react-native-paper";
 import { BackButton, Box, CButton, Text } from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
 import { updateUser } from "@/services/firebase";
-import { fetchAllCentersData } from "@/services/zenoti/centers";
+import { fetchAllCentersData } from "@/services/firebaseApp/centers";
 import { UseUserStore } from "@/store/user.store";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { AppTheme } from "@/types/theme";

@@ -5,15 +5,17 @@ import { ArrowDownIcon } from "@/theme/assets/icons";
 import { Images } from "@/theme/assets/images";
 import colors from "@/theme/colors";
 
+type PaymentCardItemProps = {
+  label?: string;
+  onPress: () => void;
+  cardNumber: string;
+};
+
 const PaymentCardItem = ({
   label = "Payment",
   cardNumber,
   onPress,
-}: {
-  label: string;
-  onPress: () => void;
-  cardNumber: string;
-}) => {
+}: PaymentCardItemProps) => {
   return (
     <Pressable onPress={onPress}>
       <Box>

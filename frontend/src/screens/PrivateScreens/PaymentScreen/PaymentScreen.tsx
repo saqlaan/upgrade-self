@@ -30,6 +30,9 @@ function PaymentScreen({ navigation }: ApplicationScreenProps) {
     bottomSheetModalRef.current?.close();
   }, []);
 
+  const handleAddNewPaymentMethod = () => {
+    alert("Add new payment");
+  };
   return (
     <SafeScreen>
       {navigation.canGoBack() && (
@@ -46,7 +49,7 @@ function PaymentScreen({ navigation }: ApplicationScreenProps) {
           onPress={() => handlePresentModalPress()}
         />
         <Box mt="6">
-          <Pressable>
+          <Pressable onPress={handleAddNewPaymentMethod}>
             <Box row alignItems={"center"} justifyContent={"center"} gap="2">
               <AddSquareRoundedIcon />
               <Text variant={"text-md-semi-bold"}>

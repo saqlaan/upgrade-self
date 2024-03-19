@@ -1,6 +1,6 @@
-import { COLLECTIONS, UserType } from "@/types";
 import { FirebaseAuthTypes, firebase } from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
+import { COLLECTIONS, UserType } from "@/types";
 
 export const getUser = async (): Promise<UserType | undefined> => {
   const { uid, emailVerified } = firebase.auth()
