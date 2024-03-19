@@ -1,8 +1,3 @@
-import { AltArrowDownIcon } from "@/theme/assets/icons";
-import colors from "@/theme/colors";
-import { variantFamily } from "@/theme/fonts";
-import { spacing } from "@/theme/spacing";
-import { AppTheme } from "@/types/theme";
 import React, { ReactNode, Ref } from "react";
 import { Image, StyleSheet, TextInputProps, View } from "react-native";
 import { useTheme } from "react-native-paper";
@@ -10,6 +5,11 @@ import PhoneInput from "react-native-phone-input";
 import Box from "../Box/Box";
 import Spacer from "../Spacer/Spacer";
 import Text from "../Text/Text";
+import { AppTheme } from "@/types/theme";
+import { spacing } from "@/theme/spacing";
+import { variantFamily } from "@/theme/fonts";
+import colors from "@/theme/colors";
+import { AltArrowDownIcon } from "@/theme/assets/icons";
 
 interface CustomTextInputProps extends TextInputProps {
   error?: string;

@@ -22,10 +22,6 @@ function Locations({ navigation }: ApplicationScreenProps) {
   } | null>(null);
 
   useEffect(() => {
-    console.log({ selectedLocation });
-  }, [selectedLocation]);
-
-  useEffect(() => {
     if (user?.centers && user.centers.length > 0)
       setSelectedLocation(user?.centers[0]);
   }, [user]);
@@ -34,8 +30,6 @@ function Locations({ navigation }: ApplicationScreenProps) {
     queryKey: ["repoData"],
     queryFn: fetchAllCentersData,
   });
-
-  console.log({ locations });
 
   const { mutateAsync: updateLocationsAsync, isPending } = useMutation({
     mutationFn: updateUser,

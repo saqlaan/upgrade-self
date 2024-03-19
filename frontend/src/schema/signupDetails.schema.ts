@@ -10,10 +10,7 @@ const signupDetailsSchema = object({
   city: string().required("City is required"),
   state: string().required("State is required"),
   zipcode: string().required("ZIP code is required"),
-  phone: string()
-    .required("Phone number is required")
-    .min(12, "Invalid phone number")
-    .max(12, "Invalid phone number"),
+  phone: string(),
 });
 
 export default signupDetailsSchema;

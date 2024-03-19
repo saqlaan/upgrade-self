@@ -1,22 +1,22 @@
+import React, { useEffect, useRef } from "react";
+import { useFormikContext } from "formik";
+import { useTranslation } from "react-i18next";
+import { StyleSheet } from "react-native";
+import { FormValues } from "../ProfileSetupScreen";
+import { spacing } from "@/theme/spacing";
+import colors from "@/theme/colors";
 import {
   Box,
   CustomTextInput,
   PhoneNumberInput,
   Text,
 } from "@/components/atoms";
-import colors from "@/theme/colors";
-import { spacing } from "@/theme/spacing";
-import { useFormikContext } from "formik";
-import { useEffect, useRef } from "react";
-import { useTranslation } from "react-i18next";
-import { StyleSheet } from "react-native";
-import { FormValues } from "../ProfileSetupScreen";
 
 function ContactDetails() {
   const { t } = useTranslation(["profileSetup", "common"]);
   const phoneInputRef = useRef();
 
-  const { errors, handleChange, values, handleBlur, touched } =
+  const { errors, handleChange, values, handleBlur, touched, setFieldValue } =
     useFormikContext<FormValues>();
 
   useEffect(() => {
@@ -29,7 +29,7 @@ function ContactDetails() {
         },
       });
     }
-  }, [phoneInputRef.current, values.phone, touched]);
+  }, [values.phone, touched, handleChange]);
 
   return (
     <>
@@ -101,7 +101,6 @@ function ContactDetails() {
               error={touched.phone ? errors.phone : ""}
               value={values.phone}
               inputRef={phoneInputRef}
-              onBlur={handleBlur("phone")}
             />
           </Box>
         </Box>

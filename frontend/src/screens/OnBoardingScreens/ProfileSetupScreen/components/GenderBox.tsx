@@ -1,11 +1,12 @@
-import { Box, Text } from "@/components/atoms";
-import { FemaleIcon, MaleIcon } from "@/theme/assets/icons";
-import { spacing } from "@/theme/spacing";
-import { AppTheme } from "@/types/theme";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
 import { Gender } from "../ProfileSetupScreen";
+import { Box, Text } from "@/components/atoms";
+import { FemaleIcon, MaleIcon } from "@/theme/assets/icons";
+import { spacing } from "@/theme/spacing";
+import { AppTheme } from "@/types/theme";
 
 const GenderBox = ({ type, value }: { type: Gender; value: Gender }) => {
   const { colors, spacing } = useTheme<AppTheme>();

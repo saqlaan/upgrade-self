@@ -1,17 +1,18 @@
-import {
-  Box,
-  CustomTextInput,
-  DateAndTimeSelector,
-  Text,
-} from "@/components/atoms";
-import colors from "@/theme/colors";
-import { spacing } from "@/theme/spacing";
+import React from "react";
 import { subYears } from "date-fns";
 import { useFormikContext } from "formik";
 import { useTranslation } from "react-i18next";
 import { Pressable, StyleSheet } from "react-native";
 import { FormValues, Gender } from "../ProfileSetupScreen";
 import GenderBox from "./GenderBox";
+import { spacing } from "@/theme/spacing";
+import colors from "@/theme/colors";
+import {
+  Box,
+  CustomTextInput,
+  DateAndTimeSelector,
+  Text,
+} from "@/components/atoms";
 
 function PersonalDetails() {
   const { t } = useTranslation(["profileSetup", "common"]);
@@ -99,15 +100,6 @@ function PersonalDetails() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    padding: 20,
-    paddingTop: 0,
-  },
-  genderBox: {
-    borderRadius: spacing[2],
-  },
   formBox: {
     borderRadius: spacing[2],
     borderWidth: 1,

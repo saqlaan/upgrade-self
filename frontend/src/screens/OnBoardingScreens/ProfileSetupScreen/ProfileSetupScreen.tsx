@@ -1,18 +1,19 @@
-import { BackButton, Box, CButton, Text } from "@/components/atoms";
-import { SafeScreen } from "@/components/template";
-import { signupDetailsSchema } from "@/schema";
-import { updateUser } from "@/services/firebase";
-import type { ApplicationScreenProps } from "@/types/navigation";
-import { AppTheme } from "@/types/theme";
+import React from "react";
 import { useKeyboard } from "@react-native-community/hooks";
 import { useMutation } from "@tanstack/react-query";
 import { Formik, FormikHelpers, FormikValues } from "formik";
-import _ from "lodash";
 import { useTranslation } from "react-i18next";
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
+import _ from "lodash";
 import ContactDetailsForm from "./components/ContactDetailsForm";
 import PersonalDetailsForm from "./components/PersonalDetailsForm";
+import { AppTheme } from "@/types/theme";
+import type { ApplicationScreenProps } from "@/types/navigation";
+import { updateUser } from "@/services/firebase";
+import { signupDetailsSchema } from "@/schema";
+import { SafeScreen } from "@/components/template";
+import { BackButton, Box, CButton, Text } from "@/components/atoms";
 
 export enum Gender {
   Male = 1,
@@ -58,8 +59,16 @@ function ProfileSetup({ navigation }: ApplicationScreenProps) {
 
   const _onSubmit = async (
     values: FormikValues,
-    {}: FormikHelpers<FormValues>
+    { setFieldError, setSubmitting }: FormikHelpers<FormValues>,
   ) => {
+    if (values.phone.length !== 12) {
+      setSubmitting(false);
+      setTimeout(() => {
+        setFieldError("phone", "Invalid phone number");
+      }, 100);
+      return null;
+    }
+
     const phoneNumber = values.phone.split(`+${values.phoneNumberCode}`)[1];
     try {
       mutateAsync({
@@ -117,5 +126,3 @@ function ProfileSetup({ navigation }: ApplicationScreenProps) {
 }
 
 export default ProfileSetup;
-
-const styles = StyleSheet.create({});
