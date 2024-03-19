@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
-import { getAllCentersAsync } from "../controllers/zenotiController";
+import { getAllCentersAsync } from "../controllers/centerController";
+import { addPaymentAsync } from "../controllers/guestController";
 const router = express.Router();
 
 router.get("/user", (req: Request, res: Response) => {
@@ -7,5 +8,6 @@ router.get("/user", (req: Request, res: Response) => {
 });
 
 router.get("/centers", getAllCentersAsync);
+router.post("/payment", addPaymentAsync);
 
 export const zenotiRoutes = router;

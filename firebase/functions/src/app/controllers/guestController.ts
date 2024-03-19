@@ -1,24 +1,13 @@
 import { Request, Response } from "express";
 import { getFirestore } from "firebase-admin/firestore";
 import { Organization } from "../../config/zenotiConfig";
-import { getAllCentersData, guestSignup } from "../../services/zenoti";
+import { addGuestPayment, guestSignup } from "../../services/zenoti";
 import { FirestoreUserType, GuestType } from "../../types";
 import { CountryCodes } from "../../types/enums/countryCode";
 
 const firestore = getFirestore();
 
-export const getAllCentersAsync = async (req: Request, res: Response) => {
-  try {
-    const data = await getAllCentersData();
-    res.json(data);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal Server Error" });
-  }
-  return;
-};
-
-export const signupUserInZenoti = async (user: FirestoreUserType) => {
+export const signupUserInZenotiAsync = async (user: FirestoreUserType) => {
   try {
     if (
       !user.email ||
@@ -106,4 +95,24 @@ export const signupUserInZenoti = async (user: FirestoreUserType) => {
     console.error("Error during user signup in zenoti:", error);
     throw error;
   }
+};
+
+export const addPaymentAsync = async (req: Request, res: Response) => {
+  try {
+    const { guestId, centerId, countryCode } = req.body;
+    if (!guestId || !centerId) {
+      res.status(403).json({ message: "Guest id or center id is missing" });
+    }
+
+    const data = await addGuestPayment({
+      centerId,
+      countryCode,
+      guestId,
+    });
+    res.json(data.data);
+  } catch (error) {
+    console.error("Error adding payment", error);
+    res.status(403).json({ message: "Error adding payment" });
+  }
+  return;
 };

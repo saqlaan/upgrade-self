@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { getFirestore } from "firebase-admin/firestore";
 import * as functions from "firebase-functions";
-import { signupUserInZenoti } from "../app/controllers/zenotiController";
+import { signupUserInZenotiAsync } from "../app/controllers/guestController";
 import { FirestoreUserType } from "../types";
 const firestore = getFirestore();
 
@@ -11,7 +11,7 @@ export const onUserDocumentChange = functions.firestore
     const before = change.before.data() as FirestoreUserType;
     const after = change.after.data() as FirestoreUserType;
     if (!before.onboardingCompleted && after.onboardingCompleted) {
-      await signupUserInZenoti(after);
+      await signupUserInZenotiAsync(after);
       await firestore
         .collection("users")
         .doc(change.before.id)
