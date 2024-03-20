@@ -1,17 +1,59 @@
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { useMutation } from "@tanstack/react-query";
 import React, { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Pressable, StyleSheet } from "react-native";
+import { Modal, Pressable, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
-import PaymentCardItem from "./components/PaymentCardItem";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Snackbar from "react-native-snackbar";
+import WebView from "react-native-webview";
 import BottomPaymentCardItem from "./components/BottomSheetPaymentCardItem";
 import PaymentBottomSheetModal from "./components/PaymentBottomSheetModal";
+import PaymentCardItem from "./components/PaymentCardItem";
 import data from "./data.json";
-import { BackButton, Box, CButton, Text } from "@/components/atoms";
-import { SafeScreen } from "@/components/template";
-import { AddSquareRoundedIcon } from "@/theme/assets/icons";
-import type { ApplicationScreenProps } from "@/types/navigation";
 import { AppTheme } from "@/types/theme";
+import type { ApplicationScreenProps } from "@/types/navigation";
+import { AddSquareRoundedIcon } from "@/theme/assets/icons";
+import { spacing } from "@/theme";
+import { addGuestPaymentAsync } from "@/services/firebaseApp/centers";
+import { getUserGuests } from "@/services/firebase/collections/guest";
+import { getUser } from "@/services/firebase";
+import { SafeScreen } from "@/components/template";
+import { BackButton, Box, CButton, Text } from "@/components/atoms";
+
+const WebViewModal = ({
+  visible,
+  onClose,
+  url,
+}: {
+  visible: boolean;
+  onClose: () => void;
+  url: string;
+}) => {
+  const { colors } = useTheme();
+  const { top, bottom } = useSafeAreaInsets();
+  return (
+    <Modal
+      animationType="slide"
+      transparent={false}
+      visible={visible}
+      onRequestClose={onClose}
+    >
+      <Box
+        style={[styles.modalWebview, { marginTop: top, marginBottom: bottom }]}
+      >
+        <Box py="5" row>
+          <BackButton onPress={onClose} color={colors.primary} />
+        </Box>
+        <WebView
+          automaticallyAdjustContentInsets={false}
+          source={{ uri: url }}
+          style={styles.webView}
+        />
+      </Box>
+    </Modal>
+  );
+};
 
 function PaymentScreen({ navigation }: ApplicationScreenProps) {
   const { colors } = useTheme<AppTheme>();
@@ -19,7 +61,13 @@ function PaymentScreen({ navigation }: ApplicationScreenProps) {
   const [selectedCard, setSelectedCard] = useState({
     cardNumber: data.cards[0].card_number,
   });
+  const [modalVisible, setModalVisible] = useState(false);
+  const [webUrl, setWebUrl] = useState("");
+
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const { mutateAsync } = useMutation({
+    mutationFn: addGuestPaymentAsync,
+  });
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -30,9 +78,46 @@ function PaymentScreen({ navigation }: ApplicationScreenProps) {
     bottomSheetModalRef.current?.close();
   }, []);
 
-  const handleAddNewPaymentMethod = () => {
-    alert("Add new payment");
+  const handleModalClose = () => {
+    setModalVisible(false);
   };
+
+  const handleAddNewPaymentMethod = async () => {
+    try {
+      const user = await getUser();
+      const { centers } = user;
+      const { centerId } = centers[0];
+      const guestInfo = await getUserGuests();
+      if (guestInfo) {
+        const { guestAccounts } = guestInfo;
+        const guestAccount = guestAccounts.find(
+          (guestAccount) => guestAccount.centerId == centerId,
+        );
+        if (!guestAccount) {
+          console.log("Account not availble");
+          return;
+        }
+        const request = await mutateAsync(guestAccount);
+        if (request?.data?.error) {
+          Snackbar.show({
+            text: "Error",
+            duration: Snackbar.LENGTH_SHORT,
+            action: {
+              text: "Something went wrong try later",
+              textColor: colors.error,
+            },
+          });
+          return;
+        }
+        const { hosted_payment_uri: hostedPaymentUri } = request?.data;
+        setWebUrl(hostedPaymentUri);
+        setModalVisible(true);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <SafeScreen>
       {navigation.canGoBack() && (
@@ -82,6 +167,11 @@ function PaymentScreen({ navigation }: ApplicationScreenProps) {
           ))}
         </Box>
       </PaymentBottomSheetModal>
+      <WebViewModal
+        url={webUrl}
+        visible={modalVisible}
+        onClose={handleModalClose}
+      />
     </SafeScreen>
   );
 }
@@ -98,6 +188,15 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     justifyContent: "center",
+  },
+  webView: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+  },
+  modalWebview: {
+    flex: 1,
+    paddingHorizontal: spacing[5],
   },
 });
 

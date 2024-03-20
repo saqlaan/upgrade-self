@@ -11,3 +11,26 @@ export const fetchAllCentersData = async (): Promise<CenterType[] | null> => {
     return null;
   }
 };
+
+type AddGuestPaymentAsync = {
+  guestId: string;
+  centerId: string;
+  countryCode: string;
+};
+
+export const addGuestPaymentAsync = async ({
+  guestId,
+  centerId,
+  countryCode,
+}: AddGuestPaymentAsync) => {
+  try {
+    const result = axios.post(Routes.addPayment, {
+      guestId,
+      centerId,
+      countryCode,
+    });
+    return await result;
+  } catch (error) {
+    return null;
+  }
+};
