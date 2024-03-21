@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import React, { useCallback, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, Pressable, StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
+import { ActivityIndicator, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Snackbar from "react-native-snackbar";
 import WebView from "react-native-webview";
@@ -65,7 +65,7 @@ function PaymentScreen({ navigation }: ApplicationScreenProps) {
   const [webUrl, setWebUrl] = useState("");
 
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const { mutateAsync } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationFn: addGuestPaymentAsync,
   });
 
@@ -134,14 +134,18 @@ function PaymentScreen({ navigation }: ApplicationScreenProps) {
           onPress={() => handlePresentModalPress()}
         />
         <Box mt="6">
-          <Pressable onPress={handleAddNewPaymentMethod}>
-            <Box row alignItems={"center"} justifyContent={"center"} gap="2">
-              <AddSquareRoundedIcon />
-              <Text variant={"text-md-semi-bold"}>
-                {t("payment:addNewPayment")}
-              </Text>
-            </Box>
-          </Pressable>
+          {!isPending ? (
+            <Pressable onPress={handleAddNewPaymentMethod}>
+              <Box row alignItems={"center"} justifyContent={"center"} gap="2">
+                <AddSquareRoundedIcon />
+                <Text variant={"text-md-semi-bold"}>
+                  {t("payment:addNewPayment")}
+                </Text>
+              </Box>
+            </Pressable>
+          ) : (
+            <ActivityIndicator color={colors["black-300"]} />
+          )}
         </Box>
       </Box>
 

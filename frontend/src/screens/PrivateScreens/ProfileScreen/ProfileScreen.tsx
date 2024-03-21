@@ -1,0 +1,172 @@
+import React from "react";
+import {
+  ImageBackground,
+  Pressable,
+  StatusBar,
+  StyleSheet,
+} from "react-native";
+import { Icon, useTheme } from "react-native-paper";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
+import auth from "@react-native-firebase/auth";
+import { BackButton, Box, Text } from "@/components/atoms";
+import { Images } from "@/theme/assets/images";
+import { spacing } from "@/theme";
+import type { ApplicationScreenProps } from "@/types/navigation";
+import { AppTheme } from "@/types/theme";
+import { UseUserStore } from "@/store/user.store";
+import { MapPointIcon } from "@/theme/assets/icons";
+
+function ProfileSceenButton({
+  title,
+  onPress,
+}: {
+  title: string;
+  onPress: () => void;
+}) {
+  const { colors } = useTheme<AppTheme>();
+  return (
+    <Box mb="2">
+      <Pressable onPress={onPress}>
+        <Box
+          row
+          justifyContent="space-between"
+          alignItems="center"
+          bgColor="grey-500"
+          px={"4"}
+          py={"6"}
+          style={styles.button}
+        >
+          <Text variant="text-md-semi-bold" color="black-500">
+            {title}
+          </Text>
+          <Box>
+            <Icon
+              size={spacing[6]}
+              source={"chevron-right"}
+              color={colors["black-300"]}
+            />
+          </Box>
+        </Box>
+      </Pressable>
+    </Box>
+  );
+}
+
+function ProfileScreen({ navigation }: ApplicationScreenProps) {
+  const { colors, spacing } = useTheme<AppTheme>();
+  const { top } = useSafeAreaInsets();
+  const { clearUser, user } = UseUserStore();
+
+  const handleLogout = () => {
+    auth().signOut();
+    clearUser();
+  };
+
+  const buttonsData = [
+    {
+      title: "Edit Profile",
+      onPress: () => navigation.navigate("EditProfileScreen"),
+    },
+    {
+      title: "Billing Info",
+      onPress: () => alert("Under construction"),
+    },
+    {
+      title: "Change Password",
+      onPress: () => alert("Under construction"),
+    },
+  ];
+
+  const getInitials = () => {
+    const { firstName, lastName } = user;
+    const firstInitial = firstName.charAt(0).toUpperCase() || "";
+    const lastInitial = lastName.charAt(0).toUpperCase() || "";
+    return firstInitial + lastInitial;
+  };
+
+  return (
+    <SafeAreaView
+      edges={["bottom"]}
+      style={{ backgroundColor: colors.white, flex: 1 }}
+    >
+      <StatusBar barStyle={"light-content"} />
+      <ImageBackground
+        style={[styles.topSection, { paddingTop: top }]}
+        source={Images.ProfileBg}
+      >
+        <Box row alignItems="center" justifyContent="space-between">
+          <BackButton />
+          <Box style={styles.title}>
+            <Text variant="text-xl-bold" color="white">
+              My Profile
+            </Text>
+          </Box>
+        </Box>
+        <Box alignItems="center" justifyContent="center" style={styles.nameBox}>
+          <Box
+            bgColor="secondary"
+            alignItems="center"
+            justifyContent="center"
+            style={{ width: 70, height: 70, borderRadius: spacing[2] }}
+          >
+            <Text color="white" variant="display-xs-bold">
+              {getInitials()}
+            </Text>
+          </Box>
+        </Box>
+      </ImageBackground>
+      <Box flex={1}>
+        <Box pt="8" pb="5" />
+        <Box alignItems="center" mb="2">
+          <Text variant="display-xs-bold">{`${user?.firstName} ${user?.lastName}`}</Text>
+        </Box>
+        <Box row alignItems="center" justifyContent="center" gap="1">
+          <Icon size={spacing[5]} source={MapPointIcon} />
+          <Text variant="text-md-bold">{user?.city || ""}</Text>
+        </Box>
+        <Box px="5" py="5">
+          {buttonsData.map(({ title, onPress }, index) => (
+            <ProfileSceenButton key={index} title={title} onPress={onPress} />
+          ))}
+        </Box>
+      </Box>
+      <Box alignItems="center" py="5">
+        <Pressable onPress={handleLogout}>
+          <Text variant="text-md-semi-bold">Sign out</Text>
+        </Pressable>
+      </Box>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  topSection: {
+    paddingHorizontal: spacing[4],
+    justifyContent: "center",
+    paddingBottom: spacing[4],
+    minHeight: 100,
+    height: 200,
+  },
+  button: {
+    borderRadius: spacing[2],
+  },
+  title: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    alignItems: "center",
+  },
+  nameBox: {
+    position: "absolute",
+    bottom: -35,
+    left: 0,
+    right: 0,
+    zIndex: 10,
+    borderRadius: spacing[2],
+  },
+});
+
+export default ProfileScreen;

@@ -1,2 +1,3 @@
-export { default as colors } from "./colors";
-export * from "./spacing";
+import colors from "./colors";
+import { spacing } from "./spacing";
+export { spacing, colors };

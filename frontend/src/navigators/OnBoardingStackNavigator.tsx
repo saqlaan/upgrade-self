@@ -1,3 +1,5 @@
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
 import {
   FinishOnBoarding,
   LoadingScreen,
@@ -7,7 +9,6 @@ import {
   Welcome,
 } from "@/screens";
 import { ApplicationStackParamList } from "@/types/navigation";
-import { createStackNavigator } from "@react-navigation/stack";
 
 const Stack = createStackNavigator<ApplicationStackParamList>();
 

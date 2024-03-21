@@ -1,9 +1,9 @@
+import auth from "@react-native-firebase/auth";
+import React from "react";
 import { Box, CButton } from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
 import { UseUserStore } from "@/store/user.store";
 import type { ApplicationScreenProps } from "@/types/navigation";
-import auth from "@react-native-firebase/auth";
-import React from "react";
 
 function Home({ navigation }: ApplicationScreenProps) {
   const { clearUser } = UseUserStore();
@@ -14,8 +14,11 @@ function Home({ navigation }: ApplicationScreenProps) {
   };
 
   const navigateToPayment = () => {
-    // navigation.navigate("PaymentScreen");
-    navigation.navigate("PaymentScreen")
+    navigation.navigate("PaymentScreen");
+  };
+
+  const navigateToProfile = () => {
+    navigation.navigate("ProfileScreen");
   };
 
   return (
@@ -24,6 +27,8 @@ function Home({ navigation }: ApplicationScreenProps) {
         <CButton onPress={handleLogout}>Logout</CButton>
         <Box mt="6" />
         <CButton onPress={navigateToPayment}>Add payment</CButton>
+        <Box mt="6" />
+        <CButton onPress={navigateToProfile}>Profile</CButton>
       </Box>
     </SafeScreen>
   );

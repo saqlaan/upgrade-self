@@ -7,4 +7,5 @@ export const Images = {
   SplashBg: require("../../../../assets/images/splash/ios/splash-screen-bg.png"),
   primaryBgLines: require("./primary-bg-lines.png"),
   visa: require("./visa.png"),
+  ProfileBg: require("./profile-bg.png"),
 };

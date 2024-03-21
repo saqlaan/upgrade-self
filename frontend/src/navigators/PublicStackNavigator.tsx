@@ -1,9 +1,10 @@
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
 import { EmailVerification, Startup, TOS } from "@/screens";
 import ForgotPassword from "@/screens/AuthScreens/ForgotPasswordScreen/ForgotPasswordScreen";
 import Login from "@/screens/AuthScreens/LoginScreen/LoginScreen";
 import Signup from "@/screens/AuthScreens/SignupScreen/SignupScreen";
 import { ApplicationStackParamList } from "@/types/navigation";
-import { createStackNavigator } from "@react-navigation/stack";
 
 const Stack = createStackNavigator<ApplicationStackParamList>();
 

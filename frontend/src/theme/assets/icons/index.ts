@@ -15,6 +15,8 @@ import MaleIcon from "./male.svg";
 import OptionSelectedIcon from "./option-selected.svg";
 import OptionUnSelectedIcon from "./option-unselected.svg";
 import UlAppIconSingle from "./ul-app-single-icon.svg";
+import MapPointIcon from "./map-point.svg";
+
 export {
   AddSquareRoundedIcon,
   AltArrowDownIcon,
@@ -22,6 +24,7 @@ export {
   ArrowRight,
   CalendarIcon,
   CheckCircleIcon,
+  MapPointIcon,
   CreateAccountMailIcon,
   DangerCircle,
   EnvelopeSolidIcon,

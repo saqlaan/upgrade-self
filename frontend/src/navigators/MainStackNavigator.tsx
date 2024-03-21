@@ -1,12 +1,12 @@
-import { useAuthState } from "@/hooks/useAuthState";
-import { useFirebaseSnapshots } from "@/hooks/useFirebaseSnapshots";
-import { UseUserStore } from "@/store/user.store";
 import { NavigationContainer } from "@react-navigation/native";
-import { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import SplashScreen from "react-native-splash-screen";
 import OnBoardingStackNavigator from "./OnBoardingStackNavigator";
 import PrivateStackNavigator from "./PrivateStackNavigator";
 import PublicStackNavigator from "./PublicStackNavigator";
+import { UseUserStore } from "@/store/user.store";
+import { useFirebaseSnapshots } from "@/hooks/useFirebaseSnapshots";
+import { useAuthState } from "@/hooks/useAuthState";
 
 function ApplicationNavigator() {
   const { user: authUser } = useAuthState();

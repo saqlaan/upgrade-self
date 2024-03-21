@@ -2,40 +2,32 @@ import React from "react";
 import { useKeyboard } from "@react-native-community/hooks";
 import { useMutation } from "@tanstack/react-query";
 import { Formik, FormikHelpers, FormikValues } from "formik";
-import { useTranslation } from "react-i18next";
-import { ScrollView } from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 import { useTheme } from "react-native-paper";
 import _ from "lodash";
+
 import { AppTheme } from "@/types/theme";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { updateUser } from "@/services/firebase";
 import { signupDetailsSchema } from "@/schema";
 import { SafeScreen } from "@/components/template";
 import { BackButton, Box, CButton, Text } from "@/components/atoms";
+import { UseUserStore } from "@/store/user.store";
 import { ContactDetailsForm, PersonalDetailsForm } from "@/components";
-import { ProfileFormValuesType, Gender } from "@/types";
+import { ProfileFormValuesType } from "@/types";
 
-const initialValues: ProfileFormValuesType = {
-  firstName: "",
-  lastName: "",
-  dob: "",
-  gender: Gender.NotSpecified,
-  address1: "",
-  address2: "",
-  city: "",
-  state: "",
-  zipcode: "",
-  phone: "+1",
-  phoneNumberCode: "",
-};
-
-function ProfileSetup({ navigation }: ApplicationScreenProps) {
+function EditProfileScreen({ navigation }: ApplicationScreenProps) {
   const { colors } = useTheme<AppTheme>();
-  const { t } = useTranslation(["common"]);
   const { keyboardHeight } = useKeyboard();
+  const { user } = UseUserStore();
   const { mutateAsync, isPending, error } = useMutation({
     mutationFn: updateUser,
   });
+  const initialValues = {
+    ...user,
+    phone: `+${user?.phone?.code}${user?.phone?.number}`,
+    code: "",
+  };
 
   const _onSubmit = async (
     values: FormikValues,
@@ -52,14 +44,22 @@ function ProfileSetup({ navigation }: ApplicationScreenProps) {
     const phoneNumber = values.phone.split(`+${values.phoneNumberCode}`)[1];
     try {
       mutateAsync({
-        onBoardingStep: 1,
-        ..._.omit(values, ["phoneNumberCode"]),
+        ..._.pick(values, [
+          "firstName",
+          "lastName",
+          "dob",
+          "gender",
+          "address1",
+          "address2",
+          "city",
+          "state",
+          "zipcode",
+        ]),
         phone: {
           number: phoneNumber,
           code: values.phoneNumberCode,
         },
       });
-      navigation.navigate("WelcomeScreen");
     } catch {
       console.error(error);
     }
@@ -67,11 +67,12 @@ function ProfileSetup({ navigation }: ApplicationScreenProps) {
 
   return (
     <SafeScreen>
-      {navigation.canGoBack() && (
-        <Box px="5" pt="5" row>
-          <BackButton color={colors.primary} />
+      <Box px="5" row alignItems="center" justifyContent="space-between">
+        <BackButton color={colors.primary} />
+        <Box style={styles.title}>
+          <Text variant="text-xl-bold">Edit profile</Text>
         </Box>
-      )}
+      </Box>
       <Formik<ProfileFormValuesType>
         initialValues={initialValues}
         validationSchema={signupDetailsSchema}
@@ -81,8 +82,8 @@ function ProfileSetup({ navigation }: ApplicationScreenProps) {
           <>
             <ScrollView>
               <Box flex={1} style={{ paddingBottom: keyboardHeight }}>
-                <PersonalDetailsForm />
-                <ContactDetailsForm />
+                <PersonalDetailsForm isUpdating={true} />
+                <ContactDetailsForm isUpdating={true} />
               </Box>
             </ScrollView>
             <Box px="5" py="5">
@@ -94,7 +95,7 @@ function ProfileSetup({ navigation }: ApplicationScreenProps) {
                 loading={isPending}
               >
                 <Text color={colors.white} variant="text-md-semi-bold">
-                  {t("common:appName.next")}
+                  Save Changes
                 </Text>
               </CButton>
             </Box>
@@ -105,4 +106,13 @@ function ProfileSetup({ navigation }: ApplicationScreenProps) {
   );
 }
 
-export default ProfileSetup;
+export default EditProfileScreen;
+
+const styles = StyleSheet.create({
+  title: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    alignItems: "center",
+  },
+});
