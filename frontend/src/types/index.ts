@@ -21,3 +21,9 @@ export interface ProfileFormValuesType {
   phone: string;
   phoneNumberCode: string;
 }
+
+export interface ChangePasswordValuesType {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}

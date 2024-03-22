@@ -27,5 +27,5 @@ export default {
   "auth/user-mismatch":
     "The supplied credentials do not correspond to the previously signed in user.",
   "auth/invalid-credential":
-    "Incorrect email/password. Please verify your email/password and try again.",
+    "Incorrect cridentials. Please verify your cridentials and try again.",
 } as FirebaseAuthErrorMessages;

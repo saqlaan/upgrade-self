@@ -6,10 +6,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { Icon, useTheme } from "react-native-paper";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import auth from "@react-native-firebase/auth";
 import { BackButton, Box, Text } from "@/components/atoms";
 import { Images } from "@/theme/assets/images";
@@ -56,7 +53,7 @@ function ProfileSceenButton({
 }
 
 function ProfileScreen({ navigation }: ApplicationScreenProps) {
-  const { colors, spacing } = useTheme<AppTheme>();
+  const { spacing } = useTheme<AppTheme>();
   const { top } = useSafeAreaInsets();
   const { clearUser, user } = UseUserStore();
 
@@ -72,11 +69,11 @@ function ProfileScreen({ navigation }: ApplicationScreenProps) {
     },
     {
       title: "Billing Info",
-      onPress: () => alert("Under construction"),
+      onPress: () => navigation.navigate("BillingInfoScreen"),
     },
     {
       title: "Change Password",
-      onPress: () => alert("Under construction"),
+      onPress: () => navigation.navigate("ChangePasswordScreen"),
     },
   ];
 
@@ -88,10 +85,7 @@ function ProfileScreen({ navigation }: ApplicationScreenProps) {
   };
 
   return (
-    <SafeAreaView
-      edges={["bottom"]}
-      style={{ backgroundColor: colors.white, flex: 1 }}
-    >
+    <Box flex={1} bgColor="white">
       <StatusBar barStyle={"light-content"} />
       <ImageBackground
         style={[styles.topSection, { paddingTop: top }]}
@@ -105,6 +99,8 @@ function ProfileScreen({ navigation }: ApplicationScreenProps) {
             </Text>
           </Box>
         </Box>
+      </ImageBackground>
+      <Box flex={1} style={styles.roundedTop}>
         <Box alignItems="center" justifyContent="center" style={styles.nameBox}>
           <Box
             bgColor="secondary"
@@ -117,8 +113,6 @@ function ProfileScreen({ navigation }: ApplicationScreenProps) {
             </Text>
           </Box>
         </Box>
-      </ImageBackground>
-      <Box flex={1}>
         <Box pt="8" pb="5" />
         <Box alignItems="center" mb="2">
           <Text variant="display-xs-bold">{`${user?.firstName} ${user?.lastName}`}</Text>
@@ -138,7 +132,7 @@ function ProfileScreen({ navigation }: ApplicationScreenProps) {
           <Text variant="text-md-semi-bold">Sign out</Text>
         </Pressable>
       </Box>
-    </SafeAreaView>
+    </Box>
   );
 }
 
@@ -146,9 +140,9 @@ const styles = StyleSheet.create({
   topSection: {
     paddingHorizontal: spacing[4],
     justifyContent: "center",
-    paddingBottom: spacing[4],
     minHeight: 100,
-    height: 200,
+    height: 180,
+    paddingBottom: spacing[10],
   },
   button: {
     borderRadius: spacing[2],
@@ -161,11 +155,19 @@ const styles = StyleSheet.create({
   },
   nameBox: {
     position: "absolute",
-    bottom: -35,
+    top: -35,
     left: 0,
     right: 0,
-    zIndex: 10,
+    zIndex: 100,
     borderRadius: spacing[2],
+  },
+  roundedTop: {
+    backgroundColor: "#fff",
+    borderTopLeftRadius: spacing[4],
+    borderTopRightRadius: spacing[4],
+    position: "relative",
+    top: -spacing[4],
+    zIndex: 7,
   },
 });
 

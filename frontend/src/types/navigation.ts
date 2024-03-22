@@ -17,6 +17,11 @@ export type ApplicationStackParamList = {
   PaymentScreen: undefined;
   ProfileScreen: undefined;
   EditProfileScreen: undefined;
+  AppointmentScreen: undefined;
+  StatsScreen: undefined;
+  ProfileTab: undefined;
+  BillingInfoScreen: undefined;
+  ChangePasswordScreen: undefined;
 };
 
 export type ApplicationScreenProps =

@@ -2,18 +2,21 @@ import React from "react";
 import { useKeyboard } from "@react-native-community/hooks";
 import { useMutation } from "@tanstack/react-query";
 import { Formik, FormikHelpers, FormikValues } from "formik";
-import { ScrollView, StyleSheet } from "react-native";
+import { ScrollView } from "react-native";
 import { useTheme } from "react-native-paper";
 import _ from "lodash";
-
 import { AppTheme } from "@/types/theme";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { updateUser } from "@/services/firebase";
 import { signupDetailsSchema } from "@/schema";
 import { SafeScreen } from "@/components/template";
-import { BackButton, Box, CButton, Text } from "@/components/atoms";
+import { Box, CButton, Text } from "@/components/atoms";
 import { UseUserStore } from "@/store/user.store";
-import { ContactDetailsForm, PersonalDetailsForm } from "@/components";
+import {
+  ContactDetailsForm,
+  PersonalDetailsForm,
+  ProfileScreenHeader,
+} from "@/components";
 import { ProfileFormValuesType } from "@/types";
 
 function EditProfileScreen({ navigation }: ApplicationScreenProps) {
@@ -67,20 +70,16 @@ function EditProfileScreen({ navigation }: ApplicationScreenProps) {
 
   return (
     <SafeScreen>
-      <Box px="5" row alignItems="center" justifyContent="space-between">
-        <BackButton color={colors.primary} />
-        <Box style={styles.title}>
-          <Text variant="text-xl-bold">Edit profile</Text>
-        </Box>
-      </Box>
       <Formik<ProfileFormValuesType>
         initialValues={initialValues}
         validationSchema={signupDetailsSchema}
         onSubmit={_onSubmit}
+        alignItems="center"
       >
         {({ handleSubmit, isSubmitting, isValid, touched }) => (
           <>
             <ScrollView>
+              <ProfileScreenHeader title="Edit profile" />
               <Box flex={1} style={{ paddingBottom: keyboardHeight }}>
                 <PersonalDetailsForm isUpdating={true} />
                 <ContactDetailsForm isUpdating={true} />
@@ -107,12 +106,3 @@ function EditProfileScreen({ navigation }: ApplicationScreenProps) {
 }
 
 export default EditProfileScreen;
-
-const styles = StyleSheet.create({
-  title: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    alignItems: "center",
-  },
-});

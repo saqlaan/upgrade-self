@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { updateUser } from "./collections/user";
 
@@ -35,4 +36,22 @@ export const sendEmailConfirmation = async () => {
 
 export const syncDataOnAppStart = async (authUser: FirebaseAuthTypes.User) => {
   return updateUser(authUser);
+};
+
+export const updatePassword = async ({
+  currentPassword,
+  newPassword,
+}: {
+  currentPassword: string;
+  newPassword: string;
+}) => {
+  const { email } = auth().currentUser as FirebaseAuthTypes.UserInfo;
+  try {
+    await auth().currentUser?.reauthenticateWithCredential(
+      auth.EmailAuthProvider.credential(email || "", currentPassword),
+    );
+    await auth().currentUser?.updatePassword(newPassword);
+  } catch (e) {
+    throw e;
+  }
 };
