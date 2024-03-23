@@ -1,19 +1,13 @@
 import React from "react";
-import { useKeyboard } from "@react-native-community/hooks";
 import { ScrollView, StatusBar } from "react-native";
-import { useTheme } from "react-native-paper";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { AppTheme } from "@/types/theme";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { Box, Text } from "@/components/atoms";
 import { ProfileScreenHeader, TransactionBox } from "@/components";
+import { SafeScreen } from "@/components/template";
 
 function BillingInfoScreen({ navigation }: ApplicationScreenProps) {
-  const { colors } = useTheme<AppTheme>();
-  const { keyboardHeight } = useKeyboard();
-
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
+    <SafeScreen edges={["top"]}>
       <Box flex={1}>
         <StatusBar barStyle={"dark-content"} />
         <ProfileScreenHeader title="Billing Info" />
@@ -36,7 +30,7 @@ function BillingInfoScreen({ navigation }: ApplicationScreenProps) {
           </Box>
         </ScrollView>
       </Box>
-    </SafeAreaView>
+    </SafeScreen>
   );
 }
 

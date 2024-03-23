@@ -1,5 +1,4 @@
 import React from "react";
-import { useKeyboard } from "@react-native-community/hooks";
 import { useMutation } from "@tanstack/react-query";
 import { Formik, FormikHelpers, FormikValues } from "formik";
 import { ScrollView } from "react-native";
@@ -9,7 +8,6 @@ import { AppTheme } from "@/types/theme";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { updateUser } from "@/services/firebase";
 import { signupDetailsSchema } from "@/schema";
-import { SafeScreen } from "@/components/template";
 import { Box, CButton, Text } from "@/components/atoms";
 import { UseUserStore } from "@/store/user.store";
 import {
@@ -18,10 +16,12 @@ import {
   ProfileScreenHeader,
 } from "@/components";
 import { ProfileFormValuesType } from "@/types";
+import { SafeScreen } from "@/components/template";
+import { useKeyboardHeight } from "@/hooks/useKeyboardHeight";
 
 function EditProfileScreen({ navigation }: ApplicationScreenProps) {
   const { colors } = useTheme<AppTheme>();
-  const { keyboardHeight } = useKeyboard();
+  const keyboardHeight = useKeyboardHeight();
   const { user } = UseUserStore();
   const { mutateAsync, isPending, error } = useMutation({
     mutationFn: updateUser,
@@ -69,7 +69,7 @@ function EditProfileScreen({ navigation }: ApplicationScreenProps) {
   };
 
   return (
-    <SafeScreen>
+    <SafeScreen edges={["top"]}>
       <Formik<ProfileFormValuesType>
         initialValues={initialValues}
         validationSchema={signupDetailsSchema}
@@ -77,28 +77,31 @@ function EditProfileScreen({ navigation }: ApplicationScreenProps) {
         alignItems="center"
       >
         {({ handleSubmit, isSubmitting, isValid, touched }) => (
-          <>
-            <ScrollView>
-              <ProfileScreenHeader title="Edit profile" />
-              <Box flex={1} style={{ paddingBottom: keyboardHeight }}>
+          <Box flex={1}>
+            <ProfileScreenHeader title="Edit profile" />
+            <ScrollView
+              contentContainerStyle={{ paddingBottom: keyboardHeight }}
+            >
+              <Box flex={1}>
                 <PersonalDetailsForm isUpdating={true} />
                 <ContactDetailsForm isUpdating={true} />
               </Box>
+              <Box px="5" py="5">
+                <CButton
+                  disabled={
+                    Object.keys(touched).length > 0 &&
+                    (!isValid || isSubmitting)
+                  }
+                  onPress={handleSubmit}
+                  loading={isPending}
+                >
+                  <Text color={colors.white} variant="text-md-semi-bold">
+                    Save Changes
+                  </Text>
+                </CButton>
+              </Box>
             </ScrollView>
-            <Box px="5" py="5">
-              <CButton
-                disabled={
-                  Object.keys(touched).length > 0 && (!isValid || isSubmitting)
-                }
-                onPress={handleSubmit}
-                loading={isPending}
-              >
-                <Text color={colors.white} variant="text-md-semi-bold">
-                  Save Changes
-                </Text>
-              </CButton>
-            </Box>
-          </>
+          </Box>
         )}
       </Formik>
     </SafeScreen>

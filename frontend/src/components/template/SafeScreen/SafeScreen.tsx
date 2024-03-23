@@ -1,12 +1,17 @@
-import type { PropsWithChildren } from "react";
-import { SafeAreaView, StatusBar, StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
+import React from "react";
+import { StyleSheet } from "react-native";
+import {
+  SafeAreaView,
+  SafeAreaViewProps,
+} from "react-native-safe-area-context";
+import { colors } from "@/theme";
 
-function SafeScreen({ children }: PropsWithChildren) {
-  const { colors, dark } = useTheme();
+function SafeScreen({ children, ...props }: SafeAreaViewProps) {
   return (
-    <SafeAreaView style={[styles.view, { backgroundColor: colors.background }]}>
-      <StatusBar barStyle={dark ? "light-content" : "dark-content"} />
+    <SafeAreaView
+      style={[styles.view, { backgroundColor: colors.white }]}
+      {...props}
+    >
       {children}
     </SafeAreaView>
   );

@@ -46,7 +46,7 @@ function ChangePasswordScreen({ navigation }: ApplicationScreenProps) {
   };
 
   return (
-    <SafeScreen>
+    <SafeScreen edges={["top"]}>
       <Formik<ChangePasswordValuesType>
         initialValues={initialValues}
         validationSchema={changePasswordSchema}
@@ -62,9 +62,9 @@ function ChangePasswordScreen({ navigation }: ApplicationScreenProps) {
           values,
           errors,
         }) => (
-          <>
+          <Box flex={1}>
+            <ProfileScreenHeader title="Change Password" />
             <ScrollView>
-              <ProfileScreenHeader title="Change Password" />
               <Box px="5" flex={1}>
                 <Box mb="2">
                   <CustomTextInput
@@ -136,7 +136,7 @@ function ChangePasswordScreen({ navigation }: ApplicationScreenProps) {
                 </Text>
               </CButton>
             </Box>
-          </>
+          </Box>
         )}
       </Formik>
     </SafeScreen>
