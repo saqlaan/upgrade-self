@@ -1,3 +1,18 @@
+import { FormikHelpers, useFormik } from "formik";
+import React, { useCallback, useState } from "react";
+import {
+  ImageBackground,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { Text, useTheme } from "react-native-paper";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
+import SocialLogin from "../components/SocialLogin/SocialLogin";
 import {
   BackButton,
   CButton,
@@ -14,21 +29,7 @@ import { TextVariants } from "@/theme/fonts";
 import { spacing } from "@/theme/spacing";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { AppTheme } from "@/types/theme";
-import { FormikHelpers, useFormik } from "formik";
-import React, { useCallback, useState } from "react";
-import {
-  ImageBackground,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { Text, useTheme } from "react-native-paper";
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
-import SocialLogin from "../components/SocialLogin/SocialLogin";
+import { syncUserDataOnSignIn } from "@/services/firebase";
 
 type LoginFormValues = {
   email: string;
@@ -60,14 +61,16 @@ function Login({ navigation }: ApplicationScreenProps) {
 
   function handleLogin(
     values: LoginFormValues,
-    { setSubmitting, resetForm, setTouched }: FormikHelpers<LoginFormValues>
+    { setSubmitting, resetForm, setTouched }: FormikHelpers<LoginFormValues>,
   ) {
     login({ ...values })
-      .then(({ user }) => {
+      .then(async ({ user }) => {
         if (!user?.emailVerified) {
           resetForm();
           setTouched({ password: false, email: false });
           navigation.navigate("EmailVerificationScreen");
+        } else {
+          await syncUserDataOnSignIn();
         }
       })
       .catch((error) => {

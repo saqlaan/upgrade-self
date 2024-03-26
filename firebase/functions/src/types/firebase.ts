@@ -17,6 +17,7 @@ export type FirestoreUserType = UserInfo & {
   lastName: string;
   onBoardingStep: number;
   onboardingCompleted: boolean;
+  emailVerified: boolean;
   phone: {
     number: string;
     code: number;

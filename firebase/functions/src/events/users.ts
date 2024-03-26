@@ -5,7 +5,7 @@ import { signupUserInZenotiAsync } from "../app/controllers/guestController";
 import { FirestoreUserType } from "../types";
 const firestore = getFirestore();
 
-export const onUserDocumentChange = functions.firestore
+export const onUserOnBoardingChanged = functions.firestore
   .document("users/{id}")
   .onUpdate(async (change, context) => {
     const before = change.before.data() as FirestoreUserType;
@@ -21,5 +21,8 @@ export const onUserDocumentChange = functions.firestore
           },
         });
       console.log(`WoW onboarding is done!!! for ${context.auth?.uid}`);
+    }
+    if (!before.emailVerified && after.emailVerified) {
+      console.log("Check if user exist on zenoti")
     }
   });

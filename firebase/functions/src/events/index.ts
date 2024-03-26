@@ -1,3 +1,3 @@
 import { onUserCreated } from "./auth";
-import { onUserDocumentChange } from "./users";
-export { onUserCreated, onUserDocumentChange };
+import { onUserOnBoardingChanged } from "./users";
+export { onUserCreated, onUserOnBoardingChanged };

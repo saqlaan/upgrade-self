@@ -22,18 +22,28 @@ export interface UserType {
 }
 
 export type FirestoreUser = FirebaseAuthTypes.UserInfo & {
-  firstName?: string;
-  lastName?: string;
-  photoURL?: string;
-  disabled?: boolean;
-  onboardingCompleted?: boolean;
-  centers?: {
+  emailVerified: boolean;
+  gender: number;
+  firstName: string;
+  lastName: string;
+  onBoardingStep: number;
+  onboardingCompleted: boolean;
+  phone: {
+    number: string;
+    code: number;
+  };
+  questions: object[];
+  state: string;
+  zipcode: string;
+  dob: string;
+  address1: string;
+  address2: string;
+  city: string;
+  zenotiIntegration: {
+    signedUp: boolean;
+  };
+  centers: {
     centerId: string;
     countryCode: "US" | "CA";
   }[];
-  onBoardingStep: number;
-  phone?: {
-    number: string;
-    code: string;
-  };
 };
