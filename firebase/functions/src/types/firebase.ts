@@ -36,4 +36,5 @@ export type FirestoreUserType = UserInfo & {
     centerId: string;
     countryCode: "US" | "CA";
   }[];
+  existingZenotiUser: boolean
 };

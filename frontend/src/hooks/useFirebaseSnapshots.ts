@@ -4,10 +4,10 @@ import firestore, {
 import { useEffect } from "react";
 import { useAuthState } from "./useAuthState";
 import { COLLECTIONS } from "@/types";
-import { UseUserStore } from "@/store/user.store";
+import { useUserStore } from "@/store/user.store";
 
 export const useFirebaseSnapshots = () => {
-  const { updateUser } = UseUserStore();
+  const { updateUser } = useUserStore();
   const { user } = useAuthState();
 
   useEffect(() => {
@@ -26,7 +26,7 @@ export const useFirebaseSnapshots = () => {
   const handleUserSnapshot = (
     documentSnapShot: FirebaseFirestoreTypes.DocumentSnapshot,
   ) => {
-    if (documentSnapShot.exists) updateUser(documentSnapShot.data());
+    if (documentSnapShot?.exists) updateUser(documentSnapShot.data());
   };
 
   return {};

@@ -22,6 +22,8 @@ import HomeOutlineIcon from "./home-outline.svg";
 import UserCircleIcon from "./user-circle.svg";
 import CalendarBottomTabIcon from "./calendar-bottom-tab.svg";
 import StopWatchIcon from "./stop-watch.svg";
+import PlusIcon from "./plus.svg";
+
 export {
   AddSquareRoundedIcon,
   AltArrowDownIcon,
@@ -47,4 +49,5 @@ export {
   GraphSquareIcon,
   CalendarBottomTabIcon,
   StopWatchIcon,
+  PlusIcon,
 };

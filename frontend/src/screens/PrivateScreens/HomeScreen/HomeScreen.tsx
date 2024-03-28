@@ -2,11 +2,11 @@ import auth from "@react-native-firebase/auth";
 import React from "react";
 import { Box, CButton } from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
-import { UseUserStore } from "@/store/user.store";
+import { useUserStore } from "@/store/user.store";
 import type { ApplicationScreenProps } from "@/types/navigation";
 
 function Home({ navigation }: ApplicationScreenProps) {
-  const { clearUser } = UseUserStore();
+  const { clearUser } = useUserStore();
 
   const handleLogout = () => {
     auth().signOut();

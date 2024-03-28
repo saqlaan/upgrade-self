@@ -116,3 +116,7 @@ export const addPaymentAsync = async (req: Request, res: Response) => {
   }
   return;
 };
+
+export const syncZenotiUserToFirebase = () => {
+
+}

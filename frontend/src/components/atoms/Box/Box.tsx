@@ -1,7 +1,8 @@
-import colors from "@/theme/colors";
-import { spacing } from "@/theme/spacing";
 import { ReactNode } from "react";
 import { FlexAlignType, View, ViewProps } from "react-native";
+import _ from "lodash";
+import colors from "@/theme/colors";
+import { spacing } from "@/theme/spacing";
 
 export type BoxProps = ViewProps & {
   mt?: keyof typeof spacing;
@@ -22,7 +23,7 @@ export type BoxProps = ViewProps & {
   col?: true;
   alignItems?: FlexAlignType;
   justifyContent?: string;
-  bgColor?: keyof typeof colors;
+  bgColor?: keyof typeof colors | string[];
   children?: ReactNode;
 };
 
@@ -52,7 +53,9 @@ function Box({ children, ...props }: BoxProps) {
   } = props;
 
   const dynamicStyles = [
-    bgColor && { backgroundColor: colors[bgColor] },
+    bgColor && {
+      backgroundColor: _.isArray(bgColor) ? bgColor[0] : colors[bgColor],
+    },
     justifyContent && { justifyContent: justifyContent },
     alignItems && { alignItems: alignItems },
     row && { flexDirection: "row" },

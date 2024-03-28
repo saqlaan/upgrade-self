@@ -1,18 +1,18 @@
-import { Box, CButton, Text } from "@/components/atoms";
-import { UseUserStore } from "@/store/user.store";
-import { GrimReaperIcon } from "@/theme/assets/icons";
-import { Images } from "@/theme/assets/images";
-import { spacing } from "@/theme/spacing";
-import type { ApplicationScreenProps } from "@/types/navigation";
 import { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { ImageBackground, StatusBar, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Box, CButton, Text } from "@/components/atoms";
+import { useUserStore } from "@/store/user.store";
+import { GrimReaperIcon } from "@/theme/assets/icons";
+import { Images } from "@/theme/assets/images";
+import { spacing } from "@/theme/spacing";
+import type { ApplicationScreenProps } from "@/types/navigation";
 
 function Welcome({ navigation }: ApplicationScreenProps) {
   const { t } = useTranslation(["welcome", "common"]);
   const { top, bottom } = useSafeAreaInsets();
-  const { user } = UseUserStore();
+  const { user } = useUserStore();
 
   const _submit = useCallback(() => {
     navigation.navigate("QuestionStepScreen");

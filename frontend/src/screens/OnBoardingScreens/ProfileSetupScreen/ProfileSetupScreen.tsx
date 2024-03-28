@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useKeyboard } from "@react-native-community/hooks";
 import { useMutation } from "@tanstack/react-query";
 import { Formik, FormikHelpers, FormikValues } from "formik";
@@ -14,6 +14,7 @@ import { SafeScreen } from "@/components/template";
 import { BackButton, Box, CButton, Text } from "@/components/atoms";
 import { ContactDetailsForm, PersonalDetailsForm } from "@/components";
 import { ProfileFormValuesType, Gender } from "@/types";
+import { useUserStore } from "@/store/user.store";
 
 const initialValues: ProfileFormValuesType = {
   firstName: "",
@@ -33,9 +34,14 @@ function ProfileSetup({ navigation }: ApplicationScreenProps) {
   const { colors } = useTheme<AppTheme>();
   const { t } = useTranslation(["common"]);
   const { keyboardHeight } = useKeyboard();
+  const { user } = useUserStore();
   const { mutateAsync, isPending, error } = useMutation({
     mutationFn: updateUser,
   });
+
+  useEffect(() => {
+    initialValues;
+  }, []);
 
   const _onSubmit = async (
     values: FormikValues,
@@ -65,6 +71,17 @@ function ProfileSetup({ navigation }: ApplicationScreenProps) {
     }
   };
 
+  const handleGetInitialValues = () => {
+    if (user?.firstName) {
+      return {
+        ...initialValues,
+        ...user,
+        phone: `+${user.phone?.code}${user.phone?.number}`,
+      };
+    }
+    return initialValues;
+  };
+
   return (
     <SafeScreen>
       {navigation.canGoBack() && (
@@ -73,7 +90,7 @@ function ProfileSetup({ navigation }: ApplicationScreenProps) {
         </Box>
       )}
       <Formik<ProfileFormValuesType>
-        initialValues={initialValues}
+        initialValues={handleGetInitialValues()}
         validationSchema={signupDetailsSchema}
         onSubmit={_onSubmit}
       >

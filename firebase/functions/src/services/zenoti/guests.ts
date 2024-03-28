@@ -33,3 +33,7 @@ export const addGuestPayment = async ({
     },
   );
 };
+
+export const getUserByEmail = () => {
+
+}

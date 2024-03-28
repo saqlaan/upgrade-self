@@ -10,7 +10,7 @@ export const onUserOnBoardingChanged = functions.firestore
   .onUpdate(async (change, context) => {
     const before = change.before.data() as FirestoreUserType;
     const after = change.after.data() as FirestoreUserType;
-    if (!before.onboardingCompleted && after.onboardingCompleted) {
+    if (!before.onboardingCompleted && after.onboardingCompleted && !after.existingZenotiUser) {
       await signupUserInZenotiAsync(after);
       await firestore
         .collection("users")
@@ -22,7 +22,5 @@ export const onUserOnBoardingChanged = functions.firestore
         });
       console.log(`WoW onboarding is done!!! for ${context.auth?.uid}`);
     }
-    if (!before.emailVerified && after.emailVerified) {
-      console.log("Check if user exist on zenoti")
-    }
+    if (!before.emailVerified && !after.emailVerified) { }
   });

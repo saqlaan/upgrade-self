@@ -9,7 +9,7 @@ import type { ApplicationScreenProps } from "@/types/navigation";
 import { updateUser } from "@/services/firebase";
 import { signupDetailsSchema } from "@/schema";
 import { Box, CButton, Text } from "@/components/atoms";
-import { UseUserStore } from "@/store/user.store";
+import { useUserStore } from "@/store/user.store";
 import {
   ContactDetailsForm,
   PersonalDetailsForm,
@@ -22,7 +22,7 @@ import { useKeyboardHeight } from "@/hooks/useKeyboardHeight";
 function EditProfileScreen({ navigation }: ApplicationScreenProps) {
   const { colors } = useTheme<AppTheme>();
   const keyboardHeight = useKeyboardHeight();
-  const { user } = UseUserStore();
+  const { user } = useUserStore();
   const { mutateAsync, isPending, error } = useMutation({
     mutationFn: updateUser,
   });

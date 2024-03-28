@@ -8,14 +8,14 @@ import { BackButton, Box, CButton, Text } from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
 import { updateUser } from "@/services/firebase";
 import { fetchAllCentersData } from "@/services/firebaseApp/centers";
-import { UseUserStore } from "@/store/user.store";
+import { useUserStore } from "@/store/user.store";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { AppTheme } from "@/types/theme";
 
 function Locations({ navigation }: ApplicationScreenProps) {
   const { colors } = useTheme<AppTheme>();
   const { t } = useTranslation(["locations", "common"]);
-  const { user } = UseUserStore();
+  const { user } = useUserStore();
   const [selectedLocation, setSelectedLocation] = useState<{
     centerId: string;
     countryCode: string;

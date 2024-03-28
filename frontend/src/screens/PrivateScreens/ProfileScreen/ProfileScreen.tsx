@@ -13,7 +13,7 @@ import { Images } from "@/theme/assets/images";
 import { spacing } from "@/theme";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { AppTheme } from "@/types/theme";
-import { UseUserStore } from "@/store/user.store";
+import { useUserStore } from "@/store/user.store";
 import { MapPointIcon } from "@/theme/assets/icons";
 
 function ProfileSceenButton({
@@ -55,7 +55,7 @@ function ProfileSceenButton({
 function ProfileScreen({ navigation }: ApplicationScreenProps) {
   const { spacing } = useTheme<AppTheme>();
   const { top } = useSafeAreaInsets();
-  const { clearUser, user } = UseUserStore();
+  const { clearUser, user } = useUserStore();
 
   const handleLogout = () => {
     auth().signOut();

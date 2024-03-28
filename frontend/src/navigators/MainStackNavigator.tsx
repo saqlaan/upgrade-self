@@ -4,14 +4,16 @@ import SplashScreen from "react-native-splash-screen";
 import OnBoardingStackNavigator from "./OnBoardingStackNavigator";
 import PrivateStackNavigator from "./PrivateStackNavigator";
 import PublicStackNavigator from "./PublicStackNavigator";
-import { UseUserStore } from "@/store/user.store";
+import { useUserStore } from "@/store/user.store";
 import { useFirebaseSnapshots } from "@/hooks/useFirebaseSnapshots";
 import { useAuthState } from "@/hooks/useAuthState";
 
 function ApplicationNavigator() {
   const { user: authUser } = useAuthState();
   const {} = useFirebaseSnapshots();
-  const { user } = UseUserStore();
+  const { user } = useUserStore();
+
+  console.log({ user });
 
   useEffect(() => {
     SplashScreen.hide();

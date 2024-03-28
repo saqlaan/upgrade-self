@@ -61,4 +61,5 @@ export type Colors = MD3Colors & {
     'grey-700': string,
     'grey-800': string,
     'grey-900': string,
+    [key: string]: string,
 }
