@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import {
   Dimensions,
   Pressable,
@@ -7,49 +7,44 @@ import {
   StyleSheet,
 } from "react-native";
 import Carousel from "react-native-snap-carousel";
+import { ActivityIndicator } from "react-native-paper";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { Box, Text } from "@/components/atoms";
-import { ProfileScreenHeader, TransactionBox } from "@/components";
+import {
+  PaymentCardItem,
+  ProfileScreenHeader,
+  TransactionBox,
+  WebViewModal,
+} from "@/components";
 import { SafeScreen } from "@/components/template";
 import { colors, spacing } from "@/theme";
 import { PlusIcon } from "@/theme/assets/icons";
+import { usePayment } from "@/hooks";
 
 function BillingInfoScreen({ navigation }: ApplicationScreenProps) {
+  const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
+  const { addPaymentMethod } = usePayment();
+  const [paymentUrl, setPaymentUrl] = useState();
+  const [isPaymentLoading, setIsPaymentLoading] = useState(false);
+
+  const handleOnCloseModal = useCallback(() => {
+    setIsPaymentModalVisible(false);
+  }, []);
+
+  const handleOnPressAddPayment = useCallback(async () => {
+    setIsPaymentLoading(true);
+    const url = await addPaymentMethod();
+    if (url) {
+      setPaymentUrl(url);
+      setIsPaymentModalVisible(true);
+    }
+    setIsPaymentLoading(false);
+  }, [addPaymentMethod, setPaymentUrl]);
+
   const _renderItem = () => {
-    return (
-      <Box
-        style={styles.cardWrapper}
-        px="4"
-        py="4"
-        bgColor={["#006F5A"]}
-        justifyContent="space-between"
-      >
-        <Box row justifyContent="space-between">
-          <Text variant="text-md-bold" color="white">
-            Visa
-          </Text>
-          <Text variant="text-md-bold" color="white">
-            Remove Card
-          </Text>
-        </Box>
-        <Box justifyContent="space-between">
-          <Box>
-            <Text variant="text-md-bold" mb="1" color="white">
-              Card number
-            </Text>
-            <Box row justifyContent="space-between" alignItems="flex-end">
-              <Text variant="text-xs-medium" color="white">
-                **** 2310
-              </Text>
-              <Text variant="text-md-bold" color="white">
-                Make default
-              </Text>
-            </Box>
-          </Box>
-        </Box>
-      </Box>
-    );
+    return <PaymentCardItem />;
   };
+
   return (
     <SafeScreen edges={["top"]}>
       <Box flex={1}>
@@ -57,11 +52,17 @@ function BillingInfoScreen({ navigation }: ApplicationScreenProps) {
         <ProfileScreenHeader
           title="Billing Info"
           rightComponent={
-            <Pressable onPress={() => alert(1)}>
-              <Box style={styles.borderIcon}>
-                <PlusIcon />
+            isPaymentLoading ? (
+              <Box style={styles.loader}>
+                <ActivityIndicator size={spacing[6]} />
               </Box>
-            </Pressable>
+            ) : (
+              <Pressable onPress={handleOnPressAddPayment}>
+                <Box style={styles.borderIcon}>
+                  <PlusIcon />
+                </Box>
+              </Pressable>
+            )
           }
         />
         <Box mb="6">
@@ -93,6 +94,11 @@ function BillingInfoScreen({ navigation }: ApplicationScreenProps) {
           </Box>
         </ScrollView>
       </Box>
+      <WebViewModal
+        onClose={handleOnCloseModal}
+        visible={isPaymentModalVisible}
+        url={paymentUrl || ""}
+      />
     </SafeScreen>
   );
 }
@@ -110,4 +116,5 @@ const styles = StyleSheet.create({
     borderRadius: spacing[2],
     padding: spacing[2],
   },
+  loader: {},
 });
