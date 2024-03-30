@@ -10,8 +10,8 @@ export interface PersonalInfoType {
   };
   work_phone?: string | null;
   home_phone?: string | null;
-  gender?: number;
-  date_of_birth?: string;
+  gender: number;
+  date_of_birth: string;
   is_minor?: boolean;
   nationality_id?: number;
   anniversary_date?: string;
@@ -26,7 +26,7 @@ export interface AddressInfoType {
   country_id?: number;
   state_id?: number;
   state_other?: string;
-  zip_code?: string;
+  zip_code: number;
 }
 
 export interface PreferencesType {

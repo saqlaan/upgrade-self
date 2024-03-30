@@ -23,8 +23,8 @@ export type FirestoreUserType = UserInfo & {
     code: number;
   };
   questions: UserQuestionType[];
-  state: string;
-  zipcode: string;
+  state: string | number;
+  zipcode: number;
   dob: string;
   address1: string;
   address2: string;
@@ -36,5 +36,14 @@ export type FirestoreUserType = UserInfo & {
     centerId: string;
     countryCode: "US" | "CA";
   }[];
-  existingZenotiUser: boolean
+  existingZenotiUser: boolean;
+};
+
+export type FirestoreZenotiGuestType = {
+  userId: string;
+  guestAccounts: {
+    centerId: string;
+    countryCode: string;
+    guestId: string;
+  }[];
 };

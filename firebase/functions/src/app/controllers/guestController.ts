@@ -70,10 +70,7 @@ export const signupUserInZenotiAsync = async (user: FirestoreUserType) => {
 
     // Make signup request for each center
     const promises = centers.map(async (center) => {
-      const result = await guestSignup(
-        { ...data, center_id: center.centerId },
-        center.countryCode as Organization,
-      );
+      const result = await guestSignup({ ...data, center_id: center.centerId }, center.countryCode as Organization);
       const { center_id: centerId, id } = result?.data as GuestType;
       return {
         centerId: centerId,
@@ -117,6 +114,4 @@ export const addPaymentAsync = async (req: Request, res: Response) => {
   return;
 };
 
-export const syncZenotiUserToFirebase = () => {
-
-}
+export const syncZenotiUserToFirebase = () => { };

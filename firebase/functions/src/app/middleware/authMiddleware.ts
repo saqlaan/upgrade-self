@@ -12,8 +12,7 @@ export const validateFirebaseIdToken = async (
   next: NextFunction,
 ) => {
   if (
-    (!req.headers.authorization ||
-      !req.headers.authorization.startsWith("Bearer ")) &&
+    (!req.headers.authorization || !req.headers.authorization.startsWith("Bearer ")) &&
     !(req.cookies && req.cookies.__session)
   ) {
     console.error(
@@ -25,10 +24,7 @@ export const validateFirebaseIdToken = async (
     return;
   }
   let idToken;
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer ")
-  ) {
+  if (req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
     // Read the ID Token from the Authorization header.
     idToken = req.headers.authorization.split("Bearer ")[1];
   } else if (req.cookies) {
