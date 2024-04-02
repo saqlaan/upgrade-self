@@ -1,9 +1,9 @@
 import axios from "../../config/axiosConfig";
-import { Organization, requestHeaders } from "../../config/zenotiConfig";
+import { requestHeaders } from "../../config/zenotiConfig";
 import { GuestType } from "../../types";
 import { CountryCodes } from "../../types/enums/countryCode";
 
-export const guestSignup = async (user: GuestType, organization: Organization) => {
+export const guestSignup = async (user: GuestType, organization: CountryCodes) => {
   return axios.post("/guests", user, {
     headers: requestHeaders[organization],
   });
@@ -17,6 +17,25 @@ type AddGuestPaymentParams = {
   countryCode: CountryCodes;
   guestId: string;
   centerId: string;
+};
+
+export const updateGuest = async ({
+  guestId,
+  data,
+  centerId,
+}: {
+  guestId: string;
+  data: ZenotiGuestType;
+
+  centerId: string;
+}) => {
+  return axios.put(
+    `/guests/${guestId}`,
+    { ...data, center_id: centerId },
+    {
+      headers: requestHeaders[data.countryCode],
+    },
+  );
 };
 
 export const addGuestPayment = async ({ countryCode, guestId, centerId }: AddGuestPaymentParams) => {
@@ -57,16 +76,20 @@ export const getZenotiUserByEmail = async ({
 };
 
 export const getZenotiUserFromAllOrganizations = async ({ email }: { email: string }): Promise<ZenotiGuestType[]> => {
-  const guestZenotiAccounts: ZenotiGuestType[] = [];
-  let guests = await getZenotiUserByEmail({ email, countryCode: CountryCodes.US });
-  if (guests.length > 0) {
-    guests = guests.map((item) => ({ ...item, countryCode: CountryCodes.US }));
-    guestZenotiAccounts.push(...guests);
+  try {
+    const guestZenotiAccounts: ZenotiGuestType[] = [];
+    let guests = await getZenotiUserByEmail({ email, countryCode: CountryCodes.US });
+    if (guests.length > 0) {
+      guests = guests.map((item) => ({ ...item, countryCode: CountryCodes.US }));
+      guestZenotiAccounts.push(...guests);
+    }
+    guests = await getZenotiUserByEmail({ email, countryCode: CountryCodes.CA });
+    if (guests.length > 0) {
+      guests = guests.map((item) => ({ ...item, countryCode: CountryCodes.CA }));
+      guestZenotiAccounts.push(...guests);
+    }
+    return guestZenotiAccounts;
+  } catch (e) {
+    throw e;
   }
-  guests = await getZenotiUserByEmail({ email, countryCode: CountryCodes.CA });
-  if (guests.length > 0) {
-    guests = guests.map((item) => ({ ...item, countryCode: CountryCodes.CA }));
-    guestZenotiAccounts.push(...guests);
-  }
-  return guestZenotiAccounts;
 };
