@@ -16,12 +16,9 @@ export const usePayment = () => {
       const user = await getUser();
       const { centers } = user;
       const centerId = centers[0];
-      console.log({ user });
       const guestInfo = await getUserGuests();
-      console.log({ centerId });
       if (guestInfo) {
         const { guestAccounts } = guestInfo;
-        console.log(guestAccounts);
         const guestAccount = guestAccounts.find(
           (guestAccount) => guestAccount.centerId == centerId,
         );

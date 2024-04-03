@@ -23,6 +23,12 @@ import UserCircleIcon from "./user-circle.svg";
 import CalendarBottomTabIcon from "./calendar-bottom-tab.svg";
 import StopWatchIcon from "./stop-watch.svg";
 import PlusIcon from "./plus.svg";
+import BellBingIcon from "./bell-bing.svg";
+import InfoIconCircleOutlineIcon from "./info-circle-outline.svg";
+import HeartIcon from "./heart.svg";
+import CaloriesIcon from "./calories.svg";
+import BrainIcon from "./brain.svg";
+import TimeIcon from "./time.svg";
 
 export {
   AddSquareRoundedIcon,
@@ -50,4 +56,10 @@ export {
   CalendarBottomTabIcon,
   StopWatchIcon,
   PlusIcon,
+  BellBingIcon,
+  InfoIconCircleOutlineIcon,
+  HeartIcon,
+  CaloriesIcon,
+  BrainIcon,
+  TimeIcon,
 };

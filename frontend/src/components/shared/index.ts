@@ -6,3 +6,5 @@ export { default as ProfileScreenHeader } from "./ProfileScreenHeader/ProfileScr
 export { default as TransactionBox } from "./TransactionBox/TransactionBox";
 export { default as WebViewModal } from "./WebViewModal/WebViewModal";
 export { default as PaymentCardItem } from "./PaymentCardItem/PaymentCardItem";
+export { default as HealthScoreCard } from "./HealthScoreCard/HealthScoreCard";
+export { default as HealthActivityCard } from "./HealthActivityCard/HealthActivityCard";

@@ -1,11 +1,11 @@
+import React from "react";
+import { Pressable, StyleSheet } from "react-native";
+import { Icon, useTheme } from "react-native-paper";
 import { DangerCircle, EnvelopeSolidIcon } from "@/theme/assets/icons";
 import colors from "@/theme/colors";
 import { variantFamily } from "@/theme/fonts";
 import { spacing } from "@/theme/spacing";
 import { AppTheme } from "@/types/theme";
-import React from "react";
-import { Pressable, StyleSheet } from "react-native";
-import { Icon, useTheme } from "react-native-paper";
 
 interface InputRightIconProps {
   isError: boolean;
@@ -23,7 +23,14 @@ const InputRightIcon = ({
 }: InputRightIconProps) => {
   const { spacing } = useTheme<AppTheme>();
 
-  if (isError) return <DangerCircle width={spacing[6]} height={spacing[6]} />;
+  if (isError)
+    return (
+      <DangerCircle
+        fill={colors.error}
+        width={spacing[6]}
+        height={spacing[6]}
+      />
+    );
   else if (isPassword)
     return (
       <Pressable onPress={onPressSecureIcon}>

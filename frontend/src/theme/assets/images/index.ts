@@ -8,4 +8,5 @@ export const Images = {
   primaryBgLines: require("./primary-bg-lines.png"),
   visa: require("./visa.png"),
   ProfileBg: require("./profile-bg.png"),
+  HealthCardBg: require("./heath-card-bg.png"),
 };

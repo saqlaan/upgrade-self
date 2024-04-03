@@ -1,36 +1,27 @@
-import auth from "@react-native-firebase/auth";
 import React from "react";
-import { Box, CButton } from "@/components/atoms";
-import { SafeScreen } from "@/components/template";
-import { useUserStore } from "@/store/user.store";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { HomeHeader } from "./components";
+import { Box } from "@/components/atoms";
 import type { ApplicationScreenProps } from "@/types/navigation";
+import { HealthActivityCard, HealthScoreCard } from "@/components";
 
 function Home({ navigation }: ApplicationScreenProps) {
-  const { clearUser } = useUserStore();
-
-  const handleLogout = () => {
-    auth().signOut();
-    clearUser();
-  };
-
-  const navigateToPayment = () => {
-    navigation.navigate("PaymentScreen");
-  };
-
-  const navigateToProfile = () => {
-    navigation.navigate("ProfileScreen");
-  };
-
+  const { top } = useSafeAreaInsets();
   return (
-    <SafeScreen>
-      <Box flex={1} alignItems="center" justifyContent="center">
-        <CButton onPress={handleLogout}>Logout</CButton>
-        <Box mt="6" />
-        <CButton onPress={navigateToPayment}>Add payment</CButton>
-        <Box mt="6" />
-        <CButton onPress={navigateToProfile}>Profile</CButton>
+    <Box bgColor={"grey-400"} flex={1} style={{ paddingTop: top }}>
+      <HomeHeader />
+      <Box bgColor={"white"} flex={1}>
+        <Box px="5">
+          <Box py="3" />
+          <HealthScoreCard />
+          <Box py="2" />
+          <Box row gap="3">
+            <HealthActivityCard variant="brain" value={98} />
+            <HealthActivityCard variant="calories" value={89} />
+          </Box>
+        </Box>
       </Box>
-    </SafeScreen>
+    </Box>
   );
 }
 

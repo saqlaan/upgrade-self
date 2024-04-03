@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { FlexAlignType, View, ViewProps } from "react-native";
 import _ from "lodash";
 import colors from "@/theme/colors";
@@ -18,6 +18,7 @@ export type BoxProps = ViewProps & {
   px?: keyof typeof spacing;
   py?: keyof typeof spacing;
   gap?: keyof typeof spacing;
+  radius?: keyof typeof spacing;
   flex?: number;
   row?: true;
   col?: true;
@@ -48,6 +49,7 @@ function Box({ children, ...props }: BoxProps) {
     ml,
     mr,
     gap,
+    radius,
     style,
     ...otherProps
   } = props;
@@ -74,6 +76,7 @@ function Box({ children, ...props }: BoxProps) {
     mb && { marginBottom: spacing[mb] },
     ml && { marginLeft: spacing[ml] },
     mr && { marginRight: spacing[mr] },
+    radius && { borderRadius: spacing[radius] },
     style,
   ];
 

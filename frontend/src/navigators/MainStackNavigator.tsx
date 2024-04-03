@@ -13,8 +13,6 @@ function ApplicationNavigator() {
   const {} = useFirebaseSnapshots();
   const { user } = useUserStore();
 
-  console.log({ user });
-
   useEffect(() => {
     SplashScreen.hide();
   }, []);
