@@ -47,13 +47,21 @@ const Variants: VariantsType = {
 const HealthActivityCard = ({
   variant = "brain",
   value = 100,
+  index,
 }: {
   value: number;
   variant: "brain" | "heart" | "calories" | "weight";
+  index: number;
 }) => {
   const { color, icon: Icon, title, valueType } = Variants[variant];
+  const addMargin = index === 0;
   return (
-    <Box bgColor={"grey-400"} px="4" py="4" style={styles.container}>
+    <Box
+      bgColor={"grey-400"}
+      px="4"
+      py="4"
+      style={[styles.container, { marginLeft: addMargin ? spacing[4] : 0 }]}
+    >
       <Box mb="2" row gap="2">
         <Box px="2" py="2" bgColor={"white"} radius="2">
           <Icon />

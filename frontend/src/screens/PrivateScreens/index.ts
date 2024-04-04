@@ -5,3 +5,4 @@ export { default as EditProfileScreen } from "./EditProfileScreen/EditProfileScr
 export { default as AppointmentScreen } from "./Appointment/Appoitment";
 export { default as StatsScreen } from "./StatsScreen/StatsScreen";
 export { default as BillingInfoScreen } from "./BillingInfoScreen/BillingInfoScreen";
+export { default as BookingAppointment } from "./BookAppointmentScreen/BookAppointmentScreen";

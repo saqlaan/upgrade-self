@@ -1,7 +1,3 @@
-import { CalendarIcon } from "@/theme/assets/icons";
-import colors from "@/theme/colors";
-import { spacing } from "@/theme/spacing";
-import { AppTheme } from "@/types/theme";
 import { format } from "date-fns";
 import React, { ReactNode, useMemo, useState } from "react";
 import { Pressable, StyleSheet, TextInputProps, View } from "react-native";
@@ -10,6 +6,10 @@ import { Icon, useTheme } from "react-native-paper";
 import Box from "../Box/Box";
 import Spacer from "../Spacer/Spacer";
 import Text from "../Text/Text";
+import { AppTheme } from "@/types/theme";
+import { spacing } from "@/theme/spacing";
+import colors from "@/theme/colors";
+import { CalendarIcon } from "@/theme/assets/icons";
 
 interface CustomTextInputProps extends TextInputProps {
   error: string | undefined;

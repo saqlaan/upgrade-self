@@ -12,19 +12,42 @@ import {
 import { ApplicationStackParamList } from "@/types/navigation";
 import { BottomTabBar } from "@/components";
 import ChangePasswordScreen from "@/screens/PrivateScreens/ChangePasswordScreen/ChangePasswordScreen";
+import BookAppointment from "@/screens/PrivateScreens/BookAppointmentScreen/BookAppointmentScreen";
 
 const ProfileStackNavigator = createStackNavigator<ApplicationStackParamList>();
 
-const ProfileTab = () => {
+const Tab = createBottomTabNavigator<ApplicationStackParamList>();
+
+const TabNavigator = () => {
+  return (
+    <Tab.Navigator
+      initialRouteName="StartupScreen"
+      screenOptions={{ headerShown: false }}
+      tabBar={(props) => <BottomTabBar {...props} />}
+    >
+      <Tab.Screen name="HomeScreen" component={Home} />
+      <Tab.Screen name="AppointmentScreen" component={AppointmentScreen} />
+      <Tab.Screen name="BookAppointmentTab" component={BookAppointment} />
+      <Tab.Screen name="StatsScreen" component={StatsScreen} />
+      <Tab.Screen name="ProfileTab" component={ProfileScreen} />
+    </Tab.Navigator>
+  );
+};
+
+const PrivateStackNavigator = () => {
   return (
     <ProfileStackNavigator.Navigator screenOptions={{ headerShown: false }}>
       <ProfileStackNavigator.Screen
         name="ProfileScreen"
-        component={ProfileScreen}
+        component={TabNavigator}
       />
       <ProfileStackNavigator.Screen
         name="EditProfileScreen"
         component={EditProfileScreen}
+      />
+      <ProfileStackNavigator.Screen
+        name="BookAppointmentScreen"
+        component={BookAppointment}
       />
       <ProfileStackNavigator.Screen
         name="BillingInfoScreen"
@@ -35,23 +58,6 @@ const ProfileTab = () => {
         component={ChangePasswordScreen}
       />
     </ProfileStackNavigator.Navigator>
-  );
-};
-
-const Tab = createBottomTabNavigator<ApplicationStackParamList>();
-
-const PrivateStackNavigator = () => {
-  return (
-    <Tab.Navigator
-      initialRouteName="StartupScreen"
-      screenOptions={{ headerShown: false }}
-      tabBar={(props) => <BottomTabBar {...props} />}
-    >
-      <Tab.Screen name="HomeScreen" component={Home} />
-      <Tab.Screen name="AppointmentScreen" component={AppointmentScreen} />
-      <Tab.Screen name="StatsScreen" component={StatsScreen} />
-      <Tab.Screen name="ProfileTab" component={ProfileTab} />
-    </Tab.Navigator>
   );
 };
 

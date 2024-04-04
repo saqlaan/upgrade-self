@@ -8,3 +8,5 @@ export { default as WebViewModal } from "./WebViewModal/WebViewModal";
 export { default as PaymentCardItem } from "./PaymentCardItem/PaymentCardItem";
 export { default as HealthScoreCard } from "./HealthScoreCard/HealthScoreCard";
 export { default as HealthActivityCard } from "./HealthActivityCard/HealthActivityCard";
+export { default as AppointmentCard } from "./AppointmentCard/AppointmentCard";
+export { default as ActivitiesCard } from "./ActivitiesCard/ActivitiesCard";

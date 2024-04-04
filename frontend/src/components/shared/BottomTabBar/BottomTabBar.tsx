@@ -5,6 +5,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Box } from "@/components/atoms";
 import { colors, spacing } from "@/theme";
 import {
+  AddSquareFilledIcon,
   CalendarBottomTabIcon,
   GraphSquareIcon,
   HomeOutlineIcon,
@@ -39,28 +40,26 @@ const TabIcons = {
       <UserCircleIcon fill={getColor(active)} />
     ),
   },
+  BookAppointmentTab: {
+    icon: ({ active }: TabIconProps) => (
+      <AddSquareFilledIcon fill={colors.secondary} />
+    ),
+  },
 };
 
-const BottomTabBar = ({
-  state,
-  descriptors,
-  navigation,
-}: BottomTabBarProps) => {
+const BottomTabBar = ({ state, navigation }: BottomTabBarProps) => {
   const { bottom } = useSafeAreaInsets();
   return (
     <Box style={[styles.tabBar, { paddingBottom: bottom }]}>
       {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
-        const label =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-              ? options.title
-              : route.name;
-
         const isFocused = state.index === index;
 
-        const onPress = () => {
+        const handleOnPress = () => {
+          if (route.name === "BookAppointmentTab") {
+            console.log("here we go");
+            navigation.navigate("BookAppointmentScreen");
+            return;
+          }
           const event = navigation.emit({
             type: "tabPress",
             target: route.key,
@@ -76,9 +75,7 @@ const BottomTabBar = ({
           <TouchableOpacity
             accessibilityRole="button"
             accessibilityState={isFocused ? { selected: true } : {}}
-            accessibilityLabel={options.tabBarAccessibilityLabel}
-            testID={options.tabBarTestID}
-            onPress={onPress}
+            onPress={handleOnPress}
             key={route.key}
             style={{ flex: 1, alignItems: "center", padding: 20 }}
           >
@@ -99,6 +96,7 @@ const BottomTabBar = ({
 };
 const styles = StyleSheet.create({
   tabBar: {
+    alignItems: "center",
     flexDirection: "row",
     backgroundColor: colors.white,
     shadowColor: "#000",

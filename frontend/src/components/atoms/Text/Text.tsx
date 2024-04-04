@@ -1,8 +1,9 @@
+import React from "react";
+import { Text as BaseComp, useTheme } from "react-native-paper";
 import colors from "@/theme/colors";
 import { TextVariants } from "@/theme/fonts";
 import { spacing } from "@/theme/spacing";
 import { AppTheme } from "@/types/theme";
-import { Text as BaseComp, useTheme } from "react-native-paper";
 
 export interface TextProps extends React.ComponentProps<typeof BaseComp> {
   color?: keyof typeof colors;
@@ -18,25 +19,24 @@ function Text({
   variant,
   mt,
   mb,
+  style,
   children,
   ...props
 }: TextProps) {
   const { colors } = useTheme<AppTheme>();
+  const dynamicStyles = [
+    color && { color: colors[color] ? colors[color] : color },
+    align && { textAlign: align },
+    mt && {
+      marginTop: spacing[mt],
+    },
+    mb && {
+      marginBottom: spacing[mb],
+    },
+    style,
+  ];
   return (
-    <BaseComp
-      variant={variant}
-      style={[
-        color && { color: colors[color] ? colors[color] : color },
-        align && { textAlign: align },
-        mt && {
-          marginTop: spacing[mt],
-        },
-        mb && {
-          marginBottom: spacing[mb],
-        },
-      ]}
-      {...props}
-    >
+    <BaseComp variant={variant} style={dynamicStyles} {...props}>
       {children}
     </BaseComp>
   );

@@ -1,65 +1,34 @@
-import AddSquareRoundedIcon from "./add-square-rounded.svg";
-import AltArrowDownIcon from "./alt-arrow-down.svg";
-import ArrowDownIcon from "./arrow-down.svg";
-import ArrowRight from "./arrow-right.svg";
-import CalendarIcon from "./calendar.svg";
-import CheckCircleIcon from "./check-circle.svg";
-import CreateAccountMailIcon from "./create-account-mail.svg";
-import DangerCircle from "./danger-circle.svg";
-import EnvelopeSolidIcon from "./envelope-solid.svg";
-import FemaleIcon from "./female.svg";
-import GrimReaperIcon from "./grim-reaper.svg";
-import LetterIcon from "./letter.svg";
-import LockIcon from "./lock.svg";
-import MaleIcon from "./male.svg";
-import OptionSelectedIcon from "./option-selected.svg";
-import OptionUnSelectedIcon from "./option-unselected.svg";
-import UlAppIconSingle from "./ul-app-single-icon.svg";
-import MapPointIcon from "./map-point.svg";
-import AddSquareFilledIcon from "./add-square-filled.svg";
-import GraphSquareIcon from "./graph-square.svg";
-import HomeOutlineIcon from "./home-outline.svg";
-import UserCircleIcon from "./user-circle.svg";
-import CalendarBottomTabIcon from "./calendar-bottom-tab.svg";
-import StopWatchIcon from "./stop-watch.svg";
-import PlusIcon from "./plus.svg";
-import BellBingIcon from "./bell-bing.svg";
-import InfoIconCircleOutlineIcon from "./info-circle-outline.svg";
-import HeartIcon from "./heart.svg";
-import CaloriesIcon from "./calories.svg";
-import BrainIcon from "./brain.svg";
-import TimeIcon from "./time.svg";
-
-export {
-  AddSquareRoundedIcon,
-  AltArrowDownIcon,
-  ArrowDownIcon,
-  ArrowRight,
-  CalendarIcon,
-  CheckCircleIcon,
-  MapPointIcon,
-  CreateAccountMailIcon,
-  DangerCircle,
-  EnvelopeSolidIcon,
-  FemaleIcon,
-  GrimReaperIcon,
-  LetterIcon,
-  LockIcon,
-  MaleIcon,
-  OptionSelectedIcon,
-  OptionUnSelectedIcon,
-  UlAppIconSingle,
-  AddSquareFilledIcon,
-  HomeOutlineIcon,
-  UserCircleIcon,
-  GraphSquareIcon,
-  CalendarBottomTabIcon,
-  StopWatchIcon,
-  PlusIcon,
-  BellBingIcon,
-  InfoIconCircleOutlineIcon,
-  HeartIcon,
-  CaloriesIcon,
-  BrainIcon,
-  TimeIcon,
-};
+export { default as AddSquareRoundedIcon } from "./add-square-rounded.svg";
+export { default as AltArrowDownIcon } from "./alt-arrow-down.svg";
+export { default as ArrowDownIcon } from "./arrow-down.svg";
+export { default as ArrowRight } from "./arrow-right.svg";
+export { default as CalendarIcon } from "./calendar.svg";
+export { default as CheckCircleIcon } from "./check-circle.svg";
+export { default as CreateAccountMailIcon } from "./create-account-mail.svg";
+export { default as DangerCircle } from "./danger-circle.svg";
+export { default as EnvelopeSolidIcon } from "./envelope-solid.svg";
+export { default as FemaleIcon } from "./female.svg";
+export { default as GrimReaperIcon } from "./grim-reaper.svg";
+export { default as LetterIcon } from "./letter.svg";
+export { default as LockIcon } from "./lock.svg";
+export { default as MaleIcon } from "./male.svg";
+export { default as OptionSelectedIcon } from "./option-selected.svg";
+export { default as OptionUnSelectedIcon } from "./option-unselected.svg";
+export { default as UlAppIconSingle } from "./ul-app-single-icon.svg";
+export { default as MapPointIcon } from "./map-point.svg";
+export { default as AddSquareFilledIcon } from "./add-square-filled.svg";
+export { default as GraphSquareIcon } from "./graph-square.svg";
+export { default as HomeOutlineIcon } from "./home-outline.svg";
+export { default as UserCircleIcon } from "./user-circle.svg";
+export { default as CalendarBottomTabIcon } from "./calendar-bottom-tab.svg";
+export { default as StopWatchIcon } from "./stop-watch.svg";
+export { default as PlusIcon } from "./plus.svg";
+export { default as BellBingIcon } from "./bell-bing.svg";
+export { default as InfoIconCircleOutlineIcon } from "./info-circle-outline.svg";
+export { default as HeartIcon } from "./heart.svg";
+export { default as CaloriesIcon } from "./calories.svg";
+export { default as BrainIcon } from "./brain.svg";
+export { default as TimeIcon } from "./time.svg";
+export { default as MapPointUnderlineIcon } from "./map-point-underline.svg";
+export { default as SearchIcon } from "./search.svg";
+export { default as SettingsIcon } from "./settings.svg";
