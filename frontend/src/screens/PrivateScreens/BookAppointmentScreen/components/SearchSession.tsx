@@ -5,7 +5,7 @@ import { colors } from "@/theme";
 import { SearchIcon, SettingsIcon } from "@/theme/assets/icons";
 import { variantFamily } from "@/theme/fonts";
 
-function SearchSession() {
+function SearchSession({ onPressFilters }: { onPressFilters: () => void }) {
   return (
     <Box row gap="2">
       <Box
@@ -26,7 +26,7 @@ function SearchSession() {
           placeholderTextColor={colors["primary-300"]}
         />
       </Box>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onPressFilters}>
         <Box
           alignItems="center"
           justifyContent="center"

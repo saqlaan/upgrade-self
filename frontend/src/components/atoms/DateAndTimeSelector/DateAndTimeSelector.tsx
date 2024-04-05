@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import React, { ReactNode, useMemo, useState } from "react";
 import { Pressable, StyleSheet, TextInputProps, View } from "react-native";
-import DatePicker from "react-native-date-picker";
+import DatePicker, { DatePickerProps } from "react-native-date-picker";
 import { Icon, useTheme } from "react-native-paper";
 import Box from "../Box/Box";
 import Spacer from "../Spacer/Spacer";
@@ -19,6 +19,10 @@ interface CustomTextInputProps extends TextInputProps {
   value?: string;
   maximumDate?: Date;
   minimumDate?: Date;
+  visibleValue?: string;
+  customRightIcon?: ReactNode;
+  title?: string;
+  pickerProps: DatePickerProps;
 }
 
 const DateAndTimeSelector: React.FC<CustomTextInputProps> = ({
@@ -32,6 +36,9 @@ const DateAndTimeSelector: React.FC<CustomTextInputProps> = ({
   value,
   maximumDate,
   minimumDate,
+  visibleValue,
+  customRightIcon,
+  pickerProps,
   ...props
 }) => {
   const { colors, spacing } = useTheme<AppTheme>();
@@ -66,9 +73,14 @@ const DateAndTimeSelector: React.FC<CustomTextInputProps> = ({
       >
         {icon}
         <Text variant={"text-md-semi-bold"} style={styles.inputText}>
-          {value === "" ? "" : format(new Date(value), "dd.MM.yyyy")}
+          {value && (value === "" ? "" : format(new Date(value), "dd.MM.yyyy"))}
+          {visibleValue && visibleValue}
         </Text>
-        <CalendarIcon width={spacing[6]} height={spacing["6"]} />
+        {customRightIcon ? (
+          customRightIcon
+        ) : (
+          <CalendarIcon width={spacing[6]} height={spacing["6"]} />
+        )}
       </Pressable>
       <Spacer marginTop={spacing[2]} />
       {inputHints && !error && props.value == "" && (
@@ -91,17 +103,19 @@ const DateAndTimeSelector: React.FC<CustomTextInputProps> = ({
         modal
         open={open}
         date={formatedValue}
-        onConfirm={(date) => {
-          setOpen(false);
-          onChangeText && onChangeText(date.toString());
-        }}
         onCancel={() => {
           setOpen(false);
         }}
-        mode="date"
+        mode={"date"}
+        title={"Select Date"}
         maximumDate={maximumDate}
         minimumDate={minimumDate}
-        title={"Select Date"}
+        {...pickerProps}
+        onConfirm={(date) => {
+          setOpen(false);
+          onChangeText && onChangeText(date.toString());
+          pickerProps.onConfirm && pickerProps.onConfirm(date);
+        }}
       />
       {error && (
         <>

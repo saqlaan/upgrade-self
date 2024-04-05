@@ -10,3 +10,4 @@ export { default as HealthScoreCard } from "./HealthScoreCard/HealthScoreCard";
 export { default as HealthActivityCard } from "./HealthActivityCard/HealthActivityCard";
 export { default as AppointmentCard } from "./AppointmentCard/AppointmentCard";
 export { default as ActivitiesCard } from "./ActivitiesCard/ActivitiesCard";
+export { default as DynamicBottomSheet } from "./DynamicBottomSheet/DynamicBottomSheet";

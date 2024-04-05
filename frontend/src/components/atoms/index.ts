@@ -9,3 +9,4 @@ export { default as IconButton } from "./IconButton/IconButton";
 export { default as PhoneNumberInput } from "./PhoneNumberInput/PhoneNumberInput";
 export { default as Spacer } from "./Spacer/Spacer";
 export { default as Text } from "./Text/Text";
+export { default as DummyTextInput } from "./DummyInput/DummyInput";

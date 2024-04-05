@@ -5,21 +5,23 @@ import {
   StatusBar,
   StyleSheet,
 } from "react-native";
-import { useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import auth from "@react-native-firebase/auth";
 import SearchSession from "./components/SearchSession";
+import BottomFilterSheet from "./components/BottomFilterSheet";
 import { BackButton, Box, Text } from "@/components/atoms";
 import { Images } from "@/theme/assets/images";
 import { spacing } from "@/theme";
 import type { ApplicationScreenProps } from "@/types/navigation";
-import { AppTheme } from "@/types/theme";
 import { useUserStore } from "@/store/user.store";
+import { DynamicBottomSheet } from "@/components";
+import { useDynamicBottomSheet } from "@/hooks";
 
 function BookAppointment({ navigation }: ApplicationScreenProps) {
-  const { spacing } = useTheme<AppTheme>();
   const { top } = useSafeAreaInsets();
-  const { clearUser, user } = useUserStore();
+  const { clearUser } = useUserStore();
+  const { bottomSheetRef, openBottomSheet, closeBottomSheet } =
+    useDynamicBottomSheet();
 
   const handleLogout = () => {
     auth().signOut();
@@ -43,7 +45,7 @@ function BookAppointment({ navigation }: ApplicationScreenProps) {
         </Box>
         {/* Search section */}
         <Box mt="6">
-          <SearchSession />
+          <SearchSession onPressFilters={() => openBottomSheet()} />
         </Box>
         {/* Selecting date section */}
         <Box mt="6"></Box>
@@ -53,6 +55,9 @@ function BookAppointment({ navigation }: ApplicationScreenProps) {
           <Text variant="text-md-semi-bold">Sign out</Text>
         </Pressable>
       </Box>
+      <DynamicBottomSheet bottomSheetModalRef={bottomSheetRef}>
+        <BottomFilterSheet onPressCancel={() => closeBottomSheet()} />
+      </DynamicBottomSheet>
     </Box>
   );
 }

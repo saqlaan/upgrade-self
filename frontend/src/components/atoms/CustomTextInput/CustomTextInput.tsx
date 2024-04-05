@@ -1,12 +1,12 @@
-import colors from "@/theme/colors";
-import { TextVariants, variantFamily } from "@/theme/fonts";
-import { spacing } from "@/theme/spacing";
-import { AppTheme } from "@/types/theme";
 import React, { ReactNode, useCallback, useState } from "react";
 import { StyleSheet, TextInput, TextInputProps, View } from "react-native";
 import { Icon, Text, useTheme } from "react-native-paper";
 import Spacer from "../Spacer/Spacer";
 import InputRightIcon from "./InputRightIcon";
+import { AppTheme } from "@/types/theme";
+import { spacing } from "@/theme/spacing";
+import { TextVariants, variantFamily } from "@/theme/fonts";
+import colors from "@/theme/colors";
 
 interface CustomTextInputProps extends TextInputProps {
   error?: string;
@@ -31,7 +31,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
   const { colors, spacing } = useTheme<AppTheme>();
   const [isFocused, setIsFocused] = useState(false);
   const [isTextSecured, setIsTextSecured] = useState(
-    textContentType === "password" ? true : false
+    textContentType === "password" ? true : false,
   );
 
   const handleOnFocused = useCallback(() => {

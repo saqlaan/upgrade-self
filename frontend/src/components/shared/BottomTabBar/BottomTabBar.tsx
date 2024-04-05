@@ -56,7 +56,6 @@ const BottomTabBar = ({ state, navigation }: BottomTabBarProps) => {
 
         const handleOnPress = () => {
           if (route.name === "BookAppointmentTab") {
-            console.log("here we go");
             navigation.navigate("BookAppointmentScreen");
             return;
           }
