@@ -11,4 +11,5 @@ export const Images = {
   HealthCardBg: require("./heath-card-bg.png"),
   ActivitiesCardBg: require("./activity-card-bg.png"),
   BookAppointmentBg: require("./book-appointment-bg.png"),
+  BookDetailsBg: require("./booking-detaills-bg.jpg"),
 };

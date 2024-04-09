@@ -1,38 +1,25 @@
 import React from "react";
-import {
-  ImageBackground,
-  Pressable,
-  StatusBar,
-  StyleSheet,
-} from "react-native";
+import { ImageBackground, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import auth from "@react-native-firebase/auth";
-import SearchSession from "./components/SearchSession";
-import BottomFilterSheet from "./components/BottomFilterSheet";
+import { SearchBar, BottomFilterSheet, DateSelection } from "./SearchFilters";
 import { BackButton, Box, Text } from "@/components/atoms";
 import { Images } from "@/theme/assets/images";
 import { spacing } from "@/theme";
-import type { ApplicationScreenProps } from "@/types/navigation";
-import { useUserStore } from "@/store/user.store";
 import { DynamicBottomSheet } from "@/components";
 import { useDynamicBottomSheet } from "@/hooks";
 
-function BookAppointment({ navigation }: ApplicationScreenProps) {
+export function BookAppointmentHeader() {
   const { top } = useSafeAreaInsets();
-  const { clearUser } = useUserStore();
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } =
     useDynamicBottomSheet();
 
-  const handleLogout = () => {
-    auth().signOut();
-    clearUser();
-  };
-
   return (
-    <Box flex={1} bgColor="white">
-      <StatusBar barStyle={"light-content"} />
+    <Box>
       <ImageBackground
-        style={[styles.topSection, { paddingTop: top }]}
+        style={[
+          styles.topSection,
+          { paddingTop: top, paddingBottom: spacing[6] },
+        ]}
         source={Images.BookAppointmentBg}
       >
         <Box row alignItems="center" justifyContent="space-between">
@@ -45,16 +32,13 @@ function BookAppointment({ navigation }: ApplicationScreenProps) {
         </Box>
         {/* Search section */}
         <Box mt="6">
-          <SearchSession onPressFilters={() => openBottomSheet()} />
+          <SearchBar onPressFilters={() => openBottomSheet()} />
         </Box>
         {/* Selecting date section */}
-        <Box mt="6"></Box>
+        <Box mt="6">
+          <DateSelection />
+        </Box>
       </ImageBackground>
-      <Box alignItems="center" py="5">
-        <Pressable onPress={handleLogout}>
-          <Text variant="text-md-semi-bold">Sign out</Text>
-        </Pressable>
-      </Box>
       <DynamicBottomSheet bottomSheetModalRef={bottomSheetRef}>
         <BottomFilterSheet onPressCancel={() => closeBottomSheet()} />
       </DynamicBottomSheet>
@@ -74,5 +58,3 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-
-export default BookAppointment;

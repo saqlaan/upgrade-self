@@ -14,14 +14,11 @@ import { useDynamicBottomSheet } from "@/hooks";
 import { DynamicBottomSheet } from "@/components";
 
 type BottomFilterSheetProps = {
-  onPressCancel: () => void;
-  onPressApplyFilters: () => void;
+  onPressCancel?: () => void;
+  onPressApplyFilters?: () => void;
 };
 
-function BottomFilterSheet({
-  onPressCancel,
-  onPressApplyFilters,
-}: BottomFilterSheetProps) {
+function BottomFilterSheet({ onPressCancel }: BottomFilterSheetProps) {
   const [fromTime, setFromTime] = useState(addHours(startOfDay(new Date()), 7));
   const [toTime, setToTime] = useState(addHours(startOfDay(new Date()), 7.5));
   const {

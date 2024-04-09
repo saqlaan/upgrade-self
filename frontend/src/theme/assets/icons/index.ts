@@ -32,3 +32,5 @@ export { default as TimeIcon } from "./time.svg";
 export { default as MapPointUnderlineIcon } from "./map-point-underline.svg";
 export { default as SearchIcon } from "./search.svg";
 export { default as SettingsIcon } from "./settings.svg";
+export { default as LineIcon } from "./line.svg";
+export { default as LikeIcon } from "./like.svg";

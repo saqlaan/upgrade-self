@@ -7,7 +7,7 @@ function Appointment({ navigation }: ApplicationScreenProps) {
   return (
     <SafeScreen>
       <Box flex={1} alignItems="center" justifyContent="center">
-        <Text>Under development</Text>
+        <Text>My appointments</Text>
       </Box>
     </SafeScreen>
   );

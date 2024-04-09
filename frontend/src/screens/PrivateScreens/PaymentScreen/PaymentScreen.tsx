@@ -153,7 +153,9 @@ function PaymentScreen({ navigation }: ApplicationScreenProps) {
         <Text align="center" variant={"text-md-medium"} mb="5">
           {t("payment:note")}
         </Text>
-        <CButton onPress={() => null}>
+        <CButton
+          onPress={() => navigation.navigate("BookAppointmentSuccessScreen")}
+        >
           <Text color={"white"} variant="text-md-semi-bold">
             {t("payment:buttonText")}
           </Text>

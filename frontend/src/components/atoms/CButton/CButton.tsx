@@ -1,9 +1,9 @@
-import colors from "@/theme/colors";
-import { AppTheme } from "@/types/theme";
 import { ReactNode } from "react";
 import { StyleSheet } from "react-native";
 import { Button, ButtonProps, useTheme } from "react-native-paper";
 import Text from "../Text/Text";
+import { AppTheme } from "@/types/theme";
+import colors from "@/theme/colors";
 
 type Props = Omit<ButtonProps, "children"> & {
   variant?: "primary" | "secondary" | "default";
@@ -45,6 +45,10 @@ function CButton({ variant = "primary", text, children, ...props }: Props) {
         buttonColor={colors.primary}
         {...props}
         labelStyle={[
+          {
+            marginHorizontal: 0,
+            paddingHorizontal: 10,
+          },
           fonts["text-md-semi-bold"],
           props.labelStyle && props.labelStyle,
         ]}

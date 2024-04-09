@@ -5,7 +5,7 @@ import { colors } from "@/theme";
 import { SearchIcon, SettingsIcon } from "@/theme/assets/icons";
 import { variantFamily } from "@/theme/fonts";
 
-function SearchSession({ onPressFilters }: { onPressFilters: () => void }) {
+function SearchBar({ onPressFilters }: { onPressFilters: () => void }) {
   return (
     <Box row gap="2">
       <Box
@@ -58,4 +58,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchSession;
+export default SearchBar;

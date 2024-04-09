@@ -1,6 +1,6 @@
 import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { FlatList, Pressable, ScrollView } from "react-native";
+import { FlatList, Pressable, ScrollView, StatusBar } from "react-native";
 import { HomeHeader } from "./components";
 import { Box, Text } from "@/components/atoms";
 import type { ApplicationScreenProps } from "@/types/navigation";
@@ -61,6 +61,7 @@ function Home({ navigation }: ApplicationScreenProps) {
   const { top } = useSafeAreaInsets();
   return (
     <Box bgColor={"grey-400"} flex={1} style={{ paddingTop: top }}>
+      <StatusBar barStyle={"dark-content"} />
       <HomeHeader />
       <ScrollView style={{ flex: 1 }}>
         <Box pb="5" pt="5" bgColor={"white"} flex={1}>

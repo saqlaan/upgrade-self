@@ -4,15 +4,18 @@ import { createStackNavigator } from "@react-navigation/stack";
 import {
   AppointmentScreen,
   BillingInfoScreen,
+  BookAppointmentDetailsScreen,
+  BookAppointmentScreen,
+  BookAppointmentSuccessScreen,
+  ChangePasswordScreen,
   EditProfileScreen,
   Home,
+  PaymentScreen,
   ProfileScreen,
   StatsScreen,
 } from "@/screens";
 import { ApplicationStackParamList } from "@/types/navigation";
 import { BottomTabBar } from "@/components";
-import ChangePasswordScreen from "@/screens/PrivateScreens/ChangePasswordScreen/ChangePasswordScreen";
-import BookAppointment from "@/screens/PrivateScreens/BookAppointmentScreen/BookAppointmentScreen";
 
 const ProfileStackNavigator = createStackNavigator<ApplicationStackParamList>();
 
@@ -27,7 +30,7 @@ const TabNavigator = () => {
     >
       <Tab.Screen name="HomeScreen" component={Home} />
       <Tab.Screen name="AppointmentScreen" component={AppointmentScreen} />
-      <Tab.Screen name="BookAppointmentTab" component={BookAppointment} />
+      <Tab.Screen name="BookAppointmentTab" component={BookAppointmentScreen} />
       <Tab.Screen name="StatsScreen" component={StatsScreen} />
       <Tab.Screen name="ProfileTab" component={ProfileScreen} />
     </Tab.Navigator>
@@ -47,7 +50,11 @@ const PrivateStackNavigator = () => {
       />
       <ProfileStackNavigator.Screen
         name="BookAppointmentScreen"
-        component={BookAppointment}
+        component={BookAppointmentScreen}
+      />
+      <ProfileStackNavigator.Screen
+        name="BookAppointmentDetailsScreen"
+        component={BookAppointmentDetailsScreen}
       />
       <ProfileStackNavigator.Screen
         name="BillingInfoScreen"
@@ -56,6 +63,14 @@ const PrivateStackNavigator = () => {
       <ProfileStackNavigator.Screen
         name="ChangePasswordScreen"
         component={ChangePasswordScreen}
+      />
+      <ProfileStackNavigator.Screen
+        name="PaymentScreen"
+        component={PaymentScreen}
+      />
+      <ProfileStackNavigator.Screen
+        name="BookAppointmentSuccessScreen"
+        component={BookAppointmentSuccessScreen}
       />
     </ProfileStackNavigator.Navigator>
   );

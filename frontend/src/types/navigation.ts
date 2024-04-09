@@ -24,6 +24,8 @@ export type ApplicationStackParamList = {
   ChangePasswordScreen: undefined;
   BookAppointmentScreen: undefined;
   BookAppointmentTab: undefined;
+  BookAppointmentDetailsScreen: undefined;
+  BookAppointmentSuccessScreen: undefined;
 };
 
 export type ApplicationScreenProps =
