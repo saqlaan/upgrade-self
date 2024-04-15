@@ -5,26 +5,33 @@ on:
     workflow_dispatch:
 
 jobs:
-  apk:
-    name: Generate APK
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: Setup JDK
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-      - name: Build APK
-        run: bash ./gradlew assembleDebug --stacktrace
-      - name: Upload APK
-        uses: actions/upload-artifact@v1
-        with:
-          name: apk
-          path: app/build/outputs/apk/debug/app-debug.apk 
+    - name: Checkout Code
+      uses: actions/checkout@v3
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+            node-version: '16'  # Set this to the Node.js version you are using
+    - name: Install Dependencies
+      working-directory: ./frontend
+      run: |
+            npm install
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+            java-version: '11'  # JDK version used by React Native
+            distribution: 'temurin'
+
+    - name: Build APK
+      working-directory: ./frontend
+      run: |
+        npx react-native run-android --variant=release
+
   release:
     name: Release APK
-    needs: apk
+    needs: build
     # if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
