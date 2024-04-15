@@ -37,6 +37,7 @@ export const validateFirebaseIdToken = async (
   }
 
   try {
+    console.log(idToken);
     const decodedIdToken = await admin.auth().verifyIdToken(idToken);
     req.user = decodedIdToken;
     next();

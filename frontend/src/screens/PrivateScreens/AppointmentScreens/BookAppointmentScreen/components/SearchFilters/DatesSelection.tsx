@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 import { Box, Text } from "@/components/atoms";
 
 const Dates = [
@@ -24,6 +24,7 @@ function DateSelection() {
           alignItems="center"
           bgColor={isSelected ? "secondary" : ["transparent"]}
           radius="3"
+          style={{ minHeight: 55 }}
         >
           <Box>
             <Text variant={"text-sm-medium"} color="white" mb="2">
@@ -39,13 +40,12 @@ function DateSelection() {
       </TouchableOpacity>
     );
   }, []);
+
   return (
     <Box row justifyContent="space-between">
       {Dates.map(renderItem)}
     </Box>
   );
 }
-
-const styles = StyleSheet.create({});
 
 export default DateSelection;

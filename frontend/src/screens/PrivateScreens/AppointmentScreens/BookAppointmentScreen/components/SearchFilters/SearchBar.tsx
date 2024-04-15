@@ -1,31 +1,47 @@
 import React from "react";
-import { StyleSheet, TextInput, TouchableOpacity } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import { Box } from "@/components/atoms";
 import { colors } from "@/theme";
 import { SearchIcon, SettingsIcon } from "@/theme/assets/icons";
 import { variantFamily } from "@/theme/fonts";
 
-function SearchBar({ onPressFilters }: { onPressFilters: () => void }) {
+function SearchBar({
+  onPressSearch,
+  onPressFilters,
+  value,
+}: {
+  value: string;
+  onPressSearch: () => void;
+  onPressFilters: () => void;
+}) {
   return (
     <Box row gap="2">
-      <Box
-        gap="2"
-        radius="3"
-        flex={1}
-        px="4"
-        py="4"
-        row
-        style={styles.inputWrapper}
-      >
-        <SearchIcon />
-        <TextInput
-          style={styles.input}
-          autoCapitalize={"none"}
-          autoCorrect={false}
-          placeholder={"Search session"}
-          placeholderTextColor={colors["primary-300"]}
-        />
-      </Box>
+      <Pressable onPress={onPressSearch} style={{ flex: 1 }}>
+        <Box
+          gap="2"
+          radius="3"
+          flex={1}
+          px="4"
+          py="4"
+          row
+          style={styles.inputWrapper}
+        >
+          <SearchIcon />
+          <TextInput
+            style={styles.input}
+            autoCapitalize={"none"}
+            autoCorrect={false}
+            placeholder={"Search session"}
+            placeholderTextColor={colors["primary-300"]}
+            value={value}
+          />
+        </Box>
+      </Pressable>
       <TouchableOpacity onPress={onPressFilters}>
         <Box
           alignItems="center"

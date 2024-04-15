@@ -18,15 +18,13 @@ export const getCenterServices = async (
     if (!centerId || !countryCode) {
       res.status(403).json({ message: "Center id or country code is missing" });
     }
-
     const data = await serviceBooking.getCenterServices({
       centerId,
       organization: countryCode,
       size,
       page,
     });
-    console.log(data.data);
-    res.json(data.data);
+    return res.status(200).json(data);
   } catch (error) {
     console.error("Error getting the services", error);
     res.status(403).json({ message: "Error getting the services" });
@@ -43,15 +41,13 @@ export const createServiceBooking = async (
     if (!centerId || !countryCode) {
       res.status(403).json({ message: "Center id or country code is missing" });
     }
-
     const data = await serviceBooking.getCenterServices({
       centerId,
       organization: countryCode,
       size,
       page,
     });
-    console.log(data.data);
-    res.json(data.data);
+    return res.json(data);
   } catch (error) {
     console.error("Error getting the services", error);
     res.status(403).json({ message: "Error getting the services" });

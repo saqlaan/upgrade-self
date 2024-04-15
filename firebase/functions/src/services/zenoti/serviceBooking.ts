@@ -13,12 +13,13 @@ export const getCenterServices = async ({
   size?: number;
 }) => {
   try {
-    const response = await axios.get(`${centerId}/services`, {
+    const response = await axios.get(`/centers/${centerId}/services`, {
       params: { page, size },
       headers: requestHeaders[organization],
     });
     return response.data;
   } catch (error) {
+    console.log(error);
     throw new Error("Failed to retrieve center services");
   }
 };

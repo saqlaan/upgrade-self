@@ -7,7 +7,7 @@ export const fetchAllCentersData = async (): Promise<CenterType[] | null> => {
     const result = axios.get(Routes.centers);
     return (await result).data;
   } catch (error) {
-    console.log(error);
+    console.log({ error });
     return null;
   }
 };

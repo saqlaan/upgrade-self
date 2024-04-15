@@ -1,5 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import SplashScreen from "react-native-splash-screen";
 import OnBoardingStackNavigator from "./OnBoardingStackNavigator";
 import PrivateStackNavigator from "./PrivateStackNavigator";
@@ -12,10 +12,19 @@ function ApplicationNavigator() {
   const { user: authUser } = useAuthState();
   const {} = useFirebaseSnapshots();
   const { user } = useUserStore();
+  const [isAppReady, setIsAppReady] = useState(false);
 
   useEffect(() => {
-    SplashScreen.hide();
+    setTimeout(() => {
+      setIsAppReady(true);
+    }, 500);
   }, []);
+
+  useEffect(() => {
+    if (isAppReady) {
+      SplashScreen.hide();
+    }
+  }, [isAppReady]);
 
   const getNavigator = useCallback(() => {
     if (!authUser || !authUser.emailVerified) {
@@ -27,6 +36,8 @@ function ApplicationNavigator() {
     }
   }, [authUser, user]);
 
-  return <NavigationContainer>{getNavigator()}</NavigationContainer>;
+  if (isAppReady)
+    return <NavigationContainer>{getNavigator()}</NavigationContainer>;
+  return null;
 }
 export default ApplicationNavigator;

@@ -1,12 +1,9 @@
 import React from "react";
 import { Pressable } from "react-native";
+import CenterSelector from "./CenterSelector";
 import { Box, Text } from "@/components/atoms";
-import {
-  ArrowDownIcon,
-  BellBingIcon,
-  MapPointIcon,
-} from "@/theme/assets/icons";
-import { colors, spacing } from "@/theme";
+import { BellBingIcon } from "@/theme/assets/icons";
+import { colors } from "@/theme";
 
 const HomeHeader = () => {
   return (
@@ -16,17 +13,7 @@ const HomeHeader = () => {
           <Text variant="text-xl-bold" mb="1">
             Good Morning!
           </Text>
-          <Box row alignItems="center" gap="2">
-            <MapPointIcon
-              fill={colors.secondary}
-              width={spacing[5]}
-              height={spacing[5]}
-            />
-            <Text variant="text-sm-bold" color="secondary">
-              Meridian
-            </Text>
-            <ArrowDownIcon fill={colors.secondary} />
-          </Box>
+          <CenterSelector />
         </Box>
         <Pressable>
           <Box

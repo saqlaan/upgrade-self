@@ -114,7 +114,7 @@ const DateAndTimeSelector: React.FC<CustomTextInputProps> = ({
         onConfirm={(date) => {
           setOpen(false);
           onChangeText && onChangeText(date.toString());
-          pickerProps.onConfirm && pickerProps.onConfirm(date);
+          if (pickerProps?.onConfirm) pickerProps.onConfirm(date);
         }}
       />
       {error && (
