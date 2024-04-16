@@ -1,15 +1,15 @@
-import { Images } from "@/theme/assets/images";
-import { TextVariants } from "@/theme/fonts";
-import { AppTheme } from "@/types/theme";
 import auth from "@react-native-firebase/auth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import React, { useState } from "react";
 import { Image } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import CButton from "../CButton/CButton";
+import { AppTheme } from "@/types/theme";
+import { TextVariants } from "@/theme/fonts";
+import { Images } from "@/theme/assets/images";
 
 GoogleSignin.configure({
-  scopes: ["https://www.googleapis.com/auth/drive.readonly"], // what API you want to access on behalf of the user, default is email and profile
+  scopes: [], // what API you want to access on behalf of the user, default is email and profile
   webClientId:
     "915255267011-d7inuo7udqnbuud0od02asjimin8i392.apps.googleusercontent.com", // client ID of type WEB for your server. Required to get the idToken on the user object, and for offline access.
   offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
