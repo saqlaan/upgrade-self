@@ -1,7 +1,13 @@
 import express, { Request, Response } from "express";
 import { getAllCentersAsync } from "../controllers/centerController";
 import { addPaymentAsync } from "../controllers/guestController";
-import { createServiceBooking, getCenterServices } from "../controllers/servicesController";
+import {
+  confirmBooking,
+  createAppointment,
+  getCenterServices,
+  getSlots,
+  reserveSlot,
+} from "../controllers/servicesController";
 const router = express.Router();
 
 router.get("/user", (req: Request, res: Response) => {
@@ -11,6 +17,9 @@ router.get("/user", (req: Request, res: Response) => {
 router.get("/centers", getAllCentersAsync);
 router.post("/payment", addPaymentAsync);
 router.get("/getServices", getCenterServices);
-router.get("/createServiceBooking", createServiceBooking);
+router.post("/bookings", createAppointment); //  Create appointment
+router.get("/bookings/:bookingId/slots", getSlots);
+router.post("/bookings/:bookingId/slots/reserve", reserveSlot);
+router.post("/bookings/:bookingId/slots/confirm", confirmBooking);
 
 export const zenotiRoutes = router;

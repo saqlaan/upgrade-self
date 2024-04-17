@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-catch */
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { updateUser } from "./collections/user";
+import { createUserDoc, getUserDoc, updateUser } from "./collections/user";
 
 export const signup = ({
   email,
@@ -53,5 +53,12 @@ export const updatePassword = async ({
     await auth().currentUser?.updatePassword(newPassword);
   } catch (e) {
     throw e;
+  }
+};
+
+export const onGoogleSignIn = async (user: FirebaseAuthTypes.User) => {
+  const userDoc = await getUserDoc();
+  if (!userDoc) {
+    await createUserDoc(user);
   }
 };

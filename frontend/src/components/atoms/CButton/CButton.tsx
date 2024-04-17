@@ -4,6 +4,7 @@ import { Button, ButtonProps, useTheme } from "react-native-paper";
 import Text from "../Text/Text";
 import { AppTheme } from "@/types/theme";
 import colors from "@/theme/colors";
+import { spacing } from "@/theme";
 
 type Props = Omit<ButtonProps, "children"> & {
   variant?: "primary" | "secondary" | "default";
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 40,
     position: "relative",
+    gap: spacing[3],
   },
   style: {
     borderRadius: 8,

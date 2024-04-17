@@ -7,6 +7,7 @@ import CButton from "../CButton/CButton";
 import { AppTheme } from "@/types/theme";
 import { TextVariants } from "@/theme/fonts";
 import { Images } from "@/theme/assets/images";
+import { onGoogleSignIn } from "@/services/firebase/auth";
 
 GoogleSignin.configure({
   scopes: [], // what API you want to access on behalf of the user, default is email and profile
@@ -35,7 +36,8 @@ function GoogleSignInButton({ onError }: Props) {
       await GoogleSignin.hasPlayServices();
       const { idToken } = await GoogleSignin.signIn();
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      await auth().signInWithCredential(googleCredential);
+      const { user } = await auth().signInWithCredential(googleCredential);
+      await onGoogleSignIn(user);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
