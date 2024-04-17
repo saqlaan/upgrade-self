@@ -31,6 +31,9 @@ jobs:
         npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle
         cd android && ./gradlew assembleRelease
 
+    - name: Get short SHA
+      id: sha
+      run: echo "::set-output name=sha_short::$(git rev-parse --short ${{ github.sha }})"
 
     - name: Create Release
       id: create_release
@@ -38,11 +41,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref_name }}
-        release_name: Release ${{ github.ref_name }}
+        tag_name: ${{ steps.sha.outputs.sha_short }}
+        release_name: ${{ steps.sha.outputs.sha_short }}
         draft: false
         prerelease: false
-        overwrite: true
   
     - name: Upload APK to Release
       uses: actions/upload-release-asset@v1
