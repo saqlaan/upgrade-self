@@ -33,6 +33,8 @@ function ApplicationNavigator() {
       return <PrivateStackNavigator />;
     } else if (user && !user?.onboardingCompleted) {
       return <OnBoardingStackNavigator />;
+    } else if (!user) {
+      return <OnBoardingStackNavigator />;
     }
   }, [authUser, user]);
 
