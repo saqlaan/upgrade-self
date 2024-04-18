@@ -27,6 +27,8 @@ jobs:
 
     - name: Build APK
       working-directory: ./frontend
+      env:
+        API_URL: https://us-central1-upgrade-labs-app.cloudfunctions.net/app
       run: |
         npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle
         cd android && ./gradlew assembleRelease
