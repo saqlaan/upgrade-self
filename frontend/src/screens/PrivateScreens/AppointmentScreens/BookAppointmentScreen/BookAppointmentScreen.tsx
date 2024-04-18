@@ -1,30 +1,28 @@
 import React from "react";
 import { StatusBar } from "react-native";
-import { BookAppointmentHeader, SlotsSection } from "./components";
+import { BookAppointmentHeader, TimeSlotSection } from "./components";
 import { useBookAppointment } from "./useBookAppointment";
+import { SlotsSection } from "./components/SlotsSection";
 import { Box, Text } from "@/components/atoms";
 import type { ApplicationScreenProps } from "@/types/navigation";
-import { AppointmentCardWithActions } from "@/components";
-import { LineIcon } from "@/theme/assets/icons";
+import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 
 function BookAppointment({ navigation }: ApplicationScreenProps) {
-  const { services, isFetching, isFetched } = useBookAppointment();
-  const areServicesAvailable = !isFetching && services?.length !== 0;
+  const {} = useBookAppointment();
+  const { selectedService, servicesFound, groupSlots, selectedHour } =
+    useCreateAppointmentStore();
 
   return (
     <Box flex={1} bgColor="white">
       <StatusBar barStyle={"light-content"} />
       <BookAppointmentHeader />
-      <Box py="4">
-        {isFetched && areServicesAvailable && (
-          <Box mb="4">
-            <SlotsSection />
-          </Box>
-        )}
-        {isFetched && areServicesAvailable ? (
-          <Box px="4" row>
-            <Box pr="5" alignItems="center">
-              {[0, 1].map((item) => (
+      <Box py="4" flex={1}>
+        <Box mb="4">
+          <TimeSlotSection />
+        </Box>
+        <Box px="4">
+          {/* <Box pr="5" alignItems="center" flex={1}>
+              {slotCards.map((item) => (
                 <Box alignItems="center" mb="2" key={item}>
                   <Box
                     radius={"20"}
@@ -35,42 +33,19 @@ function BookAppointment({ navigation }: ApplicationScreenProps) {
                   <LineIcon />
                 </Box>
               ))}
+            </Box> */}
+          <SlotsSection />
+        </Box>
+
+        {!servicesFound && (
+          <Box>
+            <Box px="4" alignItems="center" justifyContent="center">
+              <Text variant="text-sm-regular">
+                We regret to inform you that no services are currently available
+                at this center. Kindly await further updates or consider
+                selecting a different center for your convenience.
+              </Text>
             </Box>
-            <Box flex={1}>
-              <AppointmentCardWithActions
-                title={"Cell Health Analysis"}
-                time={"01:00 PM"}
-                duration={30}
-                location={"Meridian"}
-                index={0}
-                price={20}
-                onPressBookSession={() => navigation.navigate("PaymentScreen")}
-                onPressViewDetails={() =>
-                  navigation.navigate("BookAppointmentDetailsScreen")
-                }
-              />
-              <Box mb="4" />
-              <AppointmentCardWithActions
-                title={"Cell Health Analysis"}
-                time={"01:00 PM"}
-                duration={30}
-                location={"Meridian"}
-                index={0}
-                price={10}
-                onPressBookSession={() => navigation.navigate("PaymentScreen")}
-                onPressViewDetails={() =>
-                  navigation.navigate("BookAppointmentDetailsScreen")
-                }
-              />
-            </Box>
-          </Box>
-        ) : (
-          <Box px="4" alignItems="center" justifyContent="center">
-            <Text variant="text-sm-regular">
-              We regret to inform you that no services are currently available
-              at this center. Kindly await further updates or consider selecting
-              a different center for your convenience.
-            </Text>
           </Box>
         )}
       </Box>

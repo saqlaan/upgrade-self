@@ -1,2 +1,2 @@
 export * from "./BookAppointmentHeader";
-export * from "./SlotsSection";
+export * from "./TimeSlotSection";

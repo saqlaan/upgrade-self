@@ -1,4 +1,6 @@
 import { Platform } from "react-native";
+import { parseISO, format } from "date-fns";
+import { SlotType } from "@/types";
 
 export const isAndroid = Platform.OS === "android";
 
@@ -38,3 +40,27 @@ export const getCalendar = () => {
   }
   return months;
 };
+
+// Define a type for the grouped object
+type GroupSlotsTogether = { [hour: string]: SlotType[] };
+
+// Function to group objects by hour using date-fns
+export function groupSlotsTogether(data: SlotType[]): GroupSlotsTogether {
+  const groupedData: GroupSlotsTogether = {};
+  data.forEach((obj) => {
+    const time = parseISO(obj.Time);
+    const hour = format(time, "HH"); // Extract hour using date-fns
+    if (!groupedData[hour]) {
+      groupedData[hour] = []; // Initialize array if it doesn't exist
+    }
+    groupedData[hour].push(obj);
+  });
+  return groupedData;
+}
+
+export function formatHour(hour: number): string {
+  const date = new Date();
+  date.setHours(hour);
+  date.setMinutes(0);
+  return format(date, "hh:mm a");
+}

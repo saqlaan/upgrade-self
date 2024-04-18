@@ -32,3 +32,16 @@ export interface PageInfo {
   page: number;
   size: number;
 }
+
+export type AppointmentType = {
+  id: string;
+  Error: any;
+};
+
+export type SlotType = {
+  Available: boolean;
+  Priority: number;
+  SalePrice: null | number; // Since SalePrice can be either null or a number
+  Time: string; // Assuming Time is a string representing a date-time in ISO 8601 format
+  Warnings: null | string[]; // Since Warnings can be either null or an array of strings
+};

@@ -19,6 +19,7 @@ function Locations({ navigation }: ApplicationScreenProps) {
   const [selectedLocation, setSelectedLocation] = useState<{
     centerId: string;
     countryCode: string;
+    name: string;
   } | null>(null);
 
   useEffect(() => {
@@ -43,6 +44,7 @@ function Locations({ navigation }: ApplicationScreenProps) {
           setSelectedLocation({
             centerId: selection.id,
             countryCode: selection.country.code,
+            name: selection.name,
           });
         else setSelectedLocation(null);
       }

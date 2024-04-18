@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet } from "react-native";
+import { format } from "date-fns";
 import { Box, CButton, Text } from "@/components/atoms";
 import { MapPointUnderlineIcon, StopWatchIcon } from "@/theme/assets/icons";
 
@@ -9,10 +10,10 @@ const AppointmentCardWithActions = ({
   duration = 30,
   location = "Meridian",
   price = 10,
-  index,
   onPressViewDetails,
   onPressBookSession,
 }: {
+  id: string;
   title: string;
   time: string;
   duration: number;
@@ -39,7 +40,7 @@ const AppointmentCardWithActions = ({
       <Box alignItems="center" row gap="3" mt="4">
         <StopWatchIcon />
         <Text color="black-300" variant="text-sm-medium">
-          {time} - {duration} mins
+          {format(time, "hh:mm a")} - {duration} mins
         </Text>
       </Box>
       <Box alignItems="center" row gap="3" mt="4">

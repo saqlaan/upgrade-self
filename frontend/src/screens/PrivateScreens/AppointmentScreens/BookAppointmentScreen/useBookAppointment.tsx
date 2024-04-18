@@ -6,23 +6,35 @@ import { useCenter } from "@/store/center";
 
 export const useBookAppointment = () => {
   const { center } = useCenter();
-  const { setAvailableServices } = useCreateAppointmentStore();
+  const { setAvailableServices, setServicesFound, resetStore } =
+    useCreateAppointmentStore();
   const {
     data: services,
-    isFetching,
     isFetched,
+    isLoading,
   } = useQuery({
     queryKey: ["servicesData"],
     queryFn: () => getServices(center),
   });
 
   useEffect(() => {
+    resetStore();
+  }, [resetStore]);
+
+  useEffect(() => {
     setAvailableServices(services?.services || []);
   }, [services?.services, setAvailableServices]);
 
+  useEffect(() => {
+    if (isFetched) {
+      if (services?.services.length === 0) setServicesFound(false);
+      else setServicesFound(true);
+    }
+  }, [isFetched, services?.services.length, setServicesFound]);
+
   return {
     services: services?.services,
-    isFetching,
+    isLoading,
     isFetched,
   };
 };

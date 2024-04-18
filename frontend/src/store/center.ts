@@ -3,6 +3,7 @@ import { create } from "zustand";
 interface Center {
   centerId: string;
   countryCode: string;
+  name: string;
 }
 
 interface CenterStore {

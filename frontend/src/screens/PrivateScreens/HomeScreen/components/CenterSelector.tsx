@@ -33,6 +33,7 @@ const CenterSelector = () => {
     setCenter({
       centerId: center?.id,
       countryCode: center?.country.code,
+      name: center?.name,
     });
   }, []);
 
@@ -44,6 +45,7 @@ const CenterSelector = () => {
           const updatedCenter = {
             centerId: selection.id,
             countryCode: selection.country.code,
+            name: selection.name,
           };
           updateUserCenterAsync({
             centers: [updatedCenter],

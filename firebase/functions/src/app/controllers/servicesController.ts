@@ -56,7 +56,11 @@ export const createAppointment = async (req: Request, res: Response) => {
 export const getSlots = async (req: Request, res: Response) => {
   try {
     const bookingId = req.params.bookingId;
-    const { countryCode } = req.body;
+    const countryCode = req.query.countryCode as Organization;
+
+    if (!bookingId || !countryCode) {
+      res.status(403).json({ message: "bookingId or countryCode is missing" });
+    }
     const data = await serviceBooking.getSlots({
       bookingId,
       organization: countryCode,
