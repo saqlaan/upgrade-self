@@ -1,5 +1,5 @@
 import axios from "../../config/axiosConfig";
-import { requestHeaders } from "../../config/zenotiConfig";
+import { Organization, requestHeaders } from "../../config/zenotiConfig";
 import { GuestType } from "../../types";
 import { CountryCodes } from "../../types/enums/countryCode";
 
@@ -14,7 +14,7 @@ type ZenotiGuestType = GuestType & {
 };
 
 type AddGuestPaymentParams = {
-  countryCode: CountryCodes;
+  countryCode: Organization;
   guestId: string;
   centerId: string;
 };
@@ -92,4 +92,11 @@ export const getZenotiUserFromAllOrganizations = async ({ email }: { email: stri
   } catch (e) {
     throw e;
   }
+};
+
+export const fetchGuestPaymentMethods = async ({ countryCode, guestId, centerId }: AddGuestPaymentParams) => {
+  const result = await axios.get(`/guests/${guestId}/accounts?center_id=${centerId}`, {
+    headers: requestHeaders[countryCode],
+  });
+  return result.data;
 };

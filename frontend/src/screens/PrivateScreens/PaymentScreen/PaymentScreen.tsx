@@ -1,12 +1,13 @@
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useMutation } from "@tanstack/react-query";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal, Pressable, StyleSheet } from "react-native";
 import { ActivityIndicator, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Snackbar from "react-native-snackbar";
 import WebView from "react-native-webview";
+import { useBookAppointmentMethods } from "../AppointmentScreens/BookAppointmentScreen/components/hooks/useBookAppointmentMethods";
 import BottomPaymentCardItem from "./components/BottomSheetPaymentCardItem";
 import PaymentBottomSheetModal from "./components/PaymentBottomSheetModal";
 import PaymentCardItem from "./components/PaymentCardItem";
@@ -16,10 +17,10 @@ import type { ApplicationScreenProps } from "@/types/navigation";
 import { AddSquareRoundedIcon } from "@/theme/assets/icons";
 import { spacing } from "@/theme";
 import { addGuestPaymentAsync } from "@/services/firebaseApp/centers";
-import { getUserGuests } from "@/services/firebase/collections/guest";
-import { getUser } from "@/services/firebase";
 import { SafeScreen } from "@/components/template";
 import { BackButton, Box, CButton, Text } from "@/components/atoms";
+import { useCenter } from "@/store/center";
+import { getGuestAccountByCountry } from "@/utils/functions";
 
 const WebViewModal = ({
   visible,
@@ -58,9 +59,14 @@ const WebViewModal = ({
 function PaymentScreen({ navigation }: ApplicationScreenProps) {
   const { colors } = useTheme<AppTheme>();
   const { t } = useTranslation(["locations", "common", "payment"]);
+  const { hasPaymentMethod } = useBookAppointmentMethods();
   const [selectedCard, setSelectedCard] = useState({
     cardNumber: data.cards[0].card_number,
   });
+  const { center } = useCenter();
+
+  const [hasValidPaymentMethod, setHasValidPaymentMethod] = useState(false);
+
   const [modalVisible, setModalVisible] = useState(false);
   const [webUrl, setWebUrl] = useState("");
 
@@ -68,6 +74,15 @@ function PaymentScreen({ navigation }: ApplicationScreenProps) {
   const { mutateAsync, isPending } = useMutation({
     mutationFn: addGuestPaymentAsync,
   });
+
+  const onLoad = async () => {
+    const paymentMethod = await hasPaymentMethod();
+    setHasValidPaymentMethod(paymentMethod);
+  };
+
+  useEffect(() => {
+    onLoad();
+  }, []);
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
@@ -84,20 +99,13 @@ function PaymentScreen({ navigation }: ApplicationScreenProps) {
 
   const handleAddNewPaymentMethod = async () => {
     try {
-      const user = await getUser();
-      const { centers } = user;
-      const { centerId } = centers[0];
-      const guestInfo = await getUserGuests();
-      if (guestInfo) {
-        const { guestAccounts } = guestInfo;
-        const guestAccount = guestAccounts.find(
-          (guestAccount) => guestAccount.centerId == centerId,
-        );
-        if (!guestAccount) {
-          console.log("Account not availble");
-          return;
-        }
-        const request = await mutateAsync(guestAccount);
+      const guestAccount = await getGuestAccountByCountry(center?.countryCode);
+      if (guestAccount) {
+        const request = await mutateAsync({
+          centerId: center?.centerId,
+          countryCode: center?.countryCode,
+          guestId: guestAccount.guestId,
+        });
         if (request?.data?.error) {
           Snackbar.show({
             text: "Error",
@@ -129,10 +137,12 @@ function PaymentScreen({ navigation }: ApplicationScreenProps) {
         </Box>
       )}
       <Box mt="5" style={styles.container}>
-        <PaymentCardItem
-          cardNumber={selectedCard.cardNumber}
-          onPress={() => handlePresentModalPress()}
-        />
+        {hasValidPaymentMethod && (
+          <PaymentCardItem
+            cardNumber={selectedCard.cardNumber}
+            onPress={() => handlePresentModalPress()}
+          />
+        )}
         <Box mt="6">
           {!isPending ? (
             <Pressable onPress={handleAddNewPaymentMethod}>

@@ -1,17 +1,15 @@
 import React from "react";
 import { StatusBar } from "react-native";
 import { BookAppointmentHeader, TimeSlotSection } from "./components";
-import { useBookAppointment } from "./useBookAppointment";
+import { useBookAppointmentScreen } from "./components/hooks/useBookAppointmentScreen";
 import { SlotsSection } from "./components/SlotsSection";
 import { Box, Text } from "@/components/atoms";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 
 function BookAppointment({ navigation }: ApplicationScreenProps) {
-  const {} = useBookAppointment();
-  const { selectedService, servicesFound, groupSlots, selectedHour } =
-    useCreateAppointmentStore();
-
+  useBookAppointmentScreen();
+  const { servicesFound } = useCreateAppointmentStore();
   return (
     <Box flex={1} bgColor="white">
       <StatusBar barStyle={"light-content"} />

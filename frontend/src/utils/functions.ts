@@ -1,6 +1,7 @@
 import { Platform } from "react-native";
 import { parseISO, format } from "date-fns";
 import { SlotType } from "@/types";
+import { getUserGuests } from "@/services/firebase/collections/guest";
 
 export const isAndroid = Platform.OS === "android";
 
@@ -64,3 +65,10 @@ export function formatHour(hour: number): string {
   date.setMinutes(0);
   return format(date, "hh:mm a");
 }
+
+export const getGuestAccountByCountry = async (countryCode: string) => {
+  const guests = await getUserGuests();
+  return guests?.guestAccounts.find(
+    (guest) => guest.countryCode === countryCode,
+  );
+};

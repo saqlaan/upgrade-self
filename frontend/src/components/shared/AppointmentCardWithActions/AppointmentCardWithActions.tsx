@@ -12,6 +12,7 @@ const AppointmentCardWithActions = ({
   price = 10,
   onPressViewDetails,
   onPressBookSession,
+  isBooking,
 }: {
   id: string;
   title: string;
@@ -22,6 +23,7 @@ const AppointmentCardWithActions = ({
   price: number;
   onPressViewDetails: () => void;
   onPressBookSession: () => void;
+  isBooking?: boolean;
 }) => {
   return (
     <Box
@@ -56,7 +58,7 @@ const AppointmentCardWithActions = ({
           </CButton>
         </Box>
         <Box flex={1}>
-          <CButton onPress={onPressBookSession}>
+          <CButton loading={isBooking} onPress={onPressBookSession}>
             <Text color="white">Book session</Text>
           </CButton>
         </Box>

@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { getFirestore } from "firebase-admin/firestore";
-import { addGuestPayment, guestSignup } from "../../services/zenoti";
+import { Organization } from "../../config/zenotiConfig";
+import { addGuestPayment, fetchGuestPaymentMethods, guestSignup } from "../../services/zenoti";
 import { FirestoreUserType, GuestType } from "../../types";
 import { CountryCodes } from "../../types/enums/countryCode";
 import { mapFirebaseUserToZenotiGuest } from "../../utils";
@@ -78,4 +79,23 @@ export const addPaymentAsync = async (req: Request, res: Response) => {
     res.status(403).json({ message: "Error adding payment" });
   }
   return;
+};
+
+export const getGuestPaymentMethods = async (req: Request, res: Response) => {
+  try {
+    const { guestId } = req.params;
+    const { centerId, countryCode } = req.query;
+    if (!guestId || !centerId || !countryCode) {
+      res.status(403).json({ message: "Guest id or center id is missing" });
+    }
+    const data = await fetchGuestPaymentMethods({
+      centerId: centerId as string,
+      countryCode: countryCode as Organization,
+      guestId,
+    });
+    res.json(data);
+  } catch (error) {
+    console.error("Error adding payment", error);
+    res.status(403).json({ message: "Error adding payment" });
+  }
 };

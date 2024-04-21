@@ -74,3 +74,58 @@ export const getSlots = async ({
     return null;
   }
 };
+
+type ReserveSlotResponse = {
+  is_reserved: boolean;
+  error: any;
+};
+
+export const reserveSlotAsync = async ({
+  appointmentId,
+  countryCode,
+  slotTime,
+}: {
+  appointmentId: string;
+  countryCode: string;
+  slotTime: string;
+}): Promise<ReserveSlotResponse | null> => {
+  try {
+    const result = await axios.post(
+      `zenoti/bookings/${appointmentId}/slots/reserve`,
+      {
+        countryCode,
+        slotTime,
+      },
+    );
+    return result.data;
+  } catch (error) {
+    console.log({ error });
+    return null;
+  }
+};
+
+type ConfirmSlotResponse = {
+  is_confirmed: boolean;
+  error: any;
+};
+
+export const confrimSlotAsync = async ({
+  appointmentId,
+  countryCode,
+}: {
+  appointmentId: string;
+  countryCode: string;
+}): Promise<ConfirmSlotResponse | null> => {
+  try {
+    const result = await axios.post(
+      `zenoti/bookings/${appointmentId}/slots/confirm`,
+      {
+        countryCode,
+      },
+    );
+    return result.data;
+  } catch (error) {
+    console.log({ error });
+    return null;
+  }
+};
