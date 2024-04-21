@@ -9,10 +9,16 @@ import {
   BookAppointmentSuccessScreen,
   ChangePasswordScreen,
   EditProfileScreen,
+  FinishOnBoarding,
   Home,
+  LoadingScreen,
+  Locations,
   PaymentScreen,
   ProfileScreen,
+  ProfileSetup,
+  QuestionStep,
   StatsScreen,
+  Welcome,
 } from "@/screens";
 import { ApplicationStackParamList } from "@/types/navigation";
 import { BottomTabBar } from "@/components";
@@ -53,11 +59,15 @@ const PrivateStackNavigator = () => {
   }
 
   return (
-    <ProfileStackNavigator.Navigator screenOptions={{ headerShown: false }}>
+    <ProfileStackNavigator.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName="LoadingScreen"
+    >
       <ProfileStackNavigator.Screen
-        name="ProfileScreen"
-        component={TabNavigator}
+        name="LoadingScreen"
+        component={LoadingScreen}
       />
+      <ProfileStackNavigator.Screen name="MainTab" component={TabNavigator} />
       <ProfileStackNavigator.Screen
         name="EditProfileScreen"
         component={EditProfileScreen}
@@ -85,6 +95,23 @@ const PrivateStackNavigator = () => {
       <ProfileStackNavigator.Screen
         name="BookAppointmentSuccessScreen"
         component={BookAppointmentSuccessScreen}
+      />
+      <ProfileStackNavigator.Screen
+        name="LocationsScreen"
+        component={Locations}
+      />
+      <ProfileStackNavigator.Screen
+        name="ProfileSetupScreen"
+        component={ProfileSetup}
+      />
+      <ProfileStackNavigator.Screen name="WelcomeScreen" component={Welcome} />
+      <ProfileStackNavigator.Screen
+        name="QuestionStepScreen"
+        component={QuestionStep}
+      />
+      <ProfileStackNavigator.Screen
+        name="FinishOnBoardingScreen"
+        component={FinishOnBoarding}
       />
     </ProfileStackNavigator.Navigator>
   );

@@ -55,11 +55,10 @@ function ProfileSceenButton({
 function ProfileScreen({ navigation }: ApplicationScreenProps) {
   const { spacing } = useTheme<AppTheme>();
   const { top } = useSafeAreaInsets();
-  const { clearUser, user } = useUserStore();
+  const { user } = useUserStore();
 
   const handleLogout = () => {
     auth().signOut();
-    clearUser();
   };
 
   const buttonsData = [

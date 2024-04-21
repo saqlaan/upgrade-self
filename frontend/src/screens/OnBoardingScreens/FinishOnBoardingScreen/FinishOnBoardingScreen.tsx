@@ -1,29 +1,31 @@
+import React, { useCallback } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
+import { ImageBackground, StatusBar, StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import auth from "@react-native-firebase/auth";
 import { Box, CButton, Text } from "@/components/atoms";
 import { updateUser } from "@/services/firebase";
 import { CheckCircleIcon } from "@/theme/assets/icons";
 import { Images } from "@/theme/assets/images";
 import { spacing } from "@/theme/spacing";
 import type { ApplicationScreenProps } from "@/types/navigation";
-import { useMutation } from "@tanstack/react-query";
-import { useCallback } from "react";
-import { useTranslation } from "react-i18next";
-import { ImageBackground, StatusBar, StyleSheet, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 function FinishOnBoarding({ navigation }: ApplicationScreenProps) {
   const { t } = useTranslation(["common", "finishOnBoarding"]);
   const { bottom } = useSafeAreaInsets();
-  const { mutateAsync, isPending, error, isError } = useMutation({
+  const { mutateAsync, isPending, error } = useMutation({
     mutationFn: updateUser,
   });
 
-  const _submit = useCallback(() => {
+  const _submit = useCallback(async () => {
     try {
-      mutateAsync({ onBoardingStep: 2, onboardingCompleted: true });
+      await mutateAsync({ onBoardingStep: 2, onboardingCompleted: true });
+      auth().signOut();
     } catch {
       console.error(error);
     }
-  }, []);
+  }, [error, mutateAsync]);
 
   return (
     <ImageBackground source={Images.primaryBgLines} style={{ flex: 1 }}>

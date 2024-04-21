@@ -12,6 +12,7 @@ const queryClient = new QueryClient();
 
 export const storage = new MMKV();
 
+console.error = () => null;
 function App() {
   return (
     <PaperProvider theme={theme}>

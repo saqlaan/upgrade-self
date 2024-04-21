@@ -15,32 +15,32 @@ import { useCenter } from "@/store/center";
 const CenterSelector = () => {
   const { user } = useUserStore();
   const { bottomSheetRef, openBottomSheet } = useDynamicBottomSheet();
-  const { setCenter, center: selectedCenter } = useCenter();
+  const { setCenter, center } = useCenter();
   const { mutateAsync: updateUserCenterAsync } = useMutation({
     mutationFn: updateUser,
   });
 
-  const { data: centers } = useQuery({
+  const { data: allCenters } = useQuery({
     queryKey: ["allCenter"],
     queryFn: fetchAllCentersData,
   });
 
-  const center = centers?.find(
-    (center) => center.id === user?.centers[0].centerId,
-  );
+  const loadCenterOnStart = async () => {
+    if (!center) {
+      if (user?.centers.length && user.centers.length > 0) {
+        setCenter(user.centers[0]);
+      }
+    }
+  };
 
   useEffect(() => {
-    setCenter({
-      centerId: center?.id,
-      countryCode: center?.country.code,
-      name: center?.name,
-    });
+    loadCenterOnStart();
   }, []);
 
   const handlePickerChange = useCallback(
     (centerId: string, index: number) => {
-      if (centers && centers.length > 0) {
-        const selection = centers[index];
+      if (allCenters && allCenters.length > 0) {
+        const selection = allCenters[index];
         if (selection) {
           const updatedCenter = {
             centerId: selection.id,
@@ -54,10 +54,8 @@ const CenterSelector = () => {
         }
       }
     },
-    [centers, setCenter, updateUserCenterAsync],
+    [allCenters, setCenter, updateUserCenterAsync],
   );
-
-  console.log(selectedCenter);
 
   return (
     <>
@@ -76,12 +74,12 @@ const CenterSelector = () => {
       </TouchableOpacity>
       <DynamicBottomSheet bottomSheetModalRef={bottomSheetRef}>
         <Picker
-          selectedValue={selectedCenter?.centerId}
+          selectedValue={center?.centerId}
           onValueChange={handlePickerChange}
           itemStyle={{ fontSize: 16, fontFamily: "Manrope-SemiBold" }}
-          hitSlop={true}
+          mode="dialog"
         >
-          {centers?.map((location) => (
+          {allCenters?.map((location) => (
             <Picker.Item
               key={location.id}
               label={`${location.display_name}, ${location.country.code}`}

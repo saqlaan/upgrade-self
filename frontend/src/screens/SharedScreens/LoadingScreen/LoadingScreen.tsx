@@ -1,10 +1,10 @@
-import { getUser } from "@/services/firebase";
-import { Images } from "@/theme/assets/images";
-import type { ApplicationScreenProps } from "@/types/navigation";
 import { firebase } from "@react-native-firebase/auth";
 import React, { useEffect } from "react";
 import { ImageBackground, StyleSheet, View } from "react-native";
 import { ActivityIndicator, Button } from "react-native-paper";
+import type { ApplicationScreenProps } from "@/types/navigation";
+import { Images } from "@/theme/assets/images";
+import { getUser } from "@/services/firebase";
 
 function Startup({ navigation }: ApplicationScreenProps) {
   useEffect(() => {
@@ -13,7 +13,9 @@ function Startup({ navigation }: ApplicationScreenProps) {
 
   const onUserLogin = async () => {
     const user = await getUser();
-    if (user?.onBoardingStep === 0) {
+    if (user?.onboardingCompleted) {
+      navigation.replace("MainTab");
+    } else if (user?.onBoardingStep === 0) {
       navigation.replace("LocationsScreen");
     } else if (user?.onBoardingStep === 1) {
       navigation.replace("WelcomeScreen");
