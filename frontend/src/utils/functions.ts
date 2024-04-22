@@ -1,5 +1,5 @@
 import { Platform } from "react-native";
-import { parseISO, format } from "date-fns";
+import { parseISO, format, addDays } from "date-fns";
 import { SlotType } from "@/types";
 import { getUserGuests } from "@/services/firebase/collections/guest";
 
@@ -71,4 +71,21 @@ export const getGuestAccountByCountry = async (countryCode: string) => {
   return guests?.guestAccounts.find(
     (guest) => guest.countryCode === countryCode,
   );
+};
+
+export const getNextSevenDays = () => {
+  // Get today's date
+  const today = new Date();
+  // Initialize an array to store the dates for the next 7 days
+  const nextSevenDays = [];
+
+  // Loop to generate the dates for each day
+  for (let i = 0; i < 7; i++) {
+    // Add i days to today's date to get the date for the current iteration
+    const currentDate = addDays(today, i);
+
+    // Add the date to the array
+    nextSevenDays.push(currentDate);
+  }
+  return nextSevenDays;
 };

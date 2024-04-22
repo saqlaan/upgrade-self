@@ -20,24 +20,24 @@ import {
   getSlots,
 } from "@/services/firebaseApp/appointment";
 import { groupSlotsTogether } from "@/utils/functions";
+import { useServicesStore } from "@/store/servicesStore";
 
 function SearchBar({ onPressFilters }: { onPressFilters: () => void }) {
   const {
-    availableServices,
     selectedService,
     setSelectedService,
-    servicesFound,
     setAppointment,
     setSlots,
     setGroupSlots,
   } = useCreateAppointmentStore();
+
+  const { services, servicesAvailable } = useServicesStore();
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } =
     useDynamicBottomSheet();
 
   const { center } = useCenter();
 
   const handleOnChangeService = useCallback((item) => {
-    console.log(item);
     setSelectedService(item);
     closeBottomSheet();
     handleOnServiceSelection(item);
@@ -97,7 +97,7 @@ function SearchBar({ onPressFilters }: { onPressFilters: () => void }) {
   return (
     <Box row gap="2">
       <Pressable
-        onPress={servicesFound ? openBottomSheet : () => null}
+        onPress={servicesAvailable() ? openBottomSheet : () => null}
         style={{ flex: 1 }}
       >
         <Box
@@ -131,7 +131,7 @@ function SearchBar({ onPressFilters }: { onPressFilters: () => void }) {
         <Box mt="6">
           <FlatList
             style={{ height: 300 }}
-            data={availableServices || []}
+            data={services || []}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
           />

@@ -1,49 +1,62 @@
 import React, { useCallback } from "react";
 import { TouchableOpacity } from "react-native";
+import { format, isEqual } from "date-fns";
 import { Box, Text } from "@/components/atoms";
-
-const Dates = [
-  { day: "M", date: "01" },
-  { day: "T", date: "02" },
-  { day: "W", date: "03" },
-  { day: "T", date: "04" },
-  { day: "F", date: "05" },
-  { day: "S", date: "06" },
-  { day: "S", date: "07" },
-];
+import { getNextSevenDays } from "@/utils/functions";
+import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 
 function DateSelection() {
-  const renderItem = useCallback((item, index) => {
-    const { day, date } = item;
-    const isSelected = index === 2;
-    return (
-      <TouchableOpacity>
-        <Box
-          px="2"
-          py="1"
-          alignItems="center"
-          bgColor={isSelected ? "secondary" : ["transparent"]}
-          radius="3"
-          style={{ minHeight: 55 }}
-        >
-          <Box>
-            <Text variant={"text-sm-medium"} color="white" mb="2">
-              {day}
-            </Text>
+  const nextWeekDates = getNextSevenDays();
+  const {
+    appointmentsFilters: filters,
+    updateAppointmentFilters: updateFilters,
+  } = useCreateAppointmentStore();
+
+  const handleOnPress = useCallback(
+    (date: string) => {
+      updateFilters({
+        date: format(date, "yyyy-MM-dd"),
+      });
+    },
+    [updateFilters],
+  );
+
+  const renderItem = useCallback(
+    (item) => {
+      const isSelected = isEqual(
+        format(item, "dd-MM-yyyy"),
+        format(filters.date || Date.now(), "dd-MM-yyyy"),
+      );
+      return (
+        <TouchableOpacity onPress={() => handleOnPress(item)}>
+          <Box
+            px="2"
+            py="1"
+            alignItems="center"
+            bgColor={isSelected ? "secondary" : ["transparent"]}
+            radius="3"
+            style={{ minHeight: 55 }}
+          >
+            <Box>
+              <Text variant={"text-sm-medium"} color="white" mb="2">
+                {format(item, "EEEEE")}
+              </Text>
+            </Box>
+            <Box>
+              <Text variant={"text-sm-medium"} color="white">
+                {format(item, "dd")}
+              </Text>
+            </Box>
           </Box>
-          <Box>
-            <Text variant={"text-sm-medium"} color="white">
-              {date}
-            </Text>
-          </Box>
-        </Box>
-      </TouchableOpacity>
-    );
-  }, []);
+        </TouchableOpacity>
+      );
+    },
+    [filters.date, handleOnPress],
+  );
 
   return (
     <Box row justifyContent="space-between">
-      {Dates.map(renderItem)}
+      {nextWeekDates.map(renderItem)}
     </Box>
   );
 }

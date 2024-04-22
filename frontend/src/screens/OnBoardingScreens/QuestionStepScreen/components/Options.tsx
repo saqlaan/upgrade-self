@@ -1,6 +1,7 @@
+import React from "react";
+import OptionItem from "./OptionItem";
 import { Box } from "@/components/atoms";
 import { OptionType } from "@/types";
-import OptionItem from "./OptionItem";
 
 const Options = ({
   options,

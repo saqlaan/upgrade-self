@@ -10,29 +10,29 @@ type SlotsDataType = {
 type GroupSlotsType = {
   [key: string]: SlotType[];
 };
+
+type SearchAppointmentsFilter = {
+  date?: string | "";
+};
 interface CreateAppointmentStore {
-  availableServices: ZenotiService[];
   selectedService: ZenotiService | null;
   appointment: AppointmentType | null;
   slots: SlotsDataType;
   groupSlots: GroupSlotsType | null;
-  servicesFound: boolean;
   selectedHour: string;
-  setAvailableServices: (services: ZenotiService[]) => void;
   setSelectedService: (services: ZenotiService) => void;
-  setServicesFound: (value: boolean) => void;
   setAppointment: (appointment: AppointmentType) => void;
   setSlots: (slotsData: SlotsDataType) => void;
   setGroupSlots: (groupSlots: GroupSlotsType) => void;
   resetStore: () => void;
   setSelectedHour: (hour: string) => void;
+  appointmentsFilters: SearchAppointmentsFilter;
+  updateAppointmentFilters: (filters: SearchAppointmentsFilter) => void;
 }
 
 export const useCreateAppointmentStore = create<CreateAppointmentStore>(
   (set) => ({
-    availableServices: [],
     selectedService: null,
-    servicesFound: false,
     appointment: null,
     slots: {
       futureDay: null,
@@ -41,9 +41,7 @@ export const useCreateAppointmentStore = create<CreateAppointmentStore>(
     },
     groupSlots: null,
     selectedHour: "",
-    setAvailableServices: (services: ZenotiService[]) =>
-      set(() => ({ availableServices: services })),
-    setServicesFound: (value: boolean) => set(() => ({ servicesFound: value })),
+    appointmentsFilters: {},
     setSelectedService: (service: ZenotiService) =>
       set((state) => ({
         ...state,
@@ -51,9 +49,7 @@ export const useCreateAppointmentStore = create<CreateAppointmentStore>(
       })),
     resetStore: () =>
       set({
-        availableServices: [],
         selectedService: null,
-        servicesFound: false,
         appointment: null,
         slots: {
           futureDay: null,
@@ -62,11 +58,19 @@ export const useCreateAppointmentStore = create<CreateAppointmentStore>(
         },
         groupSlots: null,
         selectedHour: "",
+        appointmentsFilters: {},
       }),
     setAppointment: (appointment: AppointmentType) =>
       set(() => ({ appointment })),
     setSlots: (slots: SlotsDataType) => set(() => ({ slots })),
     setGroupSlots: (groupSlots: GroupSlotsType) => set(() => ({ groupSlots })),
     setSelectedHour: (hour: string) => set({ selectedHour: hour }),
+    updateAppointmentFilters: (filters: SearchAppointmentsFilter) =>
+      set((state) => ({
+        appointmentsFilters: {
+          ...state.appointmentsFilters,
+          ...filters,
+        },
+      })),
   }),
 );

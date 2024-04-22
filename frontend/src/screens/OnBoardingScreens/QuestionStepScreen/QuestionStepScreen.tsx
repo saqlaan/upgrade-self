@@ -1,19 +1,18 @@
-import { BackButton, Box, CButton, Text } from "@/components/atoms";
-import { SafeScreen } from "@/components/template";
-import { QuestionType } from "@/types";
-import type { ApplicationScreenProps } from "@/types/navigation";
-import { AppTheme } from "@/types/theme";
-import { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FlatList, Pressable } from "react-native";
 import { useTheme } from "react-native-paper";
 import { Bar } from "react-native-progress";
-
-import { updateUser } from "@/services/firebase";
-import { useOnBoardingQuestionsStore } from "@/store/onBoardingQuestion.stores";
 import { useMutation } from "@tanstack/react-query";
 import Question from "./components/Question";
 import questionsData from "./questions.json";
+import { useOnBoardingQuestionsStore } from "@/store/onBoardingQuestion.stores";
+import { AppTheme } from "@/types/theme";
+import type { ApplicationScreenProps } from "@/types/navigation";
+import { QuestionType } from "@/types";
+import { SafeScreen } from "@/components/template";
+import { BackButton, Box, CButton, Text } from "@/components/atoms";
+import { updateUser } from "@/services/firebase";
 
 function QuestionStep({ navigation }: ApplicationScreenProps) {
   const { colors } = useTheme<AppTheme>();
@@ -21,7 +20,7 @@ function QuestionStep({ navigation }: ApplicationScreenProps) {
   const { t } = useTranslation(["locations", "common"]);
   const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const { selections } = useOnBoardingQuestionsStore();
-  const { mutateAsync, isPending, error, isError } = useMutation({
+  const { mutateAsync, isPending, error } = useMutation({
     mutationFn: updateUser,
   });
 
@@ -30,23 +29,27 @@ function QuestionStep({ navigation }: ApplicationScreenProps) {
   }, [currentStepIndex]);
 
   const formatResults = () => {
-    const data = Object.entries(selections).map((selection) => {
-      const questionId = selection[0];
-      const answerId = selection[1];
-
-      const question = questionsData.questions.find(
-        (question) => question.id == questionId
-      );
-      const option = question?.options.find((option) => option.id == answerId);
-      return {
-        question: {
-          id: question?.id,
-          name: question?.question,
-        },
-        value: option,
-      };
-    });
-    return data;
+    const list = Object.entries(selections);
+    if (list.length > 0) {
+      const data = list.map((selection) => {
+        const questionId = selection[0];
+        const answerId = selection[1];
+        const question = questionsData.questions.find(
+          (question) => question.id == questionId,
+        );
+        const option = question?.options.find(
+          (option) => option.id == answerId,
+        );
+        return {
+          question: {
+            id: question?.id,
+            name: question?.question,
+          },
+          value: option,
+        };
+      });
+      return data;
+    } else return [];
   };
 
   const _submit = useCallback(async () => {
@@ -114,7 +117,7 @@ function QuestionStep({ navigation }: ApplicationScreenProps) {
           showsHorizontalScrollIndicator={false}
           keyExtractor={(item: QuestionType) => item.id}
           initialNumToRender={5}
-          windowSize={5}
+          windowSize={10}
         />
       </Box>
       <Box px="5" py="5">

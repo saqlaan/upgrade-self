@@ -1,7 +1,7 @@
-import { AppTheme } from "@/types/theme";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { Button, ButtonProps, useTheme } from "react-native-paper";
+import { AppTheme } from "@/types/theme";
 
 type Props = ButtonProps & {
   variant?: "primary" | "secondary" | "default";
@@ -42,10 +42,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 40,
-    position: "relative",
-  },
-  style: {
-    borderRadius: 8,
     position: "relative",
   },
   IconButtonWrapper: {

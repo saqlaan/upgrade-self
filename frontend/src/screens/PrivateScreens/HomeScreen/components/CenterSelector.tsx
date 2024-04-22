@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Picker } from "@react-native-picker/picker";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { Box, Text } from "@/components/atoms";
 import { ArrowDownIcon, MapPointIcon } from "@/theme/assets/icons";
 import { colors, spacing } from "@/theme";
@@ -11,22 +10,24 @@ import { DynamicBottomSheet } from "@/components";
 import { useDynamicBottomSheet } from "@/hooks";
 import { updateUser } from "@/services/firebase";
 import { useCenter } from "@/store/center";
+import { CenterType } from "@/types";
 
 const CenterSelector = () => {
   const { user } = useUserStore();
-  const { bottomSheetRef, openBottomSheet } = useDynamicBottomSheet();
-  const { setCenter, center } = useCenter();
+  const { bottomSheetRef, openBottomSheet, closeBottomSheet } =
+    useDynamicBottomSheet();
+  const { setCenter, center: selectedCenter } = useCenter();
   const { mutateAsync: updateUserCenterAsync } = useMutation({
     mutationFn: updateUser,
   });
 
-  const { data: allCenters } = useQuery({
+  const { data: centers } = useQuery({
     queryKey: ["allCenter"],
     queryFn: fetchAllCentersData,
   });
 
   const loadCenterOnStart = async () => {
-    if (!center) {
+    if (!selectedCenter) {
       if (user?.centers.length && user.centers.length > 0) {
         setCenter(user.centers[0]);
       }
@@ -37,24 +38,43 @@ const CenterSelector = () => {
     loadCenterOnStart();
   }, []);
 
-  const handlePickerChange = useCallback(
-    (centerId: string, index: number) => {
-      if (allCenters && allCenters.length > 0) {
-        const selection = allCenters[index];
-        if (selection) {
-          const updatedCenter = {
-            centerId: selection.id,
-            countryCode: selection.country.code,
-            name: selection.name,
-          };
-          updateUserCenterAsync({
-            centers: [updatedCenter],
-          });
-          setCenter(updatedCenter);
-        }
+  const handleOnChange = useCallback(
+    (center: CenterType) => {
+      if (center) {
+        const updatedCenter = {
+          centerId: center.id,
+          countryCode: center.country.code,
+          name: center.name,
+        };
+        updateUserCenterAsync({
+          centers: [updatedCenter],
+        });
+        setCenter(updatedCenter);
       }
+      closeBottomSheet();
     },
-    [allCenters, setCenter, updateUserCenterAsync],
+    [closeBottomSheet, setCenter, updateUserCenterAsync],
+  );
+
+  const renderItem = useCallback(
+    ({ item: center }: { item: CenterType }) => {
+      return (
+        <TouchableOpacity onPress={() => handleOnChange(center)}>
+          <Box px="4" key={center.id} mb="5">
+            <Text
+              color={
+                selectedCenter?.centerId === center.id
+                  ? "secondary"
+                  : "black-600"
+              }
+            >
+              {center.name}
+            </Text>
+          </Box>
+        </TouchableOpacity>
+      );
+    },
+    [handleOnChange, selectedCenter?.centerId],
   );
 
   return (
@@ -67,26 +87,20 @@ const CenterSelector = () => {
             height={spacing[5]}
           />
           <Text variant="text-sm-bold" color="secondary">
-            {center?.name}
+            {selectedCenter?.name}
           </Text>
           <ArrowDownIcon fill={colors.secondary} />
         </Box>
       </TouchableOpacity>
       <DynamicBottomSheet bottomSheetModalRef={bottomSheetRef}>
-        <Picker
-          selectedValue={center?.centerId}
-          onValueChange={handlePickerChange}
-          itemStyle={{ fontSize: 16, fontFamily: "Manrope-SemiBold" }}
-          mode="dialog"
-        >
-          {allCenters?.map((location) => (
-            <Picker.Item
-              key={location.id}
-              label={`${location.display_name}, ${location.country.code}`}
-              value={location.id}
-            />
-          ))}
-        </Picker>
+        <Box mt="6">
+          <FlatList
+            style={{ height: 300 }}
+            data={centers}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          />
+        </Box>
       </DynamicBottomSheet>
     </>
   );

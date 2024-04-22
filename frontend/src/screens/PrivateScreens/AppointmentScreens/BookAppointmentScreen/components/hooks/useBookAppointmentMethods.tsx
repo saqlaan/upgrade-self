@@ -13,7 +13,7 @@ import { getGuestPaymentMethods } from "@/services/firebaseApp/guests";
 export const useBookAppointmentMethods = () => {
   const { center } = useCenter();
   const navigation = useNavigation();
-  const { setServicesFound, appointment } = useCreateAppointmentStore();
+  const { appointment } = useCreateAppointmentStore();
   const [isBooking, setIsBooking] = useState(false);
   const [timeSelected, setTimeSelected] = useState("");
 
@@ -63,7 +63,6 @@ export const useBookAppointmentMethods = () => {
       countryCode: center?.countryCode || "",
       guestId: guestAccount.guestId,
     });
-    console.log(methods);
     if (methods?.error == null) {
       return methods?.accounts && methods.accounts.length > 0;
     }

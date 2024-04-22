@@ -86,6 +86,7 @@ const CustomTextInput: React.FC<CustomTextInputProps> = ({
           onBlur={handleOnBlur}
           onFocus={handleOnFocused}
           secureTextEntry={isTextSecured}
+          autoComplete="off"
           {...props}
         />
         <InputRightIcon
