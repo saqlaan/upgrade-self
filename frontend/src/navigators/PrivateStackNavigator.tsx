@@ -18,6 +18,8 @@ import {
   ProfileSetup,
   QuestionStep,
   StatsScreen,
+  BrainUpgradeScreen,
+  CellHealthAnalysisScreen,
   Welcome,
 } from "@/screens";
 import { ApplicationStackParamList } from "@/types/navigation";
@@ -112,6 +114,14 @@ const PrivateStackNavigator = () => {
       <ProfileStackNavigator.Screen
         name="FinishOnBoardingScreen"
         component={FinishOnBoarding}
+      />
+      <ProfileStackNavigator.Screen
+        name="BrainUpgradeScreen"
+        component={BrainUpgradeScreen}
+      />
+      <ProfileStackNavigator.Screen
+        name="CellHealthAnalysisScreen"
+        component={CellHealthAnalysisScreen}
       />
     </ProfileStackNavigator.Navigator>
   );

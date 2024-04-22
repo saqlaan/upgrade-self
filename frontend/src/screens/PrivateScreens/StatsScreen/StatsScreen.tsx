@@ -1,5 +1,5 @@
 import React from "react";
-import { Image } from "react-native";
+import { Image, Pressable } from "react-native";
 import { Box, Text } from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
 import type { ApplicationScreenProps } from "@/types/navigation";
@@ -24,48 +24,60 @@ function Appointment({ navigation }: ApplicationScreenProps) {
           radius="4"
           bgColor="white"
         >
-          <Box row bgColor="grey-400" py="6" px="4" radius="4">
-            <Box>
-              <Text variant="text-xl-bold">Cell Health Analysis</Text>
-              <Text color="error">(Not Connected)</Text>
-            </Box>
-            <Box
-              style={{
-                maxHeight: 210,
-              }}
-            >
-              <Image
-                source={Images.CellHealthAnalysis}
+          <Pressable
+            onPress={() => {
+              navigation.navigate("CellHealthAnalysisScreen");
+            }}
+          >
+            <Box row bgColor="grey-400" py="6" px="4" radius="4">
+              <Box>
+                <Text variant="text-xl-bold">Cell Health Analysis</Text>
+                <Text color="error">(Not Connected)</Text>
+              </Box>
+              <Box
                 style={{
-                  maxHeight: 250,
-                  maxWidth: 150,
-                  objectFit: "contain",
+                  maxHeight: 210,
                 }}
-              />
+              >
+                <Image
+                  source={Images.CellHealthAnalysis}
+                  style={{
+                    maxHeight: 250,
+                    maxWidth: 150,
+                    objectFit: "contain",
+                  }}
+                />
+              </Box>
             </Box>
-          </Box>
-          <Box row bgColor="grey-400" py="6" px="4" radius="4">
-            <Box>
-              <Text variant="text-xl-bold">Brain Upgrade</Text>
-              <Text color="success">Connected</Text>
-            </Box>
-            <Box
-              flex={1}
-              style={{
-                maxHeight: 200,
-              }}
-              alignItems="flex-end"
-            >
-              <Image
-                source={Images.BrainUpgrade}
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              navigation.navigate("BrainUpgradeScreen");
+            }}
+          >
+            <Box row bgColor="grey-400" py="6" px="4" radius="4">
+              <Box>
+                <Text variant="text-xl-bold">Brain Upgrade</Text>
+                <Text color="success">Connected</Text>
+              </Box>
+              <Box
+                flex={1}
                 style={{
-                  maxHeight: 250,
-                  maxWidth: 150,
-                  objectFit: "contain",
+                  maxHeight: 200,
                 }}
-              />
+                alignItems="flex-end"
+              >
+                <Image
+                  source={Images.BrainUpgrade}
+                  style={{
+                    maxHeight: 250,
+                    maxWidth: 150,
+                    objectFit: "contain",
+                  }}
+                />
+              </Box>
             </Box>
-          </Box>
+          </Pressable>
         </Box>
       </Box>
     </SafeScreen>
