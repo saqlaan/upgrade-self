@@ -5,7 +5,7 @@ import { FirestoreUserType, GuestType } from "../types";
 import { CountryCodes } from "../types/enums/countryCode";
 import { mapZenotiUserDataToFirestore } from "../utils";
 
-export default async function handleExistingZenotiUser(before: FirestoreUserType, after: FirestoreUserType) {
+export default async function handleExistingZenotiUser(before: FirestoreUserType | null, after: FirestoreUserType) {
   try {
     let zenotiAccounts = await getZenotiUserFromAllOrganizations({ email: after.email });
     if (zenotiAccounts.length === 0) return null;
@@ -20,6 +20,7 @@ export default async function handleExistingZenotiUser(before: FirestoreUserType
           {
             centerId: zenotiAccounts[0].center_id,
             countryCode: zenotiAccounts[0].countryCode,
+            name: zenotiAccounts[0]?.center_name || "",
           },
         ],
       });
@@ -58,11 +59,12 @@ export default async function handleExistingZenotiUser(before: FirestoreUserType
 
 const signupUserInZenoti = async (user: GuestType, countryCode: CountryCodes) => {
   try {
-    const { personal_info, address_info } = user;
+    const { personal_info, address_info, center_name } = user;
     const data = {
       personal_info,
       address_info,
       center_id: countryCode === CountryCodes.US ? process.env.US_CENTER_ID || "" : process.env.CA_CENTER_ID || "",
+      center_name,
     };
     const results = await guestSignup(data, countryCode);
     console.log(`WoW user signed up in other country i.e. ${countryCode} too`);

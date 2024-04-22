@@ -48,4 +48,5 @@ export interface GuestType {
   tags?: string;
   referral?: string;
   primary_employee?: string;
+  center_name: string;
 }
