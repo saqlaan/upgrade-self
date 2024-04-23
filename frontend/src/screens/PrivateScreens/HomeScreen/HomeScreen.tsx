@@ -2,7 +2,7 @@ import React from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FlatList, Pressable, ScrollView, StatusBar } from "react-native";
 import { HomeHeader } from "./components";
-import { Box, Text } from "@/components/atoms";
+import { AndroidScreenTopSpace, Box, Text } from "@/components/atoms";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import {
   ActivitiesCard,
@@ -10,6 +10,7 @@ import {
   HealthActivityCard,
   HealthScoreCard,
 } from "@/components";
+import { colors } from "@/theme";
 
 const HealthActivityData = [
   {
@@ -61,7 +62,11 @@ function Home({ navigation }: ApplicationScreenProps) {
   const { top } = useSafeAreaInsets();
   return (
     <Box bgColor={"grey-400"} flex={1} style={{ paddingTop: top }}>
-      <StatusBar barStyle={"dark-content"} />
+      <StatusBar
+        barStyle={"dark-content"}
+        backgroundColor={colors["grey-400"]}
+      />
+      <AndroidScreenTopSpace />
       <HomeHeader />
       <ScrollView style={{ flex: 1 }}>
         <Box pb="5" pt="5" bgColor={"white"} flex={1}>

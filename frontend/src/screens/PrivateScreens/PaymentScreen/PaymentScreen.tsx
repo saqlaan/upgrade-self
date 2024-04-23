@@ -19,7 +19,7 @@ import { spacing } from "@/theme";
 import { addGuestPaymentAsync } from "@/services/firebaseApp/centers";
 import { SafeScreen } from "@/components/template";
 import { BackButton, Box, CButton, Text } from "@/components/atoms";
-import { useCenter } from "@/store/center";
+import { useCenterStore } from "@/store/centerStore";
 import { getGuestAccountByCountry } from "@/utils/functions";
 
 const WebViewModal = ({
@@ -63,7 +63,7 @@ function PaymentScreen({ navigation }: ApplicationScreenProps) {
   const [selectedCard, setSelectedCard] = useState({
     cardNumber: data.cards[0].card_number,
   });
-  const { center } = useCenter();
+  const { center } = useCenterStore();
 
   const [hasValidPaymentMethod, setHasValidPaymentMethod] = useState(false);
 

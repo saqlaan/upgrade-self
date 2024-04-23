@@ -1,12 +1,12 @@
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FlatList, Pressable } from "react-native";
+import { FlatList, Pressable, StatusBar } from "react-native";
 import { useTheme } from "react-native-paper";
 import { Bar } from "react-native-progress";
 import { useMutation } from "@tanstack/react-query";
 import Question from "./components/Question";
 import questionsData from "./questions.json";
-import { useOnBoardingQuestionsStore } from "@/store/onBoardingQuestion.stores";
+import { useOnBoardingQuestionsStore } from "@/store/onBoardingQuestionStore";
 import { AppTheme } from "@/types/theme";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { QuestionType } from "@/types";
@@ -88,6 +88,7 @@ function QuestionStep({ navigation }: ApplicationScreenProps) {
 
   return (
     <SafeScreen>
+      <StatusBar barStyle={"dark-content"} />
       <Box px="5" pt="5" row alignItems="center" justifyContent="space-between">
         <BackButton onPress={handleBackPress} color={colors.primary} />
         <Box px="10">

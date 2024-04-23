@@ -14,5 +14,7 @@
   "city": "City",
   "state": "State",
   "zipcode": "Zip Code",
-  "phone": "Phone"
+  "phone": "Phone",
+  "province": "Province",
+  "postalCode": "Postal Code"
 }

@@ -1,10 +1,11 @@
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { ScrollView, StatusBar, StyleSheet } from "react-native";
+import { useTheme } from "react-native-paper";
 import { BackButton, Box, CButton, Spacer, Text } from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { AppTheme } from "@/types/theme";
-import { useTranslation } from "react-i18next";
-import { ScrollView, StatusBar, StyleSheet } from "react-native";
-import { useTheme } from "react-native-paper";
 
 function TOS({ navigation }: ApplicationScreenProps) {
   const { colors, spacing } = useTheme<AppTheme>();
@@ -34,7 +35,7 @@ function TOS({ navigation }: ApplicationScreenProps) {
 
   return (
     <SafeScreen>
-      <StatusBar backgroundColor={"white"} />
+      <StatusBar />
       <Box px="5" pt="5" row>
         <BackButton color={colors.primary} />
       </Box>

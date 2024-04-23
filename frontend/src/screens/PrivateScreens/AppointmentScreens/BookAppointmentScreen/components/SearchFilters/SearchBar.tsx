@@ -14,7 +14,7 @@ import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 import { useDynamicBottomSheet } from "@/hooks";
 import { ZenotiService } from "@/types";
 import { getUserGuests } from "@/services/firebase/collections/guest";
-import { useCenter } from "@/store/center";
+import { useCenterStore } from "@/store/centerStore";
 import {
   createAppointment,
   getSlots,
@@ -35,7 +35,7 @@ function SearchBar({ onPressFilters }: { onPressFilters: () => void }) {
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } =
     useDynamicBottomSheet();
 
-  const { center } = useCenter();
+  const { center } = useCenterStore();
 
   const handleOnChangeService = useCallback((item) => {
     setSelectedService(item);
@@ -128,9 +128,8 @@ function SearchBar({ onPressFilters }: { onPressFilters: () => void }) {
         </Box>
       </TouchableOpacity>
       <DynamicBottomSheet bottomSheetModalRef={bottomSheetRef}>
-        <Box mt="6">
+        <Box mt="6" style={{ height: 400 }}>
           <FlatList
-            style={{ height: 300 }}
             data={services || []}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}

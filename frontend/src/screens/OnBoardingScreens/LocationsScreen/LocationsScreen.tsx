@@ -1,36 +1,31 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
-import { FlatList, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  FlatList,
+  StatusBar,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { useTheme } from "react-native-paper";
 import { BackButton, Box, CButton, Text } from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
 import { updateUser } from "@/services/firebase";
 import { fetchAllCentersData } from "@/services/firebaseApp/centers";
-import { useUserStore } from "@/store/user.store";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { AppTheme } from "@/types/theme";
 import { useDynamicBottomSheet } from "@/hooks";
 import { DynamicBottomSheet } from "@/components";
 import { colors } from "@/theme";
 import { CenterType } from "@/types";
+import { useCenterStore } from "@/store/centerStore";
 
 function Locations({ navigation }: ApplicationScreenProps) {
   const { colors } = useTheme<AppTheme>();
   const { t } = useTranslation(["locations", "common"]);
-  const { user } = useUserStore();
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } =
     useDynamicBottomSheet();
-  const [selectedLocation, setSelectedLocation] = useState<{
-    centerId: string;
-    countryCode: string;
-    name: string;
-  } | null>(null);
-
-  useEffect(() => {
-    if (user?.centers && user.centers.length > 0)
-      setSelectedLocation(user?.centers[0]);
-  }, [user]);
+  const { center, setCenter } = useCenterStore();
 
   const { data: locations } = useQuery({
     queryKey: ["repoData"],
@@ -41,45 +36,46 @@ function Locations({ navigation }: ApplicationScreenProps) {
     mutationFn: updateUser,
   });
 
-  const handleOnChange = useCallback((center: CenterType) => {
-    setSelectedLocation({
-      centerId: center.id,
-      countryCode: center.country.code,
-      name: center.name,
-    });
-    closeBottomSheet();
-  }, []);
+  const handleOnChange = useCallback(
+    (center: CenterType) => {
+      if (center) {
+        setCenter({
+          centerId: center.id,
+          countryCode: center.country.code,
+          name: center.name,
+        });
+      }
+      closeBottomSheet();
+    },
+    [closeBottomSheet, setCenter],
+  );
 
   const _submit = useCallback(async () => {
     try {
       updateLocationsAsync({
-        centers: [selectedLocation],
+        centers: [center],
       });
       navigation.navigate("ProfileSetupScreen");
     } catch (e) {
       console.log(e);
     }
-  }, [navigation, selectedLocation, updateLocationsAsync]);
+  }, [center, navigation, updateLocationsAsync]);
 
   const renderItem = useCallback(
-    ({ item: center }: { item: CenterType }) => {
+    ({ item }: { item: CenterType }) => {
       return (
-        <TouchableOpacity onPress={() => handleOnChange(center)}>
-          <Box px="4" key={center.id} mb="5">
+        <TouchableOpacity onPress={() => handleOnChange(item)}>
+          <Box px="4" key={item.id} mb="5">
             <Text
-              color={
-                selectedLocation?.centerId === center.id
-                  ? "secondary"
-                  : "black-600"
-              }
+              color={center?.centerId === item.id ? "secondary" : "black-600"}
             >
-              {center.name}
+              {item.name}
             </Text>
           </Box>
         </TouchableOpacity>
       );
     },
-    [handleOnChange, selectedLocation?.centerId],
+    [center?.centerId, handleOnChange],
   );
 
   return (
@@ -89,6 +85,7 @@ function Locations({ navigation }: ApplicationScreenProps) {
           <BackButton color={colors.primary} />
         </Box>
       )}
+      <StatusBar barStyle={"dark-content"} />
       <Box px="5" py="5">
         <Text variant={"display-xs-bold"} mb={"2"}>
           {t("locations:title")}
@@ -101,7 +98,7 @@ function Locations({ navigation }: ApplicationScreenProps) {
         <TouchableOpacity onPress={openBottomSheet}>
           <Box gap="2" radius="3" px="4" py="4" row style={styles.inputWrapper}>
             <Text color="black-700" variant="text-sm-medium">
-              {selectedLocation?.name || "Select location"}
+              {center?.name || "Select location"}
             </Text>
           </Box>
         </TouchableOpacity>
@@ -119,11 +116,7 @@ function Locations({ navigation }: ApplicationScreenProps) {
       </Box>
 
       <Box px="5" py="5">
-        <CButton
-          loading={isPending}
-          onPress={_submit}
-          disabled={selectedLocation === null}
-        >
+        <CButton loading={isPending} onPress={_submit} disabled={!center}>
           <Text color={"white"} variant="text-md-semi-bold">
             {t("common:appName.next")}
           </Text>

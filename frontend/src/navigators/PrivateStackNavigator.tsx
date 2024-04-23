@@ -25,7 +25,7 @@ import {
 import { ApplicationStackParamList } from "@/types/navigation";
 import { BottomTabBar } from "@/components";
 import { getUser } from "@/services/firebase";
-import { useCenter } from "@/store/center";
+import { useCenterStore } from "@/store/centerStore";
 
 const ProfileStackNavigator = createStackNavigator<ApplicationStackParamList>();
 
@@ -48,7 +48,7 @@ const TabNavigator = () => {
 };
 
 const PrivateStackNavigator = () => {
-  const { setCenter } = useCenter();
+  const { setCenter } = useCenterStore();
   useEffect(() => {
     setupUser();
   }, []);

@@ -11,3 +11,4 @@ export { default as Spacer } from "./Spacer/Spacer";
 export { default as Text } from "./Text/Text";
 export { default as DummyTextInput } from "./DummyInput/DummyInput";
 export { default as RoundedTop } from "./RoundedTop/RoundedTop";
+export { default as AndroidScreenTopSpace } from "./AndroidScreenTopSpace/AndroidScreenTopSpace";

@@ -3,11 +3,13 @@ import firestore, {
 } from "@react-native-firebase/firestore";
 import { useEffect } from "react";
 import { useAuthState } from "./useAuthState";
-import { COLLECTIONS } from "@/types";
-import { useUserStore } from "@/store/user.store";
+import { COLLECTIONS, FirestoreUser } from "@/types";
+import { useUserStore } from "@/store/userStore";
+import { useCenterStore } from "@/store/centerStore";
 
 export const useFirebaseSnapshots = () => {
   const { updateUser } = useUserStore();
+  const { setCenter } = useCenterStore();
   const { user } = useAuthState();
 
   useEffect(() => {
@@ -26,7 +28,13 @@ export const useFirebaseSnapshots = () => {
   const handleUserSnapshot = (
     documentSnapShot: FirebaseFirestoreTypes.DocumentSnapshot,
   ) => {
-    if (documentSnapShot?.exists) updateUser(documentSnapShot.data());
+    if (documentSnapShot?.exists) {
+      const user = documentSnapShot.data() as FirestoreUser;
+      updateUser(user);
+      if (user.centers && user.centers.length > 0) {
+        setCenter(user.centers[0]);
+      }
+    }
   };
 
   return {};

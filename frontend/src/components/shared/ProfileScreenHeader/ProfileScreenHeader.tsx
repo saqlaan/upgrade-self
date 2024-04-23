@@ -9,7 +9,7 @@ const ProfileScreensHeader = ({
   rightComponent,
 }: {
   title: string;
-  rightComponent: ReactNode;
+  rightComponent?: ReactNode;
 }) => {
   const { colors } = useTheme<AppTheme>();
   return (

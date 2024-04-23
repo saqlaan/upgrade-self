@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { useCenter } from "@/store/center";
+import { useCenterStore } from "@/store/centerStore";
 import { useServicesStore } from "@/store/servicesStore";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 import { getServices } from "@/services/firebaseApp/appointment";
 
 export const useBookAppointmentScreen = () => {
-  const { center } = useCenter();
+  const { center } = useCenterStore();
   const { setServices, resetStore, setIsLoadingServices } = useServicesStore();
   const { resetStore: resetAppointmentStore } = useCreateAppointmentStore();
 

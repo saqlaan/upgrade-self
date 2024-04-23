@@ -1,9 +1,9 @@
-import { useCallback } from "react";
+import React, { useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { ImageBackground, StatusBar, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Box, CButton, Text } from "@/components/atoms";
-import { useUserStore } from "@/store/user.store";
+import { useUserStore } from "@/store/userStore";
 import { GrimReaperIcon } from "@/theme/assets/icons";
 import { Images } from "@/theme/assets/images";
 import { spacing } from "@/theme/spacing";
@@ -16,11 +16,11 @@ function Welcome({ navigation }: ApplicationScreenProps) {
 
   const _submit = useCallback(() => {
     navigation.navigate("QuestionStepScreen");
-  }, []);
+  }, [navigation]);
 
   return (
     <ImageBackground source={Images.primaryBgLines} style={{ flex: 1 }}>
-      <StatusBar barStyle={"light-content"} />
+      <StatusBar barStyle={"dark-content"} />
       <View
         style={[
           styles.container,

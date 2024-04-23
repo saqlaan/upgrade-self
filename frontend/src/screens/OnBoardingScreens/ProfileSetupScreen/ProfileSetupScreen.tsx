@@ -3,7 +3,7 @@ import { useKeyboard } from "@react-native-community/hooks";
 import { useMutation } from "@tanstack/react-query";
 import { Formik, FormikHelpers, FormikValues } from "formik";
 import { useTranslation } from "react-i18next";
-import { ScrollView } from "react-native";
+import { ScrollView, StatusBar } from "react-native";
 import { useTheme } from "react-native-paper";
 import _ from "lodash";
 import { AppTheme } from "@/types/theme";
@@ -14,7 +14,7 @@ import { SafeScreen } from "@/components/template";
 import { BackButton, Box, CButton, Text } from "@/components/atoms";
 import { ContactDetailsForm, PersonalDetailsForm } from "@/components";
 import { ProfileFormValuesType, Gender } from "@/types";
-import { useUserStore } from "@/store/user.store";
+import { useUserStore } from "@/store/userStore";
 
 const initialValues: ProfileFormValuesType = {
   firstName: "",
@@ -89,6 +89,7 @@ function ProfileSetup({ navigation }: ApplicationScreenProps) {
           <BackButton color={colors.primary} />
         </Box>
       )}
+      <StatusBar barStyle={"dark-content"} />
       <Formik<ProfileFormValuesType>
         initialValues={handleGetInitialValues()}
         validationSchema={signupDetailsSchema}

@@ -5,14 +5,14 @@ import { useBookAppointmentMethods } from "./hooks/useBookAppointmentMethods";
 import { Box } from "@/components/atoms";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 import { AppointmentCardWithActions } from "@/components";
-import { useCenter } from "@/store/center";
+import { useCenterStore } from "@/store/centerStore";
 import { SlotType } from "@/types";
 
 export function SlotsSection() {
   const { groupSlots, selectedHour, selectedService } =
     useCreateAppointmentStore();
   const { reserveSlot, isBooking, timeSelected } = useBookAppointmentMethods();
-  const { center } = useCenter();
+  const { center } = useCenterStore();
   const navigation = useNavigation();
   const slotCards = groupSlots ? groupSlots[selectedHour] || [] : [];
 

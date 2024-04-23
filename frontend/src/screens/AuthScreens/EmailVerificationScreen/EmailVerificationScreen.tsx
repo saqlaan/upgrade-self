@@ -1,4 +1,14 @@
-import { BackButton, CButton, Spacer } from "@/components/atoms";
+import auth from "@react-native-firebase/auth";
+import React, { useCallback, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { openInbox } from "react-native-email-link";
+import { Button, Text, useTheme } from "react-native-paper";
+import {
+  AndroidScreenTopSpace,
+  BackButton,
+  CButton,
+  Spacer,
+} from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
 import { sendEmailConfirmation } from "@/services/firebase/auth";
 import { CreateAccountMailIcon } from "@/theme/assets/icons";
@@ -6,11 +16,6 @@ import { TextVariants } from "@/theme/fonts";
 import { spacing } from "@/theme/spacing";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { AppTheme } from "@/types/theme";
-import auth from "@react-native-firebase/auth";
-import React, { useCallback, useState } from "react";
-import { StyleSheet, View } from "react-native";
-import { openInbox } from "react-native-email-link";
-import { Button, Text, useTheme } from "react-native-paper";
 
 function EmailVerification({ navigation }: ApplicationScreenProps) {
   const { colors } = useTheme<AppTheme>();
@@ -33,6 +38,7 @@ function EmailVerification({ navigation }: ApplicationScreenProps) {
 
   return (
     <SafeScreen>
+      <AndroidScreenTopSpace />
       <View style={{ flexDirection: "row", paddingHorizontal: 20 }}>
         <BackButton color={colors.primary} />
       </View>
@@ -60,7 +66,7 @@ function EmailVerification({ navigation }: ApplicationScreenProps) {
             >
               {isDisabled
                 ? "Sent again. Try again in 30s"
-                : `Didn't receive an email?`}
+                : "Didn't receive an email?"}
             </Text>
           </Button>
         </View>

@@ -1,7 +1,7 @@
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { useEffect, useState } from "react";
 import { updateAuthorizationToken } from "@/services/config/axiosConfig";
-import { useUserStore } from "@/store/user.store";
+import { useUserStore } from "@/store/userStore";
 
 export const useAuthState = () => {
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>();

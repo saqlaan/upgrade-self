@@ -10,10 +10,10 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import auth from "@react-native-firebase/auth";
 import { BackButton, Box, Text } from "@/components/atoms";
 import { Images } from "@/theme/assets/images";
-import { spacing } from "@/theme";
+import { colors, spacing } from "@/theme";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { AppTheme } from "@/types/theme";
-import { useUserStore } from "@/store/user.store";
+import { useUserStore } from "@/store/userStore";
 import { MapPointIcon } from "@/theme/assets/icons";
 
 function ProfileSceenButton({
@@ -85,7 +85,7 @@ function ProfileScreen({ navigation }: ApplicationScreenProps) {
 
   return (
     <Box flex={1} bgColor="white">
-      <StatusBar barStyle={"light-content"} />
+      <StatusBar barStyle={"light-content"} backgroundColor={colors.primary} />
       <ImageBackground
         style={[styles.topSection, { paddingTop: top }]}
         source={Images.ProfileBg}

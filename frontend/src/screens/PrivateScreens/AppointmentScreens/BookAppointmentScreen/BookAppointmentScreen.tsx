@@ -6,6 +6,8 @@ import { SlotsSection } from "./components/SlotsSection";
 import { Box, Text } from "@/components/atoms";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { useServicesStore } from "@/store/servicesStore";
+import { isIOS } from "@/utils/functions";
+import { colors } from "@/theme";
 
 function BookAppointment({ navigation }: ApplicationScreenProps) {
   const { servicesAvailable } = useServicesStore();
@@ -13,7 +15,14 @@ function BookAppointment({ navigation }: ApplicationScreenProps) {
 
   return (
     <Box flex={1} bgColor="white">
-      <StatusBar barStyle={"light-content"} />
+      {isIOS ? (
+        <StatusBar barStyle={"light-content"} />
+      ) : (
+        <StatusBar
+          barStyle={"light-content"}
+          backgroundColor={colors.primary}
+        />
+      )}
       <BookAppointmentHeader />
       {servicesAvailable() ? (
         <Box py="4" flex={1}>
