@@ -53,6 +53,7 @@ function GoogleSignInButton({ onError }: Props) {
       )}
       onPress={handleGoogleSignIn}
       loading={isLoading}
+      labelStyle={{ color: colors["black-600"] }}
     >
       <Text variant={TextVariants["text-md-semi-bold"]}>Google</Text>
     </CButton>

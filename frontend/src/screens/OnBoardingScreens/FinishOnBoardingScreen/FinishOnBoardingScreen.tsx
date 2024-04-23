@@ -10,6 +10,7 @@ import { CheckCircleIcon } from "@/theme/assets/icons";
 import { Images } from "@/theme/assets/images";
 import { spacing } from "@/theme/spacing";
 import type { ApplicationScreenProps } from "@/types/navigation";
+import { colors } from "@/theme";
 
 function FinishOnBoarding({ navigation }: ApplicationScreenProps) {
   const { t } = useTranslation(["common", "finishOnBoarding"]);
@@ -29,7 +30,7 @@ function FinishOnBoarding({ navigation }: ApplicationScreenProps) {
 
   return (
     <ImageBackground source={Images.primaryBgLines} style={{ flex: 1 }}>
-      <StatusBar barStyle={"light-content"} />
+      <StatusBar barStyle={"light-content"} backgroundColor={colors.primary} />
       <View
         style={[
           styles.container,

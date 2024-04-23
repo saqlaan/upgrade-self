@@ -4,19 +4,19 @@ import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
 import { Box, Text } from "@/components/atoms";
 import { ArrowDownIcon, MapPointIcon } from "@/theme/assets/icons";
 import { colors, spacing } from "@/theme";
-import { useUserStore } from "@/store/user.store";
+import { useUserStore } from "@/store/userStore";
 import { fetchAllCentersData } from "@/services/firebaseApp/centers";
 import { DynamicBottomSheet } from "@/components";
 import { useDynamicBottomSheet } from "@/hooks";
 import { updateUser } from "@/services/firebase";
-import { useCenter } from "@/store/center";
+import { useCenterStore } from "@/store/centerStore";
 import { CenterType } from "@/types";
 
 const CenterSelector = () => {
   const { user } = useUserStore();
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } =
     useDynamicBottomSheet();
-  const { setCenter, center: selectedCenter } = useCenter();
+  const { setCenter, center: selectedCenter } = useCenterStore();
   const { mutateAsync: updateUserCenterAsync } = useMutation({
     mutationFn: updateUser,
   });

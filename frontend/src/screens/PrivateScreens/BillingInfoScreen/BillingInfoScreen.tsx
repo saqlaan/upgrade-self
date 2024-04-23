@@ -9,7 +9,7 @@ import {
 import Carousel from "react-native-snap-carousel";
 import { ActivityIndicator } from "react-native-paper";
 import type { ApplicationScreenProps } from "@/types/navigation";
-import { Box, Text } from "@/components/atoms";
+import { AndroidScreenTopSpace, Box, Text } from "@/components/atoms";
 import {
   PaymentCardItem,
   ProfileScreenHeader,
@@ -48,7 +48,8 @@ function BillingInfoScreen({ navigation }: ApplicationScreenProps) {
   return (
     <SafeScreen edges={["top"]}>
       <Box flex={1}>
-        <StatusBar barStyle={"dark-content"} />
+        <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
+        <AndroidScreenTopSpace />
         <ProfileScreenHeader
           title="Billing Info"
           rightComponent={

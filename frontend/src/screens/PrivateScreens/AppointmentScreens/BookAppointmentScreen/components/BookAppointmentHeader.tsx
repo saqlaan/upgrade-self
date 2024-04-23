@@ -2,7 +2,12 @@ import React from "react";
 import { ImageBackground, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { SearchBar, BottomFilterSheet, DateSelection } from "./SearchFilters";
-import { BackButton, Box, Text } from "@/components/atoms";
+import {
+  AndroidScreenTopSpace,
+  BackButton,
+  Box,
+  Text,
+} from "@/components/atoms";
 import { Images } from "@/theme/assets/images";
 import { spacing } from "@/theme";
 import { DynamicBottomSheet } from "@/components";
@@ -24,6 +29,7 @@ export function BookAppointmentHeader() {
         ]}
         source={Images.BookAppointmentBg}
       >
+        <AndroidScreenTopSpace />
         <Box row alignItems="center" justifyContent="space-between">
           <BackButton />
           <Box style={styles.title}>

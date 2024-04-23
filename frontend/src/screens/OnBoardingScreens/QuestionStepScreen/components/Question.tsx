@@ -2,7 +2,7 @@ import React, { useCallback } from "react";
 import { Dimensions } from "react-native";
 import Options from "./Options";
 import { Box, Text } from "@/components/atoms";
-import { useOnBoardingQuestionsStore } from "@/store/onBoardingQuestion.stores";
+import { useOnBoardingQuestionsStore } from "@/store/onBoardingQuestionStore";
 import { OptionType, QuestionType } from "@/types";
 
 const Question = ({ item }: { item: QuestionType }) => {

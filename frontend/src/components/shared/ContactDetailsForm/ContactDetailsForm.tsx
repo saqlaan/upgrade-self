@@ -11,12 +11,16 @@ import {
   Text,
 } from "@/components/atoms";
 import { ProfileFormValuesType } from "@/types";
+import { useCenterStore } from "@/store/centerStore";
 
 function ContactDetails({ isUpdating = false }: { isUpdating?: boolean }) {
   const { t } = useTranslation(["profileSetup"]);
   const phoneInputRef = useRef();
+  const { center } = useCenterStore();
 
-  const { errors, handleChange, values, handleBlur, touched, setFieldValue } =
+  const isUserUSBased = center?.countryCode === "US";
+
+  const { errors, handleChange, values, handleBlur, touched } =
     useFormikContext<ProfileFormValuesType>();
 
   useEffect(() => {
@@ -77,7 +81,11 @@ function ContactDetails({ isUpdating = false }: { isUpdating?: boolean }) {
           </Box>
           <Box mt="2">
             <CustomTextInput
-              label={t("profileSetup:state")}
+              label={
+                isUserUSBased
+                  ? t("profileSetup:state")
+                  : t("profileSetup:province")
+              }
               onChangeText={handleChange("state")}
               value={values.state}
               textContentType={"addressState"}
@@ -87,11 +95,14 @@ function ContactDetails({ isUpdating = false }: { isUpdating?: boolean }) {
           </Box>
           <Box mt="2">
             <CustomTextInput
-              label={t("profileSetup:zipcode")}
+              label={
+                isUserUSBased
+                  ? t("profileSetup:zipcode")
+                  : t("profileSetup:postalCode")
+              }
               onChangeText={handleChange("zipcode")}
               value={values.zipcode}
               textContentType={"postalCode"}
-              keyboardType="number-pad"
               onBlur={handleBlur("zipcode")}
               error={touched.zipcode ? errors.zipcode : ""}
             />

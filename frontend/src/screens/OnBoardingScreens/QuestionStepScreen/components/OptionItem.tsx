@@ -1,7 +1,7 @@
 import React from "react";
 import { Pressable, StyleSheet } from "react-native";
 import { Box, Text } from "@/components/atoms";
-import { useOnBoardingQuestionsStore } from "@/store/onBoardingQuestion.stores";
+import { useOnBoardingQuestionsStore } from "@/store/onBoardingQuestionStore";
 import { OptionSelectedIcon, OptionUnSelectedIcon } from "@/theme/assets/icons";
 import colors from "@/theme/colors";
 import { OptionType } from "@/types";

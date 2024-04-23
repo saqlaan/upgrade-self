@@ -1,3 +1,7 @@
+import { FormikHelpers, useFormik } from "formik";
+import React, { useState } from "react";
+import { ScrollView, StyleSheet, View, Keyboard } from "react-native";
+import { Text } from "react-native-paper";
 import {
   BackButton,
   CButton,
@@ -6,16 +10,11 @@ import {
 } from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
 import { forgotPasswordSchema } from "@/schema";
-import { forgotPassword } from "@/services/firebase/auth";
 import { LetterIcon } from "@/theme/assets/icons";
 import colors from "@/theme/colors";
 import { TextVariants } from "@/theme/fonts";
 import { spacing } from "@/theme/spacing";
 import type { ApplicationScreenProps } from "@/types/navigation";
-import { FormikHelpers, useFormik } from "formik";
-import React, { useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import { Text } from "react-native-paper";
 
 interface ForgotPassworkFormValues {
   email: string;
@@ -33,7 +32,6 @@ function Login({ navigation }: ApplicationScreenProps) {
     handleSubmit,
     isSubmitting,
     touched,
-    resetForm,
   } = useFormik({
     initialValues: {
       email: "",
@@ -44,11 +42,12 @@ function Login({ navigation }: ApplicationScreenProps) {
 
   function handleForgotPassword(
     values: ForgotPassworkFormValues,
-    { setSubmitting, resetForm }: FormikHelpers<ForgotPassworkFormValues>
+    { setSubmitting, resetForm }: FormikHelpers<ForgotPassworkFormValues>,
   ) {
     forgotPassword(values.email)
       .then(() => {
-        resetForm();
+        setSubmitting(false);
+        Keyboard.dismiss();
         setMessage("Password reset email sent. Please check your inbox");
       })
       .catch((error) => {

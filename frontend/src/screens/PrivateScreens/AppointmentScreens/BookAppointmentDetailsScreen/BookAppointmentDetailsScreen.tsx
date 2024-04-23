@@ -14,7 +14,7 @@ import { Images } from "@/theme/assets/images";
 import { spacing } from "@/theme";
 import { MapPointUnderlineIcon, StopWatchIcon } from "@/theme/assets/icons";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
-import { useCenter } from "@/store/center";
+import { useCenterStore } from "@/store/centerStore";
 import { SlotType, ZenotiService } from "@/types";
 
 const AppointmentCard = ({
@@ -67,7 +67,7 @@ function BookAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
   const { top, bottom } = useSafeAreaInsets();
   const route = useRoute();
   const { selectedService } = useCreateAppointmentStore();
-  const { center } = useCenter();
+  const { center } = useCenterStore();
   const { slot } = route.params;
 
   const handleBookSession = useCallback(() => {}, []);

@@ -1,3 +1,7 @@
+import { FormikHelpers, useFormik } from "formik";
+import React, { useState } from "react";
+import { ScrollView, StatusBar, StyleSheet, View } from "react-native";
+import { Text, useTheme } from "react-native-paper";
 import {
   BackButton,
   CButton,
@@ -12,10 +16,6 @@ import { LetterIcon, LockIcon } from "@/theme/assets/icons";
 import { TextVariants } from "@/theme/fonts";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { AppTheme } from "@/types/theme";
-import { FormikHelpers, useFormik } from "formik";
-import React, { useState } from "react";
-import { ScrollView, StatusBar, StyleSheet, View } from "react-native";
-import { Text, useTheme } from "react-native-paper";
 
 type SignupFormValues = {
   email: string;
@@ -48,7 +48,7 @@ function Signup({ navigation }: ApplicationScreenProps) {
 
   function handleLogin(
     values: SignupFormValues,
-    { setSubmitting, resetForm, setTouched }: FormikHelpers<SignupFormValues>
+    { setSubmitting }: FormikHelpers<SignupFormValues>,
   ) {
     signup({ ...values })
       .then(() => {
@@ -68,7 +68,7 @@ function Signup({ navigation }: ApplicationScreenProps) {
   return (
     <SafeScreen>
       <ScrollView>
-        <StatusBar backgroundColor={"white"} />
+        <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
         <View style={styles.container}>
           <View style={{ flexDirection: "row" }}>
             <BackButton color={colors.primary} />
@@ -149,17 +149,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 20,
     paddingTop: 20,
-  },
-  error: {
-    fontSize: 14,
-    color: "black",
-  },
-  forgotPasswordRow: {
-    justifyContent: "flex-end",
-    flexDirection: "row",
-  },
-  center: {
-    alignItems: "center",
   },
 });
 

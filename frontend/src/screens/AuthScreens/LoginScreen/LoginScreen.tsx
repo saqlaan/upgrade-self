@@ -3,6 +3,7 @@ import React, { useCallback, useState } from "react";
 import {
   ImageBackground,
   ScrollView,
+  StatusBar,
   StyleSheet,
   TouchableOpacity,
   View,
@@ -24,7 +25,6 @@ import { login } from "@/services/firebase/auth";
 import firebaseErrors from "@/services/firebase/firebaseErrors";
 import { LetterIcon, LockIcon, UlAppIconSingle } from "@/theme/assets/icons";
 import { Images } from "@/theme/assets/images";
-import colors from "@/theme/colors";
 import { TextVariants } from "@/theme/fonts";
 import { spacing } from "@/theme/spacing";
 import type { ApplicationScreenProps } from "@/types/navigation";
@@ -92,6 +92,7 @@ function Login({ navigation }: ApplicationScreenProps) {
       edges={["bottom"]}
       style={{ backgroundColor: colors.white, flex: 1 }}
     >
+      <StatusBar barStyle={"light-content"} backgroundColor={colors.primary} />
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <ImageBackground
           style={[styles.topSection, { paddingTop: top }]}
@@ -207,15 +208,6 @@ const styles = StyleSheet.create({
     paddingBottom: spacing[4],
     minHeight: 100,
   },
-  backButton: {
-    padding: spacing[2],
-    borderWidth: 1,
-    borderColor: colors["black-50"],
-    width: "auto",
-    borderRadius: spacing[2],
-    zIndex: 9999,
-    backgroundColor: "rgba(233, 232, 238, 0.10);",
-  },
   appIconWrapper: {
     flex: 1,
 
@@ -234,10 +226,6 @@ const styles = StyleSheet.create({
     borderTopRightRadius: spacing[4],
     position: "relative",
     top: -spacing[4],
-  },
-  error: {
-    fontSize: 14,
-    color: "black",
   },
   forgotPasswordRow: {
     justifyContent: "center",

@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import { Formik, FormikHelpers, FormikValues } from "formik";
-import { ScrollView } from "react-native";
+import { ScrollView, StatusBar } from "react-native";
 import { useTheme } from "react-native-paper";
 import { AppTheme } from "@/types/theme";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { SafeScreen } from "@/components/template";
-import { Box, CButton, CustomTextInput, Text } from "@/components/atoms";
+import {
+  AndroidScreenTopSpace,
+  Box,
+  CButton,
+  CustomTextInput,
+  Text,
+} from "@/components/atoms";
 import { ProfileScreenHeader } from "@/components";
 import { ChangePasswordValuesType } from "@/types";
 import changePasswordSchema from "@/schema/changePassword.schema";
@@ -47,6 +53,8 @@ function ChangePasswordScreen({ navigation }: ApplicationScreenProps) {
 
   return (
     <SafeScreen edges={["top"]}>
+      <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
+      <AndroidScreenTopSpace />
       <Formik<ChangePasswordValuesType>
         initialValues={initialValues}
         validationSchema={changePasswordSchema}

@@ -6,12 +6,12 @@ import {
   reserveSlotAsync,
 } from "@/services/firebaseApp/appointment";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
-import { useCenter } from "@/store/center";
+import { useCenterStore } from "@/store/centerStore";
 import { getGuestAccountByCountry } from "@/utils/functions";
 import { getGuestPaymentMethods } from "@/services/firebaseApp/guests";
 
 export const useBookAppointmentMethods = () => {
-  const { center } = useCenter();
+  const { center } = useCenterStore();
   const navigation = useNavigation();
   const { appointment } = useCreateAppointmentStore();
   const [isBooking, setIsBooking] = useState(false);

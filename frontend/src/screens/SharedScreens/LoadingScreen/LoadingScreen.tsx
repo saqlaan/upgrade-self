@@ -1,6 +1,6 @@
 import { firebase } from "@react-native-firebase/auth";
 import React, { useEffect } from "react";
-import { ImageBackground, StyleSheet, View } from "react-native";
+import { ImageBackground, StatusBar, StyleSheet, View } from "react-native";
 import { ActivityIndicator, Button } from "react-native-paper";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { Images } from "@/theme/assets/images";
@@ -26,6 +26,7 @@ function Startup({ navigation }: ApplicationScreenProps) {
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle={"light-content"} backgroundColor={colors.primary} />
       <ImageBackground
         source={Images.SplashBg}
         resizeMode={"cover"}

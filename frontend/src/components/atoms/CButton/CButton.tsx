@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { StyleSheet } from "react-native";
 import { Button, ButtonProps, useTheme } from "react-native-paper";
 import Text from "../Text/Text";
