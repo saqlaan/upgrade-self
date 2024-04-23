@@ -1,12 +1,7 @@
 import React, { ReactNode } from "react";
 import { StyleSheet } from "react-native";
 import { Box, Text } from "@/components/atoms";
-import {
-  BrainIcon,
-  CaloriesIcon,
-  HeartIcon,
-  TimeIcon,
-} from "@/theme/assets/icons";
+import { BrainIcon, CaloriesIcon, TimeIcon } from "@/theme/assets/icons";
 import { spacing } from "@/theme";
 
 type VariantsType = {
@@ -19,27 +14,27 @@ type VariantsType = {
 };
 const Variants: VariantsType = {
   brain: {
-    title: "Brain\nActivity",
+    title: "My\nScore",
     color: "#73D485",
-    valueType: "BHI",
+    valueType: "",
     icon: BrainIcon,
   },
   heart: {
-    title: "Heart Rate",
+    title: "Session\nAlpha",
     color: "#E43C40",
-    valueType: "bpm",
-    icon: HeartIcon,
+    valueType: "min",
+    icon: TimeIcon,
   },
   calories: {
-    title: "Calories",
+    title: "EC\nWeight",
     color: "#EE862A",
-    valueType: "Kcal",
+    valueType: "lbs",
     icon: CaloriesIcon,
   },
   weight: {
-    title: "Weight",
+    title: "TC\nWeight",
     color: "#AC9AF6",
-    valueType: "Kg",
+    valueType: "lbs",
     icon: TimeIcon,
   },
 };
