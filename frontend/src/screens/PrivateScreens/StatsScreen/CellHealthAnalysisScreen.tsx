@@ -80,29 +80,40 @@ const data = [
 
 const SmoothChart = () => {
   // Calculate path data for the smooth curve
-  const controlPoints = calculateControlPoints(data);
+  const bounds = {
+    maxX: Math.max(...data.map((d) => d.x)) + 10,
+    maxY: Math.max(...data.map((d) => d.y)) + 10,
+    minX: Math.min(...data.map((d) => d.x)) - 10,
+    minY: Math.min(...data.map((d) => d.y)) - 10,
+  };
+  const plotData = data.map((d) => ({
+    x: ((d.x - bounds.minX) / (bounds.maxX - bounds.minX)) * 100,
+    y: ((d.y - bounds.minY) / (bounds.maxY - bounds.minY)) * 100,
+  }));
+  console.log(plotData);
+  const controlPoints = calculateControlPoints(plotData);
 
-  let pathData = `M ${data[0].x} ${data[0].y}`;
+  let pathData = `M ${plotData[0].x} ${plotData[0].y}`;
 
-  for (let i = 1; i < data.length; i++) {
+  for (let i = 1; i < plotData.length; i++) {
     const cp1 = controlPoints[i - 1];
     const cp2 = controlPoints[i];
-    pathData += ` C ${cp1.cp2x},${cp1.cp2y} ${cp2.cp1x},${cp2.cp1y} ${data[i].x},${data[i].y}`;
+    pathData += ` C ${cp1.cp2x},${cp1.cp2y} ${cp2.cp1x},${cp2.cp1y} ${plotData[i].x},${plotData[i].y}`;
   }
 
   return (
-    <Svg height="200" width="110">
+    <Svg height="100%" width="100%" viewBox="0 0 100 100">
       <G>
         <Path
           d={pathData}
           fill="none"
           stroke="rgb(32, 23, 81)"
-          strokeWidth="2"
+          strokeWidth="1"
         />
         <Circle
-          cx={data[data.length - 1].x}
-          cy={data[data.length - 1].y}
-          r={3}
+          cx={plotData[plotData.length - 1].x}
+          cy={plotData[plotData.length - 1].y}
+          r={2}
           fill="rgb(32, 23, 81)"
         />
       </G>
@@ -161,7 +172,13 @@ export default function Appointment({ navigation }: ApplicationScreenProps) {
               <Text variant="text-sm-bold">Normal</Text>
             </Box>
           </Box>
-          <Box>
+          <Box
+            flex={1}
+            style={{
+              height: "100%",
+              width: "100%",
+            }}
+          >
             <SmoothChart />
           </Box>
         </Box>
