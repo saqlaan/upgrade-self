@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import { Svg, Path, G, Circle } from "react-native-svg";
+import { Svg, Path, G, Circle, Line, Text as SvgText } from "react-native-svg";
 import { BackButton, Box, Text } from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
 import type { ApplicationScreenProps } from "@/types/navigation";
@@ -66,16 +66,16 @@ function calculateControlPoints(data) {
 }
 
 const data = [
-  { x: 10, y: 40 },
-  { x: 20, y: 10 },
-  { x: 30, y: 30 },
-  { x: 40, y: 50 },
-  { x: 50, y: 70 },
-  { x: 60, y: 30 },
-  { x: 70, y: 40 },
-  { x: 80, y: 10 },
-  { x: 90, y: 30 },
-  { x: 100, y: 50 },
+  { x: 10, y: 40, label: "Sep" },
+  { x: 20, y: 10, label: "Oct" },
+  { x: 30, y: 30, label: "Nov" },
+  { x: 40, y: 50, label: "Dec" },
+  { x: 50, y: 70, label: "Jan" },
+  { x: 60, y: 30, label: "Feb" },
+  { x: 70, y: 40, label: "Mar" },
+  { x: 80, y: 10, label: "Apr" },
+  { x: 90, y: 30, label: "May" },
+  { x: 100, y: 50, label: "Jun" },
 ];
 
 const SmoothChart = () => {
@@ -90,7 +90,6 @@ const SmoothChart = () => {
     x: ((d.x - bounds.minX) / (bounds.maxX - bounds.minX)) * 100,
     y: ((d.y - bounds.minY) / (bounds.maxY - bounds.minY)) * 100,
   }));
-  console.log(plotData);
   const controlPoints = calculateControlPoints(plotData);
 
   let pathData = `M ${plotData[0].x} ${plotData[0].y}`;
@@ -101,8 +100,51 @@ const SmoothChart = () => {
     pathData += ` C ${cp1.cp2x},${cp1.cp2y} ${cp2.cp1x},${cp2.cp1y} ${plotData[i].x},${plotData[i].y}`;
   }
 
+  //   return (
+  //     <Svg height="100%" width="100%" viewBox="0 0 100 100">
+  //       <G>
+  //         <Path
+  //           d={pathData}
+  //           fill="none"
+  //           stroke="rgb(32, 23, 81)"
+  //           strokeWidth="1"
+  //         />
+  //         <Circle
+  //           cx={plotData[plotData.length - 1].x}
+  //           cy={plotData[plotData.length - 1].y}
+  //           r={2}
+  //           fill="rgb(32, 23, 81)"
+  //         />
+  //       </G>
+  //     </Svg>
+  //   );
+  // };
+  const xAxisY = 100; // Y position for x-axis line and labels, adjust if necessary
+  const labelsYOffset = 5; // Offset for labels from the x-axis line
+
+  // Function to render x-axis labels
+  const renderXAxisLabels = () => {
+    return plotData.map((point, index) => {
+      // Assuming labels are the same as x values for demonstration purposes
+      const label = data[index].label;
+      return (
+        <SvgText
+          key={`label-${index}`}
+          x={point.x}
+          y={xAxisY + labelsYOffset}
+          fill="black"
+          fontSize="5"
+          textAnchor="middle" // Centers the text on the x coordinate
+          alignmentBaseline="middle" // Adjust vertical alignment
+        >
+          {label}
+        </SvgText>
+      );
+    });
+  };
+
   return (
-    <Svg height="100%" width="100%" viewBox="0 0 100 100">
+    <Svg height="100%" width="100%" viewBox="0 0 100 110">
       <G>
         <Path
           d={pathData}
@@ -116,6 +158,16 @@ const SmoothChart = () => {
           r={2}
           fill="rgb(32, 23, 81)"
         />
+        <Line
+          x1="0"
+          y1={xAxisY}
+          x2="100"
+          y2={xAxisY}
+          stroke="black"
+          strokeWidth="0.5"
+        />
+        {/* Render the x-axis labels */}
+        {renderXAxisLabels()}
       </G>
     </Svg>
   );
