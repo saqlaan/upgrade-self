@@ -9,6 +9,7 @@ export const Images = {
   visa: require("./visa.png"),
   ProfileBg: require("./profile-bg.png"),
   HealthCardBg: require("./heath-card-bg.png"),
+  HealthActivityCardBg: require("./health-activity-card-bg.png"),
   ActivitiesCardBg: require("./activity-card-bg.png"),
   BookAppointmentBg: require("./book-appointment-bg.png"),
   BookDetailsBg: require("./booking-detaills-bg.jpg"),
