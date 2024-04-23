@@ -5,7 +5,6 @@ import { BackButton, Box, Text } from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { Images } from "@/theme/assets/images";
-import { HealthActivityCard } from "@/components";
 import { BrainIcon, TimeIcon } from "@/theme/assets/icons";
 
 const data = [
@@ -26,10 +25,11 @@ const data = [
 const BarChart = ({ data }) => {
   const maxValue = Math.max(...data.map((item) => item.value));
   const scaleFactor = 90 / maxValue; // Reduced to account for label space
-  const barWidth = 20;
+  const barWidth = 17;
   const cornerRadius = 5;
-  const chartHeight = 100; // Increased SVG height to prevent cutting off labels
+  const chartHeight = 110; // Increased SVG height to prevent cutting off labels
   const labelGap = 15; // Gap for the label above the bar
+  const [activeIndex, setActiveIndex] = React.useState(data.length - 1);
 
   // Function to create a path with rounded top
   const createRoundedTopPath = (x, y, width, height, cornerRadius) => {
@@ -44,7 +44,16 @@ const BarChart = ({ data }) => {
 
   return (
     <View>
-      <Svg height={chartHeight + labelGap * 2} width="100%">
+      <Svg
+        height={chartHeight + labelGap * 2}
+        width="100%"
+        onPress={(event) => {
+          const nearestIndex = Math.floor(
+            event.nativeEvent.locationX / (barWidth + 10)
+          );
+          setActiveIndex(nearestIndex);
+        }}
+      >
         {data.map((item, index) => {
           const barHeight = item.value * scaleFactor;
           const x = index * (barWidth + 10) + 5;
@@ -61,7 +70,7 @@ const BarChart = ({ data }) => {
                   cornerRadius
                 )}
                 fill={
-                  item.label === "Dec"
+                  index === activeIndex
                     ? "rgb(238, 153, 10)"
                     : "rgb(250, 223, 179)"
                 } // Conditional fill color
@@ -76,7 +85,7 @@ const BarChart = ({ data }) => {
                 {item.label}
               </SvgText>
               {/* Value label above the bar */}
-              {item.label === "Dec" && (
+              {index === activeIndex && (
                 <SvgText
                   x={index * (barWidth + 10) + barWidth / 2 + 5}
                   y={y - 5} // Position above the bar
