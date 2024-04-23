@@ -5,6 +5,7 @@ import { ActivityIndicator, Button } from "react-native-paper";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { Images } from "@/theme/assets/images";
 import { getUser } from "@/services/firebase";
+import colors from "@/theme/colors";
 
 function Startup({ navigation }: ApplicationScreenProps) {
   useEffect(() => {
