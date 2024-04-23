@@ -127,8 +127,11 @@ function SearchBar({ onPressFilters }: { onPressFilters: () => void }) {
           <SettingsIcon />
         </Box>
       </TouchableOpacity>
-      <DynamicBottomSheet bottomSheetModalRef={bottomSheetRef}>
-        <Box mt="6" style={{ height: 400 }}>
+      <DynamicBottomSheet
+        snapPoints={["10%", "50%", "90%"]}
+        bottomSheetModalRef={bottomSheetRef}
+      >
+        <Box mt="6">
           <FlatList
             data={services || []}
             renderItem={renderItem}
