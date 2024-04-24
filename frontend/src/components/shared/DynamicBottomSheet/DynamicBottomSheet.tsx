@@ -7,17 +7,19 @@ import { Box } from "@/components/atoms";
 const DynamicBottomSheet = ({
   children,
   bottomSheetModalRef,
+  snapPoints,
 }: {
   children: ReactNode;
+  snapPoints: string[];
   bottomSheetModalRef: React.Ref<BottomSheetModal>;
 }) => {
-  const [snapPoints, setSnapPoints] = useState([100]);
+  const [dynamicSnapPoints, setDynamicSnapPoint] = useState([100]);
   const { bottom } = useSafeAreaInsets();
 
   const handlelayout = useCallback(
     (event) => {
       const { height } = event.nativeEvent.layout;
-      setSnapPoints([height + bottom]);
+      setDynamicSnapPoint([height + bottom]);
     },
     [bottom],
   );
@@ -30,7 +32,7 @@ const DynamicBottomSheet = ({
     <BottomSheetModal
       ref={bottomSheetModalRef}
       index={0}
-      snapPoints={snapPoints}
+      snapPoints={snapPoints ? snapPoints : dynamicSnapPoints}
       backdropComponent={({ style }) => (
         <Box style={[style, { backgroundColor: "rgba(0, 0, 0, 0.5)" }]}>
           <Pressable style={{ flex: 1 }} onPress={closeBottomSheet} />
