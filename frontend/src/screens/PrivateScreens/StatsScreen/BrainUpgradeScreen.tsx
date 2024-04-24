@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ScrollView, Image, View } from "react-native";
 import { Svg, Path, Line, Circle, Text as SvgText } from "react-native-svg";
 import { BackButton, Box, Text } from "@/components/atoms";
@@ -6,6 +6,10 @@ import { SafeScreen } from "@/components/template";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { Images } from "@/theme/assets/images";
 import { BrainIcon, TimeIcon } from "@/theme/assets/icons";
+import {
+  getBrainUpgradeUserReports,
+  BrainUpgradeUserReport,
+} from "@/services/firebaseApp/brainUpgrade";
 
 const data = [
   { label: "Jun", value: 50 },
@@ -105,6 +109,57 @@ const BarChart = ({ data }) => {
 };
 
 export default function Appointment({ navigation }: ApplicationScreenProps) {
+  const [reportData, setReportData] = React.useState<
+    BrainUpgradeUserReport[] | null
+  >(null);
+  const [myScore, setMyScore] = React.useState<number | null>(null);
+  const [sessionAlpha, setSessionAlpha] = React.useState<number | null>(null);
+  const [baseline, setBaseline] = React.useState<number | null>(null);
+  const [sessionTimeMinutes, setSessionTimeMinutes] = React.useState<
+    number | null
+  >(null);
+  const [historyData, setHistoryData] = React.useState<
+    { label: string; value: number }[] | null
+  >(null);
+  const [bestSession, setBestSession] = React.useState<number | null>(null);
+  const [totalPoints, setTotalPoints] = React.useState<number | null>(null);
+  useEffect(() => {
+    getBrainUpgradeUserReports().then((data) => {
+      if (data) {
+        setReportData(data);
+        console.log(data);
+      }
+    });
+  }, []);
+  useEffect(() => {
+    if (reportData && reportData.length > 0) {
+      const myScore = reportData[reportData.length - 1].alphaScore;
+      setMyScore(myScore);
+      const sessionAlpha = reportData[reportData.length - 1].alphaTime;
+      setSessionAlpha(sessionAlpha);
+      const baseline = reportData[reportData.length - 1].baselinePeakAlpha;
+      setBaseline(baseline);
+      const startAt = new Date(reportData[reportData.length - 1].startAt);
+      const endAt = new Date(reportData[reportData.length - 1].endAt);
+      const sessionTimeMinutes = (endAt.getTime() - startAt.getTime()) / 60000;
+      setSessionTimeMinutes(sessionTimeMinutes);
+      const historyData = reportData.map((item) => {
+        const date = new Date(item.startAt);
+        return {
+          label: date.toLocaleString("default", { month: "short" }),
+          value: item.alphaScore,
+        };
+      });
+      setHistoryData(historyData);
+      const bestSession = Math.max(...historyData.map((item) => item.value));
+      setBestSession(bestSession);
+      const totalPoints = reportData.reduce(
+        (acc, item) => acc + item.alphaScore,
+        0
+      );
+      setTotalPoints(totalPoints);
+    }
+  }, [reportData]);
   return (
     <SafeScreen>
       <Box px="4" bgColor="grey-400" flex={1} gap="4" pb="4">
@@ -132,7 +187,9 @@ export default function Appointment({ navigation }: ApplicationScreenProps) {
             </Text>
           </View>
           <Text variant="text-sm-semi-bold">Previous Session:</Text>
-          <Text variant="text-md-bold">30 min</Text>
+          <Text variant="text-md-bold">
+            {sessionTimeMinutes?.toFixed(0)} min
+          </Text>
           <Box
             style={{
               maxHeight: 200,
@@ -177,7 +234,7 @@ export default function Appointment({ navigation }: ApplicationScreenProps) {
                 </Box>
                 <Text variant="text-sm-semi-bold">My score</Text>
               </Box>
-              <Text variant="display-md-semi-bold">97</Text>
+              <Text variant="display-md-semi-bold">{myScore}</Text>
             </Box>
             <Box
               bgColor="white"
@@ -195,7 +252,9 @@ export default function Appointment({ navigation }: ApplicationScreenProps) {
                 <Text variant="text-sm-semi-bold">Session{"\n"}Alpha</Text>
               </Box>
               <Box row alignItems="baseline" gap="1">
-                <Text variant="display-md-semi-bold">25</Text>
+                <Text variant="display-md-semi-bold">
+                  {sessionAlpha?.toFixed(0)}
+                </Text>
                 <Text variant="text-sm-medium">min</Text>
               </Box>
             </Box>
@@ -206,20 +265,20 @@ export default function Appointment({ navigation }: ApplicationScreenProps) {
             <Box row gap="4">
               <Box>
                 <Text variant="text-xs-medium">Total Points</Text>
-                <Text variant="text-md-bold">501</Text>
+                <Text variant="text-md-bold">{totalPoints?.toFixed(0)}</Text>
               </Box>
               <Box>
                 <Text variant="text-xs-medium">Best Session</Text>
-                <Text variant="text-md-bold">88</Text>
+                <Text variant="text-md-bold">{bestSession?.toFixed(0)}</Text>
               </Box>
             </Box>
-            <Box>
-              <BarChart data={data} />
-            </Box>
+            <Box>{historyData && <BarChart data={historyData} />}</Box>
           </Box>
           {/* Baseline Chart */}
           <Box bgColor="white" radius="4" px="4" py="4" my="2">
-            <Text variant="text-xl-bold">Baseline: 9.5 Hz</Text>
+            <Text variant="text-xl-bold">
+              Baseline: {baseline?.toFixed(1)} Hz
+            </Text>
             <Box
               row
               justifyContent="space-between"
@@ -240,7 +299,16 @@ export default function Appointment({ navigation }: ApplicationScreenProps) {
                 />
 
                 {/* Draw the circle that represents the slider "handle" */}
-                <Circle cx="105" cy="30" r="6" fill="#000000" />
+                <Circle
+                  cx={
+                    baseline !== null
+                      ? `${200 * ((baseline - 8) / (12 - 8))}`
+                      : "0"
+                  }
+                  cy="30"
+                  r="6"
+                  fill="#000000"
+                />
               </Svg>
               <Text variant="text-md-medium">12 Hz</Text>
             </Box>

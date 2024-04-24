@@ -42,6 +42,7 @@ export const mapFirebaseUserToZenotiGuest = (user: FirestoreUserType): GuestType
   }
   const data: GuestType = {
     center_id: "",
+    center_name: user.centers[0].name,
     personal_info: {
       email: user.email,
       first_name: user.firstName,
