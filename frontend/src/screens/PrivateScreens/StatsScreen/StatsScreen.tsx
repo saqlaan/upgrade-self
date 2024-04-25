@@ -1,11 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Image, Pressable } from "react-native";
 import { Box, Text } from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { Images } from "@/theme/assets/images";
+import { getBrainUpgradeUser } from "@/services/firebaseApp/brainUpgrade";
 
 function Appointment({ navigation }: ApplicationScreenProps) {
+  const cellHealthAnalysisConnected = false;
+  const [brainUpgradeConnected, setBrainUpgradeConnected] = React.useState<
+    boolean | null
+  >(null);
+  useEffect(() => {
+    getBrainUpgradeUser()
+      .then((user) => {
+        if (user) {
+          setBrainUpgradeConnected(true);
+        } else {
+          setBrainUpgradeConnected(false);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+        setBrainUpgradeConnected(false);
+      });
+  }, []); // TODO: fetch this whenever user navigates to this screen
   return (
     <SafeScreen>
       <Box bgColor="grey-400" flex={1}>
@@ -25,32 +44,7 @@ function Appointment({ navigation }: ApplicationScreenProps) {
           bgColor="white"
         >
           <Pressable
-            onPress={() => {
-              navigation.navigate("CellHealthAnalysisScreen");
-            }}
-          >
-            <Box row bgColor="grey-400" py="6" px="4" radius="4">
-              <Box>
-                <Text variant="text-xl-bold">Cell Health Analysis</Text>
-                <Text color="error">(Not Connected)</Text>
-              </Box>
-              <Box
-                style={{
-                  maxHeight: 210,
-                }}
-              >
-                <Image
-                  source={Images.CellHealthAnalysis}
-                  style={{
-                    maxHeight: 250,
-                    maxWidth: 150,
-                    objectFit: "contain",
-                  }}
-                />
-              </Box>
-            </Box>
-          </Pressable>
-          <Pressable
+            disabled={brainUpgradeConnected !== true}
             onPress={() => {
               navigation.navigate("BrainUpgradeScreen");
             }}
@@ -58,7 +52,13 @@ function Appointment({ navigation }: ApplicationScreenProps) {
             <Box row bgColor="grey-400" py="6" px="4" radius="4">
               <Box>
                 <Text variant="text-xl-bold">Brain Upgrade</Text>
-                <Text color="success">Connected</Text>
+                {brainUpgradeConnected && (
+                  <Text color="success">Connected</Text>
+                )}
+                {brainUpgradeConnected === false && (
+                  <Text color="error">(Not Connected)</Text>
+                )}
+                {brainUpgradeConnected === null && <Text>Loading...</Text>}
               </Box>
               <Box
                 flex={1}
@@ -69,6 +69,33 @@ function Appointment({ navigation }: ApplicationScreenProps) {
               >
                 <Image
                   source={Images.BrainUpgrade}
+                  style={{
+                    maxHeight: 250,
+                    maxWidth: 150,
+                    objectFit: "contain",
+                  }}
+                />
+              </Box>
+            </Box>
+          </Pressable>
+          <Pressable
+            disabled={cellHealthAnalysisConnected !== true}
+            onPress={() => {
+              navigation.navigate("CellHealthAnalysisScreen");
+            }}
+          >
+            <Box row bgColor="grey-400" py="6" px="4" radius="4">
+              <Box>
+                <Text variant="text-xl-bold">Cell Health Analysis</Text>
+                <Text>Coming soon</Text>
+              </Box>
+              <Box
+                style={{
+                  maxHeight: 210,
+                }}
+              >
+                <Image
+                  source={Images.CellHealthAnalysis}
                   style={{
                     maxHeight: 250,
                     maxWidth: 150,

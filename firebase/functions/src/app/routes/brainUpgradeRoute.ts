@@ -24,7 +24,7 @@ const getBrainUpgradeApp = () => {
   return brainUpgradeApp;
 };
 
-const getBrainUpgradeToken = async () => {
+const getBrainUpgradeAuthToken = async () => {
   const brainUpgradeApp = getBrainUpgradeApp();
 
   try {
@@ -36,13 +36,7 @@ const getBrainUpgradeToken = async () => {
   }
 };
 
-const getBrainUpgradeUserFromEmail = async (email: string) => {
-  const token = await getBrainUpgradeToken();
-  if (!token) {
-    console.error("Error getting token");
-    return null;
-  }
-
+const getBrainUpgradeUserFromEmail = async (token: string, email: string) => {
   try {
     const response = await axios({
       method: "get", // or 'post', 'put', etc.
@@ -58,17 +52,12 @@ const getBrainUpgradeUserFromEmail = async (email: string) => {
   }
 };
 
-const getBrainUpgradeReports = async (userId: string) => {
-  const token = await getBrainUpgradeToken();
-  if (!token) {
-    console.error("Error getting token");
-    return null;
-  }
-
+const getBrainUpgradeReports = async (token: string, userId: string, limit: number | null = null) => {
   try {
+    const url = `${BRAIN_UPGRADE_API_URL}/user/${userId}/reports` + (limit ? `?limit=${limit}` : "");
     const response = await axios({
       method: "get", // or 'post', 'put', etc.
-      url: `${BRAIN_UPGRADE_API_URL}/user/${userId}/reports?n=100`,
+      url,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -81,8 +70,18 @@ const getBrainUpgradeReports = async (userId: string) => {
 };
 
 const getBrainUpgradeUserAsync = async (req: Request, res: Response) => {
-  const email = "andrei@patagona.ca";
-  const user = await getBrainUpgradeUserFromEmail(email);
+  const token = await getBrainUpgradeAuthToken();
+  if (!token) {
+    res.status(500).send("Error getting token");
+    return;
+  }
+  const firebaseUser = (req as unknown as { user: admin.auth.DecodedIdToken }).user;
+  const email = firebaseUser.email;
+  if (!email) {
+    res.status(500).send("Error getting email");
+    return;
+  }
+  const user = await getBrainUpgradeUserFromEmail(token, email);
   if (!user) {
     res.status(500).send("Error getting user");
     return;
@@ -91,13 +90,24 @@ const getBrainUpgradeUserAsync = async (req: Request, res: Response) => {
 };
 
 const getBrainUpgradeReportsAsync = async (req: Request, res: Response) => {
-  const email = "andrei@patagona.ca";
-  const user = await getBrainUpgradeUserFromEmail(email);
+  const token = await getBrainUpgradeAuthToken();
+  if (!token) {
+    res.status(500).send("Error getting token");
+    return;
+  }
+  const firebaseUser = (req as unknown as { user: admin.auth.DecodedIdToken }).user;
+  const email = firebaseUser.email;
+  if (!email) {
+    res.status(500).send("Error getting email");
+    return;
+  }
+  const user = await getBrainUpgradeUserFromEmail(token, email);
   if (!user) {
     res.status(500).send("Error getting user");
     return;
   }
-  const reports = await getBrainUpgradeReports(user.userId);
+  const limit = req.query.limit ? parseInt(req.query.limit as string) : null;
+  const reports = await getBrainUpgradeReports(token, user.userId, limit);
   if (!reports) {
     res.status(500).send("Error getting reports");
     return;

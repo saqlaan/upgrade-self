@@ -82,7 +82,7 @@ const HealthActivityCard = ({
       </Box>
       <Box row alignItems="baseline" gap="1">
         <Text variant="display-md-semi-bold" color="black-500">
-          {value}
+          {value.toFixed(0)}
         </Text>
         <Text variant="text-sm-medium" color="black-300">
           {valueType}

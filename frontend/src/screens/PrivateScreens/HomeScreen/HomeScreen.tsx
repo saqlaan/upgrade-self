@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FlatList, Pressable, ScrollView, StatusBar } from "react-native";
 import { HomeHeader } from "./components";
@@ -11,6 +11,7 @@ import {
   HealthScoreCard,
 } from "@/components";
 import { colors } from "@/theme";
+import { getBrainUpgradeUserReports } from "@/services/firebaseApp/brainUpgrade";
 
 const HealthActivityData = [
   {
@@ -60,6 +61,38 @@ const AppointmentData = [
 
 function Home({ navigation }: ApplicationScreenProps) {
   const { top } = useSafeAreaInsets();
+  const [brainUpgradeData, setBrainUpgradeData] = React.useState<
+    | {
+        variant: "brain" | "heart" | "calories" | "weight";
+        value: number;
+      }[]
+    | null
+  >(null);
+
+  useEffect(() => {
+    getBrainUpgradeUserReports({ limit: 1 })
+      .then((data) => {
+        if (!data || data.length === 0) {
+          return;
+        }
+        setBrainUpgradeData([
+          {
+            variant: "brain",
+            value: data[0].alphaScore,
+          },
+          {
+            variant: "heart",
+            value: data[0].alphaTime,
+          },
+        ]);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  const activityData = brainUpgradeData || [];
+
   return (
     <Box bgColor={"grey-400"} flex={1} style={{ paddingTop: top }}>
       <StatusBar
@@ -75,16 +108,18 @@ function Home({ navigation }: ApplicationScreenProps) {
           </Box>
           {/* Activity cards */}
           <Box pt={"4"}>
-            <FlatList
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              ItemSeparatorComponent={() => <Box px="2" />}
-              data={HealthActivityData}
-              renderItem={({ item, index }) => (
-                <HealthActivityCard {...item} index={index} />
-              )}
-              automaticallyAdjustContentInsets
-            />
+            {activityData.length > 0 && (
+              <FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                ItemSeparatorComponent={() => <Box px="2" />}
+                data={activityData}
+                renderItem={({ item, index }) => (
+                  <HealthActivityCard {...item} index={index} />
+                )}
+                automaticallyAdjustContentInsets
+              />
+            )}
           </Box>
           {/* Upcoming schedule */}
           <Box mt="6">

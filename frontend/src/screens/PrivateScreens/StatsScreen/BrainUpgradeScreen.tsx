@@ -11,22 +11,7 @@ import {
   BrainUpgradeUserReport,
 } from "@/services/firebaseApp/brainUpgrade";
 
-const data = [
-  { label: "Jun", value: 50 },
-  { label: "Jul", value: 30 },
-  { label: "Aug", value: 70 },
-  { label: "Sep", value: 40 },
-  { label: "Oct", value: 60 },
-  { label: "Nov", value: 80 },
-  { label: "Dec", value: 90 },
-  { label: "Jan", value: 100 },
-  { label: "Feb", value: 110 },
-  { label: "Mar", value: 120 },
-  { label: "Apr", value: 130 },
-  { label: "May", value: 140 },
-];
-
-const BarChart = ({ data }) => {
+const BarChart = ({ data }: { data: { value: number; label: string }[] }) => {
   const maxValue = Math.max(...data.map((item) => item.value));
   const scaleFactor = 90 / maxValue; // Reduced to account for label space
   const barWidth = 17;
@@ -34,9 +19,16 @@ const BarChart = ({ data }) => {
   const chartHeight = 110; // Increased SVG height to prevent cutting off labels
   const labelGap = 15; // Gap for the label above the bar
   const [activeIndex, setActiveIndex] = React.useState(data.length - 1);
+  const barGap = 10;
 
   // Function to create a path with rounded top
-  const createRoundedTopPath = (x, y, width, height, cornerRadius) => {
+  const createRoundedTopPath = (
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    cornerRadius: number
+  ) => {
     return `M${x},${y + cornerRadius}
             a${cornerRadius},${cornerRadius} 0 0 1 ${cornerRadius},-${cornerRadius}
             h${width - 2 * cornerRadius}
@@ -52,15 +44,19 @@ const BarChart = ({ data }) => {
         height={chartHeight + labelGap * 2}
         width="100%"
         onPress={(event) => {
-          const nearestIndex = Math.floor(
-            event.nativeEvent.locationX / (barWidth + 10)
+          const nearestIndex = Math.max(
+            Math.min(
+              Math.floor(event.nativeEvent.locationX / (barWidth + barGap)),
+              data.length - 1
+            ),
+            0
           );
           setActiveIndex(nearestIndex);
         }}
       >
         {data.map((item, index) => {
           const barHeight = item.value * scaleFactor;
-          const x = index * (barWidth + 10) + 5;
+          const x = index * (barWidth + barGap) + barGap;
           const y = chartHeight - barHeight; // Adjusted Y position for the bars
 
           return (
@@ -79,20 +75,22 @@ const BarChart = ({ data }) => {
                     : "rgb(250, 223, 179)"
                 } // Conditional fill color
               />
-              <SvgText
-                x={index * (barWidth + 10) + barWidth / 2 + 5}
-                y={chartHeight + labelGap}
-                fontSize="10"
-                textAnchor="middle"
-                fill="black"
-              >
-                {item.label}
-              </SvgText>
+              {index === activeIndex && (
+                <SvgText
+                  x={x + barWidth / 2}
+                  y={chartHeight + labelGap}
+                  fontSize="10"
+                  textAnchor="middle"
+                  fill="black"
+                >
+                  {item.label}
+                </SvgText>
+              )}
               {/* Value label above the bar */}
               {index === activeIndex && (
                 <SvgText
-                  x={index * (barWidth + 10) + barWidth / 2 + 5}
-                  y={y - 5} // Position above the bar
+                  x={x + barWidth / 2}
+                  y={y - labelGap / 2} // Position above the bar
                   fontSize="10"
                   textAnchor="middle"
                   fill="black"
@@ -124,12 +122,16 @@ export default function Appointment({ navigation }: ApplicationScreenProps) {
   const [bestSession, setBestSession] = React.useState<number | null>(null);
   const [totalPoints, setTotalPoints] = React.useState<number | null>(null);
   useEffect(() => {
-    getBrainUpgradeUserReports().then((data) => {
-      if (data) {
-        setReportData(data);
-        console.log(data);
-      }
-    });
+    getBrainUpgradeUserReports({ limit: 12 })
+      .then((data) => {
+        if (data) {
+          data.reverse();
+          setReportData(data);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
   useEffect(() => {
     if (reportData && reportData.length > 0) {
@@ -146,7 +148,10 @@ export default function Appointment({ navigation }: ApplicationScreenProps) {
       const historyData = reportData.map((item) => {
         const date = new Date(item.startAt);
         return {
-          label: date.toLocaleString("default", { month: "short" }),
+          label: date.toLocaleString("default", {
+            month: "short",
+            day: "2-digit",
+          }),
           value: item.alphaScore,
         };
       });
@@ -187,9 +192,12 @@ export default function Appointment({ navigation }: ApplicationScreenProps) {
             </Text>
           </View>
           <Text variant="text-sm-semi-bold">Previous Session:</Text>
-          <Text variant="text-md-bold">
-            {sessionTimeMinutes?.toFixed(0)} min
-          </Text>
+          {sessionTimeMinutes && (
+            <Text variant="text-md-bold">
+              {sessionTimeMinutes?.toFixed(0)} min
+            </Text>
+          )}
+          {!sessionTimeMinutes && <Text>Loading...</Text>}
           <Box
             style={{
               maxHeight: 200,
@@ -234,7 +242,7 @@ export default function Appointment({ navigation }: ApplicationScreenProps) {
                 </Box>
                 <Text variant="text-sm-semi-bold">My score</Text>
               </Box>
-              <Text variant="display-md-semi-bold">{myScore}</Text>
+              {myScore && <Text variant="display-md-semi-bold">{myScore}</Text>}
             </Box>
             <Box
               bgColor="white"
@@ -252,10 +260,14 @@ export default function Appointment({ navigation }: ApplicationScreenProps) {
                 <Text variant="text-sm-semi-bold">Session{"\n"}Alpha</Text>
               </Box>
               <Box row alignItems="baseline" gap="1">
-                <Text variant="display-md-semi-bold">
-                  {sessionAlpha?.toFixed(0)}
-                </Text>
-                <Text variant="text-sm-medium">min</Text>
+                {sessionAlpha && (
+                  <>
+                    <Text variant="display-md-semi-bold">
+                      {sessionAlpha?.toFixed(0)}
+                    </Text>
+                    <Text variant="text-sm-medium">min</Text>
+                  </>
+                )}
               </Box>
             </Box>
           </Box>
@@ -279,39 +291,41 @@ export default function Appointment({ navigation }: ApplicationScreenProps) {
             <Text variant="text-xl-bold">
               Baseline: {baseline?.toFixed(1)} Hz
             </Text>
-            <Box
-              row
-              justifyContent="space-between"
-              alignItems="center"
-              style={{ width: "100%" }}
-              gap="4"
-            >
-              <Text variant="text-md-medium">8 Hz</Text>
-              <Svg height="60" width="200">
-                {/* Draw the baseline line */}
-                <Line
-                  x1="0"
-                  y1="30"
-                  x2="200"
-                  y2="30"
-                  stroke="#D3D3D3"
-                  strokeWidth="4"
-                />
+            {baseline !== null && (
+              <Box
+                row
+                justifyContent="space-between"
+                alignItems="center"
+                style={{ width: "100%" }}
+                gap="4"
+              >
+                <Text variant="text-md-medium">8 Hz</Text>
+                <Svg height="60" width="200">
+                  {/* Draw the baseline line */}
+                  <Line
+                    x1="0"
+                    y1="30"
+                    x2="200"
+                    y2="30"
+                    stroke="#D3D3D3"
+                    strokeWidth="4"
+                  />
 
-                {/* Draw the circle that represents the slider "handle" */}
-                <Circle
-                  cx={
-                    baseline !== null
-                      ? `${200 * ((baseline - 8) / (12 - 8))}`
-                      : "0"
-                  }
-                  cy="30"
-                  r="6"
-                  fill="#000000"
-                />
-              </Svg>
-              <Text variant="text-md-medium">12 Hz</Text>
-            </Box>
+                  {/* Draw the circle that represents the slider "handle" */}
+                  <Circle
+                    cx={
+                      baseline !== null
+                        ? `${200 * ((baseline - 8) / (12 - 8))}`
+                        : "0"
+                    }
+                    cy="30"
+                    r="6"
+                    fill="#000000"
+                  />
+                </Svg>
+                <Text variant="text-md-medium">12 Hz</Text>
+              </Box>
+            )}
           </Box>
         </ScrollView>
       </Box>

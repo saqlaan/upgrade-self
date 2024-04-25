@@ -5,7 +5,7 @@ export const getBrainUpgradeUser = async (): Promise<{ userId: string } | null> 
     const result = await axios.get("brain-upgrade/user");
     return result.data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return null;
   }
 };
@@ -18,14 +18,18 @@ export type BrainUpgradeUserReport = {
   baselinePeakAlpha: number;
 };
 
-export const getBrainUpgradeUserReports = async (): Promise<
-  BrainUpgradeUserReport[] | null
-> => {
+export const getBrainUpgradeUserReports = async (
+  params: { limit: number | null } | undefined,
+): Promise<BrainUpgradeUserReport[] | null> => {
   try {
-    const result = await axios.get("brain-upgrade/reports");
+    let url = "brain-upgrade/reports";
+    if (params?.limit) {
+      url += `?limit=${params?.limit}`;
+    }
+    const result = await axios.get(url);
     return result.data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return null;
   }
 }
