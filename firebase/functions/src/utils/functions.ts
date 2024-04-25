@@ -35,14 +35,13 @@ export const mapZenotiUserDataToFirestore = (zenotiUser: GuestType): MapZenotiUs
   };
 };
 
-export const mapFirebaseUserToZenotiGuest = (user: FirestoreUserType): GuestType => {
+export const mapFirebaseUserToZenotiGuest = (user: FirestoreUserType): Omit<GuestType, "center_id" | "center_name"> => {
   // Todo: after things are good from zenoti end for address information we will update this
   if (!user.email || !user.firstName || !user.lastName || !user.dob || !user.centers) {
     throw new Error("Missing required user data");
   }
-  const data: GuestType = {
-    center_id: "",
-    center_name: user.centers[0].name,
+
+  const data = {
     personal_info: {
       email: user.email,
       first_name: user.firstName,

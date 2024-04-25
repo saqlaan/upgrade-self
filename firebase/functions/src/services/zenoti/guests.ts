@@ -3,7 +3,7 @@ import { Organization, requestHeaders } from "../../config/zenotiConfig";
 import { GuestType } from "../../types";
 import { CountryCodes } from "../../types/enums/countryCode";
 
-export const guestSignup = async (user: GuestType, organization: CountryCodes) => {
+export const guestSignup = async (user: Omit<GuestType, "center_name">, organization: CountryCodes) => {
   return axios.post("/guests", user, {
     headers: requestHeaders[organization],
   });
@@ -99,4 +99,27 @@ export const fetchGuestPaymentMethods = async ({ countryCode, guestId, centerId 
     headers: requestHeaders[countryCode],
   });
   return result.data;
+};
+
+export const getGuestBookings = async ({
+  organization,
+  guestId,
+  page = 1,
+  size = 30,
+}: {
+  organization: Organization;
+  guestId: string;
+  page?: number;
+  size?: number;
+}) => {
+  try {
+    const response = await axios.get(`/guests/${guestId}/appointments`, {
+      params: { page, size },
+      headers: requestHeaders[organization],
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to retrieve guest bookings");
+  }
 };
