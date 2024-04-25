@@ -1,6 +1,6 @@
 import { getFirestore } from "firebase-admin/firestore";
 import { updateGuest } from "../services/zenoti";
-import { FirestoreUserType, FirestoreZenotiGuestType } from "../types";
+import { FirestoreUserType, FirestoreZenotiGuestType, GuestType } from "../types";
 import { CountryCodes } from "../types/enums/countryCode";
 import { mapFirebaseUserToZenotiGuest } from "../utils";
 const firestore = getFirestore();
@@ -14,9 +14,12 @@ export default async function handleProfileUpdates(before: FirestoreUserType, af
     if (!querySnapshot.empty) {
       const data = querySnapshot.docs[0].data() as FirestoreZenotiGuestType;
       promises = data.guestAccounts.map((guestAccount) => {
+        const data = { ...updatedData, countryCode: guestAccount.countryCode as CountryCodes } as GuestType & {
+          countryCode: CountryCodes;
+        };
         updateGuest({
           guestId: guestAccount.guestId,
-          data: { ...updatedData, countryCode: guestAccount.countryCode as CountryCodes },
+          data,
           centerId: guestAccount.centerId,
         });
       });
