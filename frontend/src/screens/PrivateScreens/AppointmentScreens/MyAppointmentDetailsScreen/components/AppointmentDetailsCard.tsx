@@ -85,7 +85,7 @@ const AppointmentDetailsCard = ({
         <Box mb="4">
           <Box row justifyContent="space-between">
             <Box>
-              <Text variant="text-sm-regular">Direction</Text>
+              <Text variant="text-sm-regular">Contact</Text>
               <Box row alignItems="center" gap="3" mt="2">
                 <CallIcon />
                 <Text color="black-400" variant="text-sm-semi-bold">
@@ -94,7 +94,7 @@ const AppointmentDetailsCard = ({
               </Box>
             </Box>
             <Box>
-              <Text variant="text-sm-regular">Contact</Text>
+              <Text variant="text-sm-regular">Direction</Text>
               <Box row alignItems="center" gap="3" mt="2">
                 <Text color="black-400" variant="text-sm-semi-bold">
                   Google map
