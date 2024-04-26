@@ -129,3 +129,27 @@ export const confrimSlotAsync = async ({
     return null;
   }
 };
+
+type CancelBookingResponse = {
+  success: boolean;
+  is_charge_applied: boolean;
+};
+
+export const cancelBooking = async ({
+  invoiceId,
+  countryCode,
+}: {
+  invoiceId: string;
+  countryCode: string;
+}): Promise<CancelBookingResponse | null> => {
+  console.log({ invoiceId, countryCode });
+  try {
+    const result = await axios.put(
+      `zenoti/invoices/${invoiceId}/cancel?countryCode=${countryCode}`,
+    );
+    return result.data;
+  } catch (error) {
+    console.log({ error });
+    return null;
+  }
+};

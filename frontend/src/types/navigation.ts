@@ -1,5 +1,6 @@
 import type { StackScreenProps } from "@react-navigation/stack";
 
+import { GuestAppointmentType } from "./zenoti/BookedAppointmentType";
 export type ApplicationStackParamList = {
   LoginScreen: undefined;
   SignupScreen: undefined;
@@ -27,6 +28,9 @@ export type ApplicationStackParamList = {
   BookAppointmentDetailsScreen: undefined;
   BookAppointmentSuccessScreen: undefined;
   MainTab: undefined;
+  MyAppointmentDetailScreen: {
+    appointment: GuestAppointmentType;
+  };
 };
 
 export type ApplicationScreenProps =

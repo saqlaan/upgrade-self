@@ -1,6 +1,11 @@
 import express, { Request, Response } from "express";
 import { getAllCentersAsync } from "../controllers/centerController";
-import { addPaymentAsync, getGuestBookings, getGuestPaymentMethods } from "../controllers/guestController";
+import {
+  addPaymentAsync,
+  cancelBooking,
+  getGuestBookings,
+  getGuestPaymentMethods,
+} from "../controllers/guestController";
 import {
   confirmBooking,
   createAppointment,
@@ -23,5 +28,6 @@ router.post("/bookings/:bookingId/slots/reserve", reserveSlot);
 router.post("/bookings/:bookingId/slots/confirm", confirmBooking);
 router.get("/guests/:guestId/accounts", getGuestPaymentMethods);
 router.get("/guests/:guestId/appointments", getGuestBookings);
+router.put("/invoices/:invoiceId/cancel", cancelBooking);
 
 export const zenotiRoutes = router;

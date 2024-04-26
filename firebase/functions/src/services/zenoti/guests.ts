@@ -123,3 +123,15 @@ export const getGuestBookings = async ({
     throw new Error("Failed to retrieve guest bookings");
   }
 };
+
+export const cancelBooking = async ({ invoiceId, organization }: { invoiceId: string; organization: Organization }) => {
+  try {
+    const response = await axios.put(`/invoices/${invoiceId}/cancel`, {
+      headers: requestHeaders[organization],
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+    throw new Error("Failed to cancel the guest booking");
+  }
+};

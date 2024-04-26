@@ -32,7 +32,7 @@ export const validateFirebaseIdToken = async (
     idToken = req.cookies.__session;
   } else {
     // No cookie
-    res.status(403).send("Unauthorized");
+    res.status(401).send("Unauthorized");
     return;
   }
 
@@ -44,7 +44,7 @@ export const validateFirebaseIdToken = async (
     return;
   } catch (error) {
     console.error("Error while verifying Firebase ID token:", error);
-    res.status(403).send("Unauthorized");
+    res.status(401).send("Unauthorized");
     return;
   }
 };

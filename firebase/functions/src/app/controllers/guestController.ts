@@ -121,3 +121,22 @@ export const getGuestBookings = async (req: Request, res: Response) => {
   }
   return;
 };
+
+export const cancelBooking = async (req: Request, res: Response) => {
+  try {
+    const { invoiceId } = req.params;
+    const { countryCode } = req.query;
+    if (!invoiceId || !countryCode) {
+      res.status(403).json({ message: "InvoiceId or country code is missing" });
+    }
+    const data = await guestService.cancelBooking({
+      invoiceId: invoiceId as string,
+      organization: countryCode as Organization,
+    });
+    return res.status(200).json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(403).json({ message: "Error canceling the booking", error });
+  }
+  return;
+};

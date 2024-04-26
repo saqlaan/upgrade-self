@@ -25,7 +25,7 @@ const TabIcons = {
       <HomeOutlineIcon fill={getColor(active)} />
     ),
   },
-  AppointmentScreen: {
+  MyAppointmentsScreen: {
     icon: ({ active }: TabIconProps) => (
       <CalendarBottomTabIcon fill={getColor(active)} />
     ),

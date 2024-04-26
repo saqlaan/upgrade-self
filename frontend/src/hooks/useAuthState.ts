@@ -1,6 +1,5 @@
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { useEffect, useState } from "react";
-import { updateAuthorizationToken } from "@/services/config/axiosConfig";
 import { useUserStore } from "@/store/userStore";
 
 export const useAuthState = () => {
@@ -10,12 +9,7 @@ export const useAuthState = () => {
 
   async function onAuthStateChanged(user: FirebaseAuthTypes.User | null) {
     setUser(user);
-    if (user) {
-      const token = (await auth().currentUser?.getIdToken()) || "";
-      updateAuthorizationToken(token);
-    } else {
-      clearUser();
-    }
+    if (!user) clearUser();
     setIsLoading(false);
   }
 

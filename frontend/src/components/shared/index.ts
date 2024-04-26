@@ -12,3 +12,4 @@ export { default as AppointmentCard } from "./AppointmentCard/AppointmentCard";
 export { default as ActivitiesCard } from "./ActivitiesCard/ActivitiesCard";
 export { default as DynamicBottomSheet } from "./DynamicBottomSheet/DynamicBottomSheet";
 export { default as AppointmentCardWithActions } from "./AppointmentCardWithActions/AppointmentCardWithActions";
+export { default as BookedAppointmentCard } from "./BookedAppointmentCard/BookedAppointmentCard";
