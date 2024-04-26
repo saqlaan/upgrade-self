@@ -40,7 +40,7 @@ function BookAppointmentSuccessScreen({ navigation }: ApplicationScreenProps) {
             booked session
           </Text>
           <CButton
-            onPress={() => navigation.navigate("AppointmentScreen")}
+            onPress={() => navigation.navigate("MyAppointmentsScreen")}
             variant={"default"}
           >
             <Text color={"black-900"} variant="text-md-semi-bold">

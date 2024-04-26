@@ -8,9 +8,11 @@ const DynamicBottomSheet = ({
   children,
   bottomSheetModalRef,
   snapPoints,
+  name,
 }: {
+  name?: string;
   children: ReactNode;
-  snapPoints: string[];
+  snapPoints?: string[];
   bottomSheetModalRef: React.Ref<BottomSheetModal>;
 }) => {
   const [dynamicSnapPoints, setDynamicSnapPoint] = useState([100]);
@@ -38,6 +40,7 @@ const DynamicBottomSheet = ({
           <Pressable style={{ flex: 1 }} onPress={closeBottomSheet} />
         </Box>
       )}
+      name={name}
     >
       <BottomSheetView>
         <Box onLayout={handlelayout}>{children}</Box>

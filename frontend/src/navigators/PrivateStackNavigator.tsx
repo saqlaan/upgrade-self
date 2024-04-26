@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import {
-  AppointmentScreen,
+  MyAppointmentsScreen,
   BillingInfoScreen,
   BookAppointmentDetailsScreen,
   BookAppointmentScreen,
@@ -19,11 +19,13 @@ import {
   QuestionStep,
   StatsScreen,
   Welcome,
+  MyAppointmentDetailsScreen,
 } from "@/screens";
 import { ApplicationStackParamList } from "@/types/navigation";
 import { BottomTabBar } from "@/components";
 import { getUser } from "@/services/firebase";
 import { useCenterStore } from "@/store/centerStore";
+import { fetchAllCentersData } from "@/services/firebaseApp/centers";
 
 const ProfileStackNavigator = createStackNavigator<ApplicationStackParamList>();
 
@@ -37,7 +39,10 @@ const TabNavigator = () => {
       tabBar={(props) => <BottomTabBar {...props} />}
     >
       <Tab.Screen name="HomeScreen" component={Home} />
-      <Tab.Screen name="AppointmentScreen" component={AppointmentScreen} />
+      <Tab.Screen
+        name="MyAppointmentsScreen"
+        component={MyAppointmentsScreen}
+      />
       <Tab.Screen name="BookAppointmentTab" component={BookAppointmentScreen} />
       <Tab.Screen name="StatsScreen" component={StatsScreen} />
       <Tab.Screen name="ProfileTab" component={ProfileScreen} />
@@ -46,7 +51,7 @@ const TabNavigator = () => {
 };
 
 const PrivateStackNavigator = () => {
-  const { setCenter } = useCenterStore();
+  const { setCenter, setAllCenters } = useCenterStore();
   useEffect(() => {
     setupUser();
   }, []);
@@ -56,6 +61,8 @@ const PrivateStackNavigator = () => {
     if (user?.centers) {
       setCenter(user?.centers[0]);
     }
+    const centers = await fetchAllCentersData();
+    setAllCenters(centers || []);
   }
 
   return (
@@ -112,6 +119,10 @@ const PrivateStackNavigator = () => {
       <ProfileStackNavigator.Screen
         name="FinishOnBoardingScreen"
         component={FinishOnBoarding}
+      />
+      <ProfileStackNavigator.Screen
+        name="MyAppointmentDetailScreen"
+        component={MyAppointmentDetailsScreen}
       />
     </ProfileStackNavigator.Navigator>
   );
