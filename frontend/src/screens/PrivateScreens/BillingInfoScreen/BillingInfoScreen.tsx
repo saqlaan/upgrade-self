@@ -46,6 +46,7 @@ function BillingInfoScreen({ navigation }: ApplicationScreenProps) {
         console.error("Guest info not found");
         return;
       }
+      // TODO: this should be based on org id
       const guestAccount = guestInfo.guestAccounts.find(
         (guestAccount) => guestAccount.countryCode == center.countryCode
       );
