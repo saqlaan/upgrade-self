@@ -43,11 +43,16 @@ function BillingInfoScreen({ navigation }: ApplicationScreenProps) {
       const center = centers[0];
       const guestInfo = await getUserGuests();
       if (!guestInfo) {
+        console.error("Guest info not found");
         return;
       }
       const guestAccount = guestInfo.guestAccounts.find(
-        (guestAccount) => guestAccount.centerId == center.centerId
+        (guestAccount) => guestAccount.countryCode == center.countryCode
       );
+      if (!guestAccount) {
+        console.error("Guest account not found");
+        return;
+      }
       const { guestId, centerId, countryCode } = guestAccount;
       const paymentMethods = await getGuestPaymentMethods({
         guestId,
