@@ -1,7 +1,18 @@
 import axios from "../config/axiosConfig";
 
-type GetGuestPaymentMethodsResponse = {
-  accounts: [];
+export type GuestPaymentMethod = {
+  account_id: string;
+  account_type: string;
+  card_logo: string;
+  created_date: string;
+  created_date_iso: string;
+  identifier: string;
+  last_four: string;
+  expiry_on: string;
+};
+
+export type GetGuestPaymentMethodsResponse = {
+  accounts: GuestPaymentMethod[];
   has_expired_cards: boolean;
   error: any | null;
 };
