@@ -7,7 +7,7 @@ import { ActivityIndicator, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Snackbar from "react-native-snackbar";
 import WebView from "react-native-webview";
-import { useBookAppointmentMethods } from "../AppointmentScreens/BookAppointmentScreen/components/hooks/useBookAppointmentMethods";
+import { useBookAppointmentMethods } from "../AppointmentScreens/BookAppointmentScreen/hooks/useBookAppointmentMethods";
 import BottomPaymentCardItem from "./components/BottomSheetPaymentCardItem";
 import PaymentBottomSheetModal from "./components/PaymentBottomSheetModal";
 import PaymentCardItem from "./components/PaymentCardItem";

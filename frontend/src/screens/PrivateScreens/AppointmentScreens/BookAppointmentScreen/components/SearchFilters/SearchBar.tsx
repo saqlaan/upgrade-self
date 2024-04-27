@@ -5,7 +5,6 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import { format } from "date-fns";
 import { Box, Text } from "@/components/atoms";
 import { colors } from "@/theme";
 import { SearchIcon, SettingsIcon } from "@/theme/assets/icons";
@@ -13,67 +12,19 @@ import { DynamicBottomSheet } from "@/components";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 import { useDynamicBottomSheet } from "@/hooks";
 import { ZenotiService } from "@/types";
-import { getUserGuests } from "@/services/firebase/collections/guest";
-import { useCenterStore } from "@/store/centerStore";
-import {
-  createAppointment,
-  getSlots,
-} from "@/services/firebaseApp/appointment";
-import { groupSlotsTogether } from "@/utils/functions";
 import { useServicesStore } from "@/store/servicesStore";
 
 function SearchBar({ onPressFilters }: { onPressFilters: () => void }) {
-  const {
-    selectedService,
-    setSelectedService,
-    setAppointment,
-    setSlots,
-    setGroupSlots,
-  } = useCreateAppointmentStore();
+  const { selectedService, setSelectedService } = useCreateAppointmentStore();
 
   const { services, servicesAvailable } = useServicesStore();
   const { bottomSheetRef, openBottomSheet, closeBottomSheet } =
     useDynamicBottomSheet();
 
-  const { center } = useCenterStore();
-
   const handleOnChangeService = useCallback((item) => {
     setSelectedService(item);
     closeBottomSheet();
-    handleOnServiceSelection(item);
   }, []);
-
-  const handleOnServiceSelection = async (item) => {
-    const guests = await getUserGuests();
-    const guestAccount = guests?.guestAccounts.find(
-      (guest) => guest.countryCode === center?.countryCode,
-    );
-    if (guestAccount) {
-      const appointment = await createAppointment({
-        date: format(new Date(), "yyyy-MM-dd"),
-        guestId: guestAccount.guestId,
-        serviceId: item.id,
-        centerId: center?.centerId,
-        countryCode: guestAccount.countryCode,
-      });
-      if (appointment?.id) setAppointment(appointment);
-      else return;
-      const slots = await getSlots({
-        appointmentId: appointment.id,
-        countryCode: guestAccount.countryCode,
-      });
-      if (slots?.Error !== null) {
-        console.log("Failed to fetch slots");
-        return null;
-      }
-      setSlots({
-        available: slots.slots,
-        futureDay: slots.future_days,
-        nextAvailableDay: slots.next_available_day,
-      });
-      setGroupSlots(groupSlotsTogether(slots.slots));
-    }
-  };
 
   const renderItem = useCallback(
     ({ item: service }: { item: ZenotiService }) => {

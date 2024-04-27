@@ -1,16 +1,20 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FlatList, Pressable, ScrollView, StatusBar } from "react-native";
+import useMyAppointments from "../AppointmentScreens/MyAppointmentsScreen/useMyAppointments";
 import { HomeHeader } from "./components";
 import { AndroidScreenTopSpace, Box, Text } from "@/components/atoms";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import {
   ActivitiesCard,
-  AppointmentCard,
+  BookedAppointmentCard,
   HealthActivityCard,
   HealthScoreCard,
 } from "@/components";
 import { colors } from "@/theme";
+import { useMyBookingStore } from "@/store/myBookingsStore";
+import { useCenterStore } from "@/store/centerStore";
+import { GuestAppointmentType } from "@/types/zenoti/BookedAppointmentType";
 
 const HealthActivityData = [
   {
@@ -60,6 +64,35 @@ const AppointmentData = [
 
 function Home({ navigation }: ApplicationScreenProps) {
   const { top } = useSafeAreaInsets();
+  const { activeBookings } = useMyBookingStore();
+  const { allCenters } = useCenterStore();
+  useMyAppointments();
+
+  const renderAppointmentCardItem = useCallback(
+    ({ item, index }: { item: GuestAppointmentType; index: number }) => {
+      const service = item?.appointment_services[0]?.service;
+      if (!service) return null;
+      const { start_time: startTime } = item?.appointment_services[0];
+      const centerId = item?.center_id;
+      const center = allCenters.find((center) => center.id === centerId);
+      const { duration, name } = service;
+
+      return (
+        <Box ml={index === 0 ? "4" : [0]} style={{ width: 280 }}>
+          <BookedAppointmentCard
+            title={name}
+            duration={duration}
+            dateTime={startTime}
+            location={center?.name || ""}
+            index={index}
+            isPastBooking={false}
+          />
+        </Box>
+      );
+    },
+    [allCenters],
+  );
+
   return (
     <Box bgColor={"grey-400"} flex={1} style={{ paddingTop: top }}>
       <StatusBar
@@ -90,20 +123,21 @@ function Home({ navigation }: ApplicationScreenProps) {
           <Box mt="6">
             <Box px="4" row justifyContent="space-between" mb="4">
               <Text variant="text-lg-bold">Upcoming Schedule</Text>
-              <Pressable onPress={() => alert("To be added")}>
+              <Pressable
+                onPress={() => navigation.navigate("MyAppointmentsScreen")}
+              >
                 <Text color="black-300" variant="text-sm-medium">
                   See all
                 </Text>
               </Pressable>
             </Box>
             <FlatList
-              data={AppointmentData}
+              data={activeBookings}
               horizontal
               showsHorizontalScrollIndicator={false}
               ItemSeparatorComponent={() => <Box px="2" />}
-              renderItem={({ item, index }) => (
-                <AppointmentCard {...item} index={index} />
-              )}
+              renderItem={renderAppointmentCardItem}
+              keyExtractor={(item) => item.invoice_id}
             />
           </Box>
           <Box mt="6">
