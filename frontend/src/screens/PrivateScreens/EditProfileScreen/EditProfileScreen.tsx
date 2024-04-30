@@ -26,6 +26,7 @@ function EditProfileScreen({ navigation }: ApplicationScreenProps) {
   const { mutateAsync, isPending, error } = useMutation({
     mutationFn: updateUser,
   });
+
   const initialValues = {
     ...user,
     phone: `+${user?.phone?.code}${user?.phone?.number}`,

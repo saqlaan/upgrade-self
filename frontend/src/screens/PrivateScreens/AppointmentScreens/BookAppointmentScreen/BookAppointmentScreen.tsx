@@ -1,17 +1,20 @@
 import React from "react";
 import { StatusBar } from "react-native";
+import { ActivityIndicator } from "react-native-paper";
 import { BookAppointmentHeader, TimeSlotSection } from "./components";
-import { useBookAppointmentScreen } from "./components/hooks/useBookAppointmentScreen";
+import { useBookAppointmentScreen } from "./hooks/useBookAppointmentScreen";
 import { SlotsSection } from "./components/SlotsSection";
 import { Box, Text } from "@/components/atoms";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { useServicesStore } from "@/store/servicesStore";
 import { isIOS } from "@/utils/functions";
-import { colors } from "@/theme";
+import { colors, spacing } from "@/theme";
+import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 
 function BookAppointment({ navigation }: ApplicationScreenProps) {
   const { servicesAvailable } = useServicesStore();
-  useBookAppointmentScreen();
+  const { selectedService } = useCreateAppointmentStore();
+  const { isLoadingSlots } = useBookAppointmentScreen();
 
   return (
     <Box flex={1} bgColor="white">
@@ -24,16 +27,27 @@ function BookAppointment({ navigation }: ApplicationScreenProps) {
         />
       )}
       <BookAppointmentHeader />
+      {selectedService === null && (
+        <Box flex={1} alignItems="center" justifyContent="center">
+          <Text variant="text-sm-regular">Please select service</Text>
+        </Box>
+      )}
+      {isLoadingSlots && (
+        <Box flex={1} alignItems="center" justifyContent="center">
+          <ActivityIndicator size={spacing[6]} />
+        </Box>
+      )}
+
       {servicesAvailable() ? (
         <Box py="4" flex={1}>
           <Box mb="4">
             <TimeSlotSection />
           </Box>
           <Box px="4">
-            {/* <Box pr="5" alignItems="center" flex={1}>
-              {slotCards.map((item) => (
+            <Box pr="5" alignItems="center" flex={1}>
+              {/* {slotCards.map((item) => (
                 <Box alignItems="center" mb="2" key={item}>
-                  <Box
+                  <Box 
                     radius={"20"}
                     bgColor={"primary"}
                     style={{ width: 10, height: 10 }}
@@ -41,8 +55,8 @@ function BookAppointment({ navigation }: ApplicationScreenProps) {
                   />
                   <LineIcon />
                 </Box>
-              ))}
-            </Box> */}
+              ))} */}
+            </Box>
             <SlotsSection />
           </Box>
         </Box>

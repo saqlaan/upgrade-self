@@ -1,19 +1,28 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { format } from "date-fns";
 import {
   confrimSlotAsync,
+  createAppointment,
+  getSlots,
   reserveSlotAsync,
 } from "@/services/firebaseApp/appointment";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 import { useCenterStore } from "@/store/centerStore";
-import { getGuestAccountByCountry } from "@/utils/functions";
+import {
+  getGuestAccountByCountry,
+  groupSlotsTogether,
+} from "@/utils/functions";
 import { getGuestPaymentMethods } from "@/services/firebaseApp/guests";
+import { getUserGuests } from "@/services/firebase/collections/guest";
+import { ZenotiService } from "@/types";
 
 export const useBookAppointmentMethods = () => {
   const { center } = useCenterStore();
   const navigation = useNavigation();
-  const { appointment } = useCreateAppointmentStore();
+  const { appointment, setSlots, setGroupSlots, setAppointment } =
+    useCreateAppointmentStore();
   const [isBooking, setIsBooking] = useState(false);
   const [timeSelected, setTimeSelected] = useState("");
 
@@ -69,10 +78,54 @@ export const useBookAppointmentMethods = () => {
     return null;
   };
 
+  const loadSlots = useCallback(
+    async ({ service, date }: { service: ZenotiService; date: string }) => {
+      setSlots({ available: [], futureDay: null, nextAvailableDay: null });
+      setGroupSlots({});
+      const guests = await getUserGuests();
+      const guestAccount = guests?.guestAccounts.find(
+        (guest) => guest.countryCode === center?.countryCode,
+      );
+      if (guestAccount) {
+        const appointment = await createAppointment({
+          date: format(date, "yyyy-MM-dd"),
+          guestId: guestAccount.guestId,
+          serviceId: service.id,
+          centerId: center?.centerId,
+          countryCode: guestAccount.countryCode,
+        });
+        if (appointment?.id) setAppointment(appointment);
+        else return;
+        const slots = await getSlots({
+          appointmentId: appointment.id,
+          countryCode: guestAccount.countryCode,
+        });
+        if (slots?.Error !== null) {
+          console.log("Failed to fetch slots");
+          return null;
+        }
+        setSlots({
+          available: slots.slots,
+          futureDay: slots.future_days,
+          nextAvailableDay: slots.next_available_day,
+        });
+        setGroupSlots(groupSlotsTogether(slots.slots));
+      }
+    },
+    [
+      center?.centerId,
+      center?.countryCode,
+      setAppointment,
+      setGroupSlots,
+      setSlots,
+    ],
+  );
+
   return {
     reserveSlot,
     isBooking,
     timeSelected,
     hasPaymentMethod,
+    loadSlots,
   };
 };

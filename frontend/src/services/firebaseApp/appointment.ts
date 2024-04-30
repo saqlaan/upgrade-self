@@ -142,7 +142,6 @@ export const cancelBooking = async ({
   invoiceId: string;
   countryCode: string;
 }): Promise<CancelBookingResponse | null> => {
-  console.log({ invoiceId, countryCode });
   try {
     const result = await axios.put(
       `zenoti/invoices/${invoiceId}/cancel?countryCode=${countryCode}`,

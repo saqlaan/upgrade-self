@@ -31,6 +31,7 @@ export type ApplicationStackParamList = {
   MyAppointmentDetailScreen: {
     appointment: GuestAppointmentType;
   };
+  MyAppointmentsScreen: undefined;
 };
 
 export type ApplicationScreenProps =

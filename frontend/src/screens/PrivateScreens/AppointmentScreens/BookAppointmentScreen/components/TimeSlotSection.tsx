@@ -6,15 +6,17 @@ import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 import { formatHour } from "@/utils/functions";
 
 export function TimeSlotSection() {
-  const { slots, groupSlots, selectedHour, setSelectedHour } =
+  const { slots, groupSlots, filters, updateAppointmentFilters } =
     useCreateAppointmentStore();
   const slotKeys = Object.keys(groupSlots || []).sort();
 
   const renderItem = ({ item, index }) => {
-    const isSelected = item == selectedHour;
+    const isSelected = item == filters.hour;
     const formatedTime = formatHour(item);
     return (
-      <Pressable onPress={() => setSelectedHour(item)}>
+      <Pressable
+        onPress={() => updateAppointmentFilters({ hour: item as string })}
+      >
         <Box
           px="4"
           py="2"

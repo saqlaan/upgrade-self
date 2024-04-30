@@ -3,11 +3,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar, TouchableOpacity } from "react-native";
 import BookingList from "./components/BookingsList";
 import useMyAppointments from "./useMyAppointments";
-
 import SearchItem from "./components/SearchItem";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { AndroidScreenTopSpace, Box, Text } from "@/components/atoms";
 import { colors } from "@/theme";
+import { useMyBookingStore } from "@/store/myBookingsStore";
 
 const FilterButton = ({
   title,
@@ -43,8 +43,8 @@ export enum BookingType {
 }
 
 function MyAppointmentsScreen({ navigation }: ApplicationScreenProps) {
-  const { activeBookings, pastBookings, silentRefresh, isLoading } =
-    useMyAppointments();
+  const { silentRefresh } = useMyAppointments();
+  const { activeBookings, pastBookings, isLoading } = useMyBookingStore();
   const [filters, setFilters] = useState<{
     bookingType: BookingType;
     searchText: string;
@@ -57,7 +57,6 @@ function MyAppointmentsScreen({ navigation }: ApplicationScreenProps) {
     const unsubscribe = navigation.addListener("focus", () => {
       silentRefresh();
     });
-    // Return the function to unsubscribe from the event so it gets removed on unmount
     return unsubscribe;
   }, [navigation, silentRefresh]);
 

@@ -7,10 +7,8 @@ import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 
 function DateSelection() {
   const nextWeekDates = getNextSevenDays();
-  const {
-    appointmentsFilters: filters,
-    updateAppointmentFilters: updateFilters,
-  } = useCreateAppointmentStore();
+  const { filters, updateAppointmentFilters: updateFilters } =
+    useCreateAppointmentStore();
 
   const handleOnPress = useCallback(
     (date: string) => {
@@ -25,7 +23,7 @@ function DateSelection() {
     (item) => {
       const isSelected = isEqual(
         format(item, "dd-MM-yyyy"),
-        format(filters.date || Date.now(), "dd-MM-yyyy"),
+        format(filters.date, "dd-MM-yyyy"),
       );
       return (
         <TouchableOpacity onPress={() => handleOnPress(item)}>
