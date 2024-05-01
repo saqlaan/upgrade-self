@@ -1,6 +1,7 @@
 import React, { useCallback } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FlatList, Pressable, ScrollView, StatusBar } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import useMyAppointments from "../AppointmentScreens/MyAppointmentsScreen/useMyAppointments";
 import { HomeHeader } from "./components";
 import { AndroidScreenTopSpace, Box, Text } from "@/components/atoms";
@@ -15,6 +16,7 @@ import { colors } from "@/theme";
 import { useMyBookingStore } from "@/store/myBookingsStore";
 import { useCenterStore } from "@/store/centerStore";
 import { GuestAppointmentType } from "@/types/zenoti/BookedAppointmentType";
+import { isAndroid } from "@/utils/functions";
 
 const HealthActivityData = [
   {
@@ -67,6 +69,13 @@ function Home({ navigation }: ApplicationScreenProps) {
   const { activeBookings } = useMyBookingStore();
   const { allCenters } = useCenterStore();
   useMyAppointments();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      StatusBar.setBarStyle("dark-content");
+      if (isAndroid) StatusBar.setBackgroundColor(colors["grey-400"]);
+    }, []),
+  );
 
   const renderAppointmentCardItem = useCallback(
     ({ item, index }: { item: GuestAppointmentType; index: number }) => {

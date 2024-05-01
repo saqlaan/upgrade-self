@@ -79,7 +79,7 @@ function SearchBar({ onPressFilters }: { onPressFilters: () => void }) {
         </Box>
       </TouchableOpacity>
       <DynamicBottomSheet
-        snapPoints={["10%", "50%", "90%"]}
+        snapPoints={["90%"]}
         bottomSheetModalRef={bottomSheetRef}
       >
         <Box mt="6">

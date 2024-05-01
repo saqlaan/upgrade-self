@@ -30,7 +30,7 @@ function useMyAppointments() {
 
         if (allAppointments.length === 0) return;
         const currentTime = Date.now();
-        const [pastBookings, activeBookings] = allAppointments.reduce(
+                const [pastBookings, activeBookings] = allAppointments.reduce(
           (result, appointment) => {
             const endTimeString =
               appointment?.appointment_services[0]?.end_time;

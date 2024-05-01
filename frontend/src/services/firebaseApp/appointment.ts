@@ -155,6 +155,10 @@ export const cancelBooking = async ({
     });
     const result = await axios.put(
       `zenoti/invoices/${invoiceId}/cancel?countryCode=${countryCode}`,
+      {
+        reason_id: "bb42a412-b7b4-4fcb-bb44-9a4b4452ec2d",
+        comments: "personal",
+      },
     );
     return result.data;
   } catch (error) {

@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { format } from "date-fns";
 import { AppointmentType, SlotType, ZenotiService } from "@/types";
 
 type SlotsDataType = {
@@ -43,7 +44,7 @@ const initialState: CreateAppointmentStore = {
   },
   groupSlots: null,
   filters: {
-    date: new Date().toDateString(),
+    date: format(new Date(), "yyyy-MM-dd"),
     hour: "",
   },
 };

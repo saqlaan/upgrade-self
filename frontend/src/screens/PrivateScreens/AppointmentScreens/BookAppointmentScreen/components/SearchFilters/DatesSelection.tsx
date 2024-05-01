@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { TouchableOpacity } from "react-native";
-import { format, isEqual } from "date-fns";
+import { format } from "date-fns";
 import { Box, Text } from "@/components/atoms";
 import { getNextSevenDays } from "@/utils/functions";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
@@ -21,10 +21,7 @@ function DateSelection() {
 
   const renderItem = useCallback(
     (item) => {
-      const isSelected = isEqual(
-        format(item, "dd-MM-yyyy"),
-        format(filters.date, "dd-MM-yyyy"),
-      );
+      const isSelected = filters.date === format(item, "yyyy-MM-dd");
       return (
         <TouchableOpacity onPress={() => handleOnPress(item)}>
           <Box

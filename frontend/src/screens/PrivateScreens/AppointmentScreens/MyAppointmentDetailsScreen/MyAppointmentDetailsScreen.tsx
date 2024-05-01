@@ -32,6 +32,7 @@ import { cancelBooking } from "@/services/firebaseApp/appointment";
 import { useCenterStore } from "@/store/centerStore";
 import { useServicesStore } from "@/store/servicesStore";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
+import { isIOS } from "@/utils/functions";
 
 function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
   const route = useRoute();
@@ -162,9 +163,9 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
       >
         <Box
           px={"4"}
-          pt="4"
+          py="4"
           alignItems="center"
-          style={{ paddingBottom: bottom }}
+          style={[isIOS && { paddingBottom: bottom }]}
         >
           <CancelBookingIcon />
           <Text variant="text-lg-bold" mt="2" mb="2">
@@ -196,10 +197,10 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
         bottomSheetModalRef={reScheduleSheetRef}
       >
         <Box
-          px={"4"}
-          pt="4"
+          px="4"
+          py="4"
           alignItems="center"
-          style={{ paddingBottom: bottom }}
+          style={[isIOS && { paddingBottom: bottom }]}
         >
           <RescheduleBookingIcon />
           <Text variant="text-lg-bold" mt="2" mb="2">
@@ -229,7 +230,13 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
         name="actionSheet"
         bottomSheetModalRef={actionSheetRef}
       >
-        <Box px={"4"} pt="4" row gap="4" style={{ paddingBottom: bottom }}>
+        <Box
+          px={"4"}
+          py="4"
+          row
+          gap="4"
+          style={[isIOS && { paddingBottom: bottom }]}
+        >
           <Box flex={1}>
             <CButton
               variant={"default"}

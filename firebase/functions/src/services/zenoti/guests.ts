@@ -124,9 +124,17 @@ export const getGuestBookings = async ({
   }
 };
 
-export const cancelBooking = async ({ invoiceId, organization }: { invoiceId: string; organization: Organization }) => {
+export const cancelBooking = async ({
+  invoiceId,
+  organization,
+  requestBody,
+}: {
+  invoiceId: string;
+  organization: Organization;
+  requestBody: unknown;
+}) => {
   try {
-    const response = await axios.put(`/invoices/${invoiceId}/cancel`, {
+    const response = await axios.put(`/invoices/${invoiceId}/cancel`, requestBody, {
       headers: requestHeaders[organization],
     });
     return response.data;

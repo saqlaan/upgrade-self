@@ -8,6 +8,7 @@ import {
 import { Icon, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import auth from "@react-native-firebase/auth";
+import { useFocusEffect } from "@react-navigation/native";
 import { BackButton, Box, Text } from "@/components/atoms";
 import { Images } from "@/theme/assets/images";
 import { colors, spacing } from "@/theme";
@@ -15,6 +16,10 @@ import type { ApplicationScreenProps } from "@/types/navigation";
 import { AppTheme } from "@/types/theme";
 import { useUserStore } from "@/store/userStore";
 import { MapPointIcon } from "@/theme/assets/icons";
+import { useServicesStore } from "@/store/servicesStore";
+import { useMyBookingStore } from "@/store/myBookingsStore";
+import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
+import { isAndroid } from "@/utils/functions";
 
 function ProfileSceenButton({
   title,
@@ -55,10 +60,25 @@ function ProfileSceenButton({
 function ProfileScreen({ navigation }: ApplicationScreenProps) {
   const { spacing } = useTheme<AppTheme>();
   const { top } = useSafeAreaInsets();
-  const { user } = useUserStore();
+  const { user, clearUser } = useUserStore();
+  const { resetStore: resetServicesStore } = useServicesStore();
+  const { resetMyBoookingStore } = useMyBookingStore();
+  const { resetStore: resetCreateAppointmentStore } =
+    useCreateAppointmentStore();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      StatusBar.setBarStyle("light-content");
+      if (isAndroid) StatusBar.setBackgroundColor(colors.primary);
+    }, []),
+  );
 
   const handleLogout = () => {
     auth().signOut();
+    clearUser();
+    resetServicesStore();
+    resetMyBoookingStore();
+    resetCreateAppointmentStore({});
   };
 
   const buttonsData = [
@@ -77,7 +97,10 @@ function ProfileScreen({ navigation }: ApplicationScreenProps) {
   ];
 
   const getInitials = () => {
-    const { firstName, lastName } = user;
+    const { firstName, lastName } = user || {
+      firstName: "",
+      lastName: "",
+    };
     const firstInitial = firstName.charAt(0).toUpperCase() || "";
     const lastInitial = lastName.charAt(0).toUpperCase() || "";
     return firstInitial + lastInitial;
