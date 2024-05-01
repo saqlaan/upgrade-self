@@ -32,6 +32,9 @@ export type ApplicationStackParamList = {
     appointment: GuestAppointmentType;
   };
   MyAppointmentsScreen: undefined;
+  RescheduleAppointmentScreen: {
+    appointment: GuestAppointmentType;
+  };
 };
 
 export type ApplicationScreenProps =

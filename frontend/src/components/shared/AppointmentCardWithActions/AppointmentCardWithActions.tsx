@@ -13,6 +13,7 @@ const AppointmentCardWithActions = ({
   onPressViewDetails,
   onPressBookSession,
   isBooking,
+  primaryButtonText = "Book session",
 }: {
   id: string;
   title: string;
@@ -24,6 +25,7 @@ const AppointmentCardWithActions = ({
   onPressViewDetails: () => void;
   onPressBookSession: () => void;
   isBooking?: boolean;
+  primaryButtonText: string;
 }) => {
   return (
     <Box
@@ -52,14 +54,16 @@ const AppointmentCardWithActions = ({
         </Text>
       </Box>
       <Box row gap="4" mt="4">
-        <Box flex={1}>
-          <CButton variant={"default"} onPress={onPressViewDetails} text="">
-            <Text color="black-800">View details</Text>
-          </CButton>
-        </Box>
+        {onPressViewDetails && (
+          <Box flex={1}>
+            <CButton variant={"default"} onPress={onPressViewDetails} text="">
+              <Text color="black-800">View details</Text>
+            </CButton>
+          </Box>
+        )}
         <Box flex={1}>
           <CButton loading={isBooking} onPress={onPressBookSession}>
-            <Text color="white">Book session</Text>
+            <Text color="white">{primaryButtonText}</Text>
           </CButton>
         </Box>
       </Box>

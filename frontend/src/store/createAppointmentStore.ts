@@ -24,7 +24,11 @@ interface CreateAppointmentStore {
   setAppointment: (appointment: AppointmentType) => void;
   setSlots: (slotsData: SlotsDataType) => void;
   setGroupSlots: (groupSlots: GroupSlotsType) => void;
-  resetStore: () => void;
+  resetStore: ({
+    selectedService,
+  }: {
+    selectedService?: ZenotiService;
+  }) => void;
   filters: SearchAppointmentsFilter;
   updateAppointmentFilters: (filters: { date?: string; hour?: string }) => void;
 }
@@ -52,7 +56,8 @@ export const useCreateAppointmentStore = create<CreateAppointmentStore>(
         ...state,
         selectedService: service,
       })),
-    resetStore: () => set(initialState),
+    resetStore: (data: { selectedService?: ZenotiService }) =>
+      set({ ...initialState, selectedService: data?.selectedService || null }),
     setAppointment: (appointment: AppointmentType) =>
       set(() => ({ appointment })),
     setSlots: (slots: SlotsDataType) => set(() => ({ slots })),

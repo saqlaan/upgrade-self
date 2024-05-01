@@ -30,12 +30,17 @@ import { DynamicBottomSheet } from "@/components";
 import { useDynamicBottomSheet } from "@/hooks";
 import { cancelBooking } from "@/services/firebaseApp/appointment";
 import { useCenterStore } from "@/store/centerStore";
+import { useServicesStore } from "@/store/servicesStore";
+import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 
 function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
   const route = useRoute();
   const appointment = route.params?.appointment as GuestAppointmentType;
   const isPastBooking = route.params?.isPastBooking;
   const { allCenters } = useCenterStore();
+  const { resetStore: resetServicesStore } = useServicesStore();
+  const { resetStore: resetAppointmentStore, selectedService } =
+    useCreateAppointmentStore();
 
   const { mutateAsync: cancelBookingAsync, isPending: isPendingCancelBooking } =
     useMutation({
@@ -83,8 +88,7 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
     }
   }, [
     allCenters,
-    appointment.center_id,
-    appointment?.invoice_id,
+    appointment,
     cancelBookingAsync,
     closeCancelSheet,
     navigation,
@@ -103,6 +107,26 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
       openReScheduleSheet();
     }, 500);
   }, [closeActionSheet, openReScheduleSheet]);
+
+  const handleOnConfirmReschedule = useCallback(() => {
+    closeReScheduleSheet();
+    setTimeout(() => {
+      navigation.navigate("RescheduleAppointmentScreen", {
+        appointment,
+      });
+      resetAppointmentStore({
+        selectedService,
+      });
+      resetServicesStore();
+    }, 500);
+  }, [
+    appointment,
+    closeReScheduleSheet,
+    navigation,
+    resetAppointmentStore,
+    resetServicesStore,
+    selectedService,
+  ]);
 
   return (
     <SafeScreen style={{ flex: 1, backgroundColor: colors["white"] }}>
@@ -194,7 +218,7 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
             </Box>
             <Box flex={1}>
               <CButton
-                onPress={() => navigation.navigate("SignupScreen")}
+                onPress={handleOnConfirmReschedule}
                 text="Confirm"
               ></CButton>
             </Box>
