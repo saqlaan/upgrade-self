@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigation } from "@react-navigation/native";
 import { useCallback, useState } from "react";
-import { format } from "date-fns";
 import {
   confrimSlotAsync,
   createAppointment,
@@ -88,7 +87,7 @@ export const useBookAppointmentMethods = () => {
       );
       if (guestAccount) {
         const appointment = await createAppointment({
-          date: format(date, "yyyy-MM-dd"),
+          date: date,
           guestId: guestAccount.guestId,
           serviceId: service.id,
           centerId: center?.centerId,
