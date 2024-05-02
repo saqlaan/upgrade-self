@@ -50,11 +50,17 @@ export function groupSlotsTogether(data: SlotType[]): GroupSlotsTogether {
   const groupedData: GroupSlotsTogether = {};
   data.forEach((obj) => {
     const time = parseISO(obj.Time);
-    const hour = format(time, "HH"); // Extract hour using date-fns
-    if (!groupedData[hour]) {
-      groupedData[hour] = []; // Initialize array if it doesn't exist
+    const hour = Number(format(time, "HH")); // Extract hour using date-fns
+    const deviceHour = new Date().getHours();
+    const isDateToday =
+      format(obj.Time, "yyyy-MM-dd") === format(new Date(), "yyyy-MM-dd");
+    if (isDateToday && hour > deviceHour) {
+      // Time should be greater then device time
+      if (!groupedData[hour]) {
+        groupedData[hour] = []; // Initialize array if it doesn't exist
+      }
+      groupedData[hour].push(obj);
     }
-    groupedData[hour].push(obj);
   });
   return groupedData;
 }

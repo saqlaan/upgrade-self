@@ -10,6 +10,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useMutation } from "@tanstack/react-query";
 import Snackbar from "react-native-snackbar";
 import AppointmentDetailsCard from "./components/AppointmentDetailsCard";
+import ReasonList from "./data.json";
 import {
   AndroidScreenTopSpace,
   BackButton,
@@ -63,37 +64,58 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
     openBottomSheet: openReScheduleSheet,
     closeBottomSheet: closeReScheduleSheet,
   } = useDynamicBottomSheet();
+  const {
+    bottomSheetRef: cancelReasonSheet,
+    openBottomSheet: openCancelReasonSheet,
+    closeBottomSheet: closeCancelReasonSheet,
+  } = useDynamicBottomSheet();
   const { bottom } = useSafeAreaInsets();
 
   const handleCancelBooking = useCallback(async () => {
-    const invoiceId = appointment?.invoice_id || "";
-    const center = allCenters.find(
-      (center) => center.id === appointment.center_id,
-    );
-    const result = await cancelBookingAsync({
-      invoiceId,
-      countryCode: center?.country.code || "",
-    });
-    if (result?.success) {
-      closeCancelSheet();
-      navigation.goBack();
-    } else {
-      Snackbar.show({
-        text: "Error",
-        duration: Snackbar.LENGTH_SHORT,
-        action: {
-          text: "Failed to cancel the booking. Try later",
-          textColor: colors.error,
-        },
+    closeCancelSheet();
+    setTimeout(() => {
+      openCancelReasonSheet();
+    }, 500);
+    return;
+  }, [closeCancelSheet, openCancelReasonSheet]);
+
+  const handleConfirmCancelBooking = useCallback(
+    async ({ reasonId, comments }) => {
+      const invoiceId = appointment?.invoice_id || "";
+      const center = allCenters.find(
+        (center) => center.id === appointment.center_id,
+      );
+      const result = await cancelBookingAsync({
+        invoiceId,
+        countryCode: center?.country.code || "",
+        reasonId,
+        comments,
       });
-    }
-  }, [
-    allCenters,
-    appointment,
-    cancelBookingAsync,
-    closeCancelSheet,
-    navigation,
-  ]);
+      if (result?.success) {
+        closeCancelSheet();
+        navigation.goBack();
+      } else {
+        Snackbar.show({
+          text: "Error",
+          duration: Snackbar.LENGTH_SHORT,
+          action: {
+            text: "Failed to cancel the booking. Try later",
+            textColor: colors.error,
+          },
+        });
+        closeCancelReasonSheet();
+      }
+    },
+    [
+      allCenters,
+      appointment.center_id,
+      appointment?.invoice_id,
+      cancelBookingAsync,
+      closeCancelReasonSheet,
+      closeCancelSheet,
+      navigation,
+    ],
+  );
 
   const handleOpenCancelSheet = useCallback(() => {
     closeActionSheet();
@@ -250,6 +272,23 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
               text="Re-schedule"
             ></CButton>
           </Box>
+        </Box>
+      </DynamicBottomSheet>
+      <DynamicBottomSheet
+        name="reasonSheet"
+        bottomSheetModalRef={cancelReasonSheet}
+      >
+        <Box px="4">
+          {ReasonList.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => handleConfirmCancelBooking(item)}
+            >
+              <Box mb="4">
+                <Text>{item.comments}</Text>
+              </Box>
+            </TouchableOpacity>
+          ))}
         </Box>
       </DynamicBottomSheet>
     </SafeScreen>

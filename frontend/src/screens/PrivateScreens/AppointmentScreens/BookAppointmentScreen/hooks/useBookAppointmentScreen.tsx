@@ -19,6 +19,10 @@ export const useBookAppointmentScreen = () => {
   useEffect(() => {
     resetStore();
     resetAppointmentStore({});
+    return () => {
+      resetStore();
+      resetAppointmentStore({});
+    };
   }, [resetAppointmentStore, resetStore]);
 
   const onStart = useCallback(async () => {

@@ -144,9 +144,13 @@ type CancelBookingResponse = {
 export const cancelBooking = async ({
   invoiceId,
   countryCode,
+  comments,
+  reasonId,
 }: {
   invoiceId: string;
   countryCode: string;
+  comments: string;
+  reasonId: string;
 }): Promise<CancelBookingResponse | null> => {
   try {
     console.log({
@@ -156,8 +160,8 @@ export const cancelBooking = async ({
     const result = await axios.put(
       `zenoti/invoices/${invoiceId}/cancel?countryCode=${countryCode}`,
       {
-        reason_id: "bb42a412-b7b4-4fcb-bb44-9a4b4452ec2d",
-        comments: "personal",
+        reason_id: reasonId,
+        comments: comments,
       },
     );
     return result.data;

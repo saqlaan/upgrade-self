@@ -20,8 +20,13 @@ import { ZenotiService } from "@/types";
 export const useBookAppointmentMethods = () => {
   const { center } = useCenterStore();
   const navigation = useNavigation();
-  const { appointment, setSlots, setGroupSlots, setAppointment } =
-    useCreateAppointmentStore();
+  const {
+    appointment,
+    setSlots,
+    setGroupSlots,
+    setAppointment,
+    updateAppointmentFilters,
+  } = useCreateAppointmentStore();
   const [isBooking, setIsBooking] = useState(false);
   const [timeSelected, setTimeSelected] = useState("");
 
@@ -108,7 +113,13 @@ export const useBookAppointmentMethods = () => {
           futureDay: slots.future_days,
           nextAvailableDay: slots.next_available_day,
         });
+        const keys = Object.keys(groupSlotsTogether(slots.slots)).sort();
         setGroupSlots(groupSlotsTogether(slots.slots));
+        if (keys.length > 0) {
+          updateAppointmentFilters({
+            hour: keys[0],
+          });
+        }
       }
     },
     [
@@ -117,6 +128,7 @@ export const useBookAppointmentMethods = () => {
       setAppointment,
       setGroupSlots,
       setSlots,
+      updateAppointmentFilters,
     ],
   );
 
