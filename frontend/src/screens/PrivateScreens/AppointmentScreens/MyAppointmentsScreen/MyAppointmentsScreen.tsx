@@ -8,6 +8,8 @@ import type { ApplicationScreenProps } from "@/types/navigation";
 import { AndroidScreenTopSpace, Box, Text } from "@/components/atoms";
 import { colors } from "@/theme";
 import { useMyBookingStore } from "@/store/myBookingsStore";
+import { useServicesStore } from "@/store/servicesStore";
+import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 
 const FilterButton = ({
   title,
@@ -45,6 +47,8 @@ export enum BookingType {
 function MyAppointmentsScreen({ navigation }: ApplicationScreenProps) {
   const { silentRefresh } = useMyAppointments();
   const { activeBookings, pastBookings, isLoading } = useMyBookingStore();
+  const { resetStore } = useServicesStore();
+  const { resetStore: resetAppointmentStore } = useCreateAppointmentStore();
   const [filters, setFilters] = useState<{
     bookingType: BookingType;
     searchText: string;
@@ -56,9 +60,11 @@ function MyAppointmentsScreen({ navigation }: ApplicationScreenProps) {
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
       silentRefresh();
+      resetStore();
+      resetAppointmentStore({});
     });
     return unsubscribe;
-  }, [navigation, silentRefresh]);
+  }, [navigation, resetAppointmentStore, resetStore, silentRefresh]);
 
   const handleOnPressButton = useCallback(
     (value: BookingType) => {

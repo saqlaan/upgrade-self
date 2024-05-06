@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { GuestAppointmentType } from "@/types/zenoti/BookedAppointmentType";
 
-interface CenterStore {
+interface MyBookingStoreType {
   pastBookings: GuestAppointmentType[];
   activeBookings: GuestAppointmentType[];
   isLoading: boolean;
@@ -10,9 +10,10 @@ interface CenterStore {
     activeBookings: GuestAppointmentType[];
   }) => void;
   setIsLoading: (value: boolean) => void;
+  resetMyBoookingStore: () => void;
 }
 
-export const useMyBookingStore = create<CenterStore>((set) => ({
+export const useMyBookingStore = create<MyBookingStoreType>((set) => ({
   pastBookings: [],
   activeBookings: [],
   isLoading: false,
@@ -22,4 +23,10 @@ export const useMyBookingStore = create<CenterStore>((set) => ({
     set({
       isLoading: value,
     }),
+  resetMyBoookingStore: () =>
+    set(() => ({
+      pastBookings: [],
+      activeBookings: [],
+      isLoading: false,
+    })),
 }));

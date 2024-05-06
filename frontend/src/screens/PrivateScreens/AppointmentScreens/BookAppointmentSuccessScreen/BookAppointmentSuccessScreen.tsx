@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ImageBackground, StatusBar, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Box, CButton, Text } from "@/components/atoms";
@@ -6,9 +6,22 @@ import { LikeIcon } from "@/theme/assets/icons";
 import { Images } from "@/theme/assets/images";
 import { spacing } from "@/theme/spacing";
 import type { ApplicationScreenProps } from "@/types/navigation";
+import { useMyBookingStore } from "@/store/myBookingsStore";
+import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
+import { useServicesStore } from "@/store/servicesStore";
 
 function BookAppointmentSuccessScreen({ navigation }: ApplicationScreenProps) {
   const { top, bottom } = useSafeAreaInsets();
+
+  const { resetStore: resetServicesStore } = useServicesStore();
+  const { resetMyBoookingStore } = useMyBookingStore();
+  const { resetStore: resetCreateAppointmentStore } =
+    useCreateAppointmentStore();
+
+  useEffect(() => {
+    resetMyBoookingStore();
+    resetCreateAppointmentStore({});
+  }, [resetCreateAppointmentStore, resetMyBoookingStore, resetServicesStore]);
 
   return (
     <ImageBackground source={Images.primaryBgLines} style={{ flex: 1 }}>

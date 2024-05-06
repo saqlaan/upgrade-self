@@ -20,10 +20,12 @@ const DynamicBottomSheet = ({
 
   const handlelayout = useCallback(
     (event) => {
-      const { height } = event.nativeEvent.layout;
-      setDynamicSnapPoint([height + bottom]);
+      if (!snapPoints) {
+        const { height } = event.nativeEvent.layout;
+        setDynamicSnapPoint([height + bottom + 30]);
+      }
     },
-    [bottom],
+    [bottom, snapPoints],
   );
 
   const closeBottomSheet = useCallback(() => {
@@ -42,8 +44,8 @@ const DynamicBottomSheet = ({
       )}
       name={name}
     >
-      <BottomSheetView>
-        <Box onLayout={handlelayout}>{children}</Box>
+      <BottomSheetView onLayout={handlelayout}>
+        <Box>{children}</Box>
       </BottomSheetView>
     </BottomSheetModal>
   );

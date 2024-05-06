@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { format } from "date-fns";
 import { AppointmentType, SlotType, ZenotiService } from "@/types";
 
 type SlotsDataType = {
@@ -24,7 +25,11 @@ interface CreateAppointmentStore {
   setAppointment: (appointment: AppointmentType) => void;
   setSlots: (slotsData: SlotsDataType) => void;
   setGroupSlots: (groupSlots: GroupSlotsType) => void;
-  resetStore: () => void;
+  resetStore: ({
+    selectedService,
+  }: {
+    selectedService?: ZenotiService;
+  }) => void;
   filters: SearchAppointmentsFilter;
   updateAppointmentFilters: (filters: { date?: string; hour?: string }) => void;
 }
@@ -39,7 +44,7 @@ const initialState: CreateAppointmentStore = {
   },
   groupSlots: null,
   filters: {
-    date: new Date().toDateString(),
+    date: format(new Date(), "yyyy-MM-dd"),
     hour: "",
   },
 };
@@ -52,7 +57,8 @@ export const useCreateAppointmentStore = create<CreateAppointmentStore>(
         ...state,
         selectedService: service,
       })),
-    resetStore: () => set(initialState),
+    resetStore: (data: { selectedService?: ZenotiService }) =>
+      set({ ...initialState, selectedService: data?.selectedService || null }),
     setAppointment: (appointment: AppointmentType) =>
       set(() => ({ appointment })),
     setSlots: (slots: SlotsDataType) => set(() => ({ slots })),

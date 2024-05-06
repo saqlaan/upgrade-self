@@ -7,38 +7,34 @@ import { colors, spacing } from "@/theme";
 import {
   AddSquareFilledIcon,
   CalendarBottomTabIcon,
+  CalendarBottomTabIconFilled,
+  GraohSquareFilled,
   GraphSquareIcon,
+  HomeFilledIcon,
   HomeOutlineIcon,
   UserCircleIcon,
 } from "@/theme/assets/icons";
+import { isIOS } from "@/utils/functions";
 
 type TabIconProps = {
   active: boolean;
 };
 
-const getColor = (active: boolean) =>
-  active ? colors.primary : colors["black-400"];
-
 const TabIcons = {
   HomeScreen: {
-    icon: ({ active }: TabIconProps) => (
-      <HomeOutlineIcon fill={getColor(active)} />
-    ),
+    icon: ({ active }: TabIconProps) =>
+      active ? <HomeFilledIcon /> : <HomeOutlineIcon />,
   },
   MyAppointmentsScreen: {
-    icon: ({ active }: TabIconProps) => (
-      <CalendarBottomTabIcon fill={getColor(active)} />
-    ),
+    icon: ({ active }: TabIconProps) =>
+      active ? <CalendarBottomTabIconFilled /> : <CalendarBottomTabIcon />,
   },
   StatsScreen: {
-    icon: ({ active }: TabIconProps) => (
-      <GraphSquareIcon fill={getColor(active)} />
-    ),
+    icon: ({ active }: TabIconProps) =>
+      active ? <GraohSquareFilled /> : <GraphSquareIcon />,
   },
   ProfileTab: {
-    icon: ({ active }: TabIconProps) => (
-      <UserCircleIcon fill={getColor(active)} />
-    ),
+    icon: ({ active }: TabIconProps) => <UserCircleIcon />,
   },
   BookAppointmentTab: {
     icon: ({ active }: TabIconProps) => (
@@ -76,13 +72,22 @@ const BottomTabBar = ({ state, navigation }: BottomTabBarProps) => {
             accessibilityState={isFocused ? { selected: true } : {}}
             onPress={handleOnPress}
             key={route.key}
-            style={{ flex: 1, alignItems: "center", padding: 20 }}
+            style={{
+              flex: 1,
+              alignItems: "center",
+              paddingBottom: 5,
+              paddingTop: 10,
+            }}
           >
-            <Box alignItems="center" justifyContent="center">
+            <Box
+              alignItems="center"
+              justifyContent="center"
+              style={[!isIOS && { paddingBottom: 10 }]}
+            >
               <Box
                 mb="1"
                 bgColor={isFocused ? "primary" : "white"}
-                style={{ width: 5, height: 5, borderRadius: 5 }}
+                style={[{ width: 5, height: 5, borderRadius: 5 }]}
               />
               {TabIcons[route.name] &&
                 TabIcons[route.name].icon({ active: isFocused })}

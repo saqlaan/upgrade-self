@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
-import { Image, Pressable } from "react-native";
+import { Image, Pressable, StatusBar } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import { Box, Text } from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { Images } from "@/theme/assets/images";
 import { getBrainUpgradeUser } from "@/services/firebaseApp/brainUpgrade";
+import { colors } from "@/theme";
+import { isAndroid } from "@/utils/functions";
 
 function Appointment({ navigation }: ApplicationScreenProps) {
   const cellHealthAnalysisConnected = false;
@@ -25,6 +28,12 @@ function Appointment({ navigation }: ApplicationScreenProps) {
         setBrainUpgradeConnected(false);
       });
   }, []); // TODO: fetch this whenever user navigates to this screen
+  useFocusEffect(
+    React.useCallback(() => {
+      StatusBar.setBarStyle("dark-content");
+      if (isAndroid) StatusBar.setBackgroundColor(colors["grey-400"]);
+    }, []),
+  );
   return (
     <SafeScreen>
       <Box bgColor="grey-400" flex={1}>

@@ -10,6 +10,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useMutation } from "@tanstack/react-query";
 import Snackbar from "react-native-snackbar";
 import AppointmentDetailsCard from "./components/AppointmentDetailsCard";
+import ReasonList from "./data.json";
 import {
   AndroidScreenTopSpace,
   BackButton,
@@ -30,12 +31,18 @@ import { DynamicBottomSheet } from "@/components";
 import { useDynamicBottomSheet } from "@/hooks";
 import { cancelBooking } from "@/services/firebaseApp/appointment";
 import { useCenterStore } from "@/store/centerStore";
+import { useServicesStore } from "@/store/servicesStore";
+import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
+import { isIOS } from "@/utils/functions";
 
 function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
   const route = useRoute();
   const appointment = route.params?.appointment as GuestAppointmentType;
   const isPastBooking = route.params?.isPastBooking;
   const { allCenters } = useCenterStore();
+  const { resetStore: resetServicesStore } = useServicesStore();
+  const { resetStore: resetAppointmentStore, selectedService } =
+    useCreateAppointmentStore();
 
   const { mutateAsync: cancelBookingAsync, isPending: isPendingCancelBooking } =
     useMutation({
@@ -57,38 +64,58 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
     openBottomSheet: openReScheduleSheet,
     closeBottomSheet: closeReScheduleSheet,
   } = useDynamicBottomSheet();
+  const {
+    bottomSheetRef: cancelReasonSheet,
+    openBottomSheet: openCancelReasonSheet,
+    closeBottomSheet: closeCancelReasonSheet,
+  } = useDynamicBottomSheet();
   const { bottom } = useSafeAreaInsets();
 
   const handleCancelBooking = useCallback(async () => {
-    const invoiceId = appointment?.invoice_id || "";
-    const center = allCenters.find(
-      (center) => center.id === appointment.center_id,
-    );
-    const result = await cancelBookingAsync({
-      invoiceId,
-      countryCode: center?.country.code || "",
-    });
-    if (result?.success) {
-      closeCancelSheet();
-      navigation.goBack();
-    } else {
-      Snackbar.show({
-        text: "Error",
-        duration: Snackbar.LENGTH_SHORT,
-        action: {
-          text: "Failed to cancel the booking. Try later",
-          textColor: colors.error,
-        },
+    closeCancelSheet();
+    setTimeout(() => {
+      openCancelReasonSheet();
+    }, 500);
+    return;
+  }, [closeCancelSheet, openCancelReasonSheet]);
+
+  const handleConfirmCancelBooking = useCallback(
+    async ({ reasonId, comments }) => {
+      const invoiceId = appointment?.invoice_id || "";
+      const center = allCenters.find(
+        (center) => center.id === appointment.center_id,
+      );
+      const result = await cancelBookingAsync({
+        invoiceId,
+        countryCode: center?.country.code || "",
+        reasonId,
+        comments,
       });
-    }
-  }, [
-    allCenters,
-    appointment.center_id,
-    appointment?.invoice_id,
-    cancelBookingAsync,
-    closeCancelSheet,
-    navigation,
-  ]);
+      if (result?.success) {
+        closeCancelSheet();
+        navigation.goBack();
+      } else {
+        Snackbar.show({
+          text: "Error",
+          duration: Snackbar.LENGTH_SHORT,
+          action: {
+            text: "Failed to cancel the booking. Try later",
+            textColor: colors.error,
+          },
+        });
+        closeCancelReasonSheet();
+      }
+    },
+    [
+      allCenters,
+      appointment.center_id,
+      appointment?.invoice_id,
+      cancelBookingAsync,
+      closeCancelReasonSheet,
+      closeCancelSheet,
+      navigation,
+    ],
+  );
 
   const handleOpenCancelSheet = useCallback(() => {
     closeActionSheet();
@@ -103,6 +130,26 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
       openReScheduleSheet();
     }, 500);
   }, [closeActionSheet, openReScheduleSheet]);
+
+  const handleOnConfirmReschedule = useCallback(() => {
+    closeReScheduleSheet();
+    setTimeout(() => {
+      navigation.navigate("RescheduleAppointmentScreen", {
+        appointment,
+      });
+      resetAppointmentStore({
+        selectedService,
+      });
+      resetServicesStore();
+    }, 500);
+  }, [
+    appointment,
+    closeReScheduleSheet,
+    navigation,
+    resetAppointmentStore,
+    resetServicesStore,
+    selectedService,
+  ]);
 
   return (
     <SafeScreen style={{ flex: 1, backgroundColor: colors["white"] }}>
@@ -138,9 +185,9 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
       >
         <Box
           px={"4"}
-          pt="4"
+          py="4"
           alignItems="center"
-          style={{ paddingBottom: bottom }}
+          style={[isIOS && { paddingBottom: bottom }]}
         >
           <CancelBookingIcon />
           <Text variant="text-lg-bold" mt="2" mb="2">
@@ -172,10 +219,10 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
         bottomSheetModalRef={reScheduleSheetRef}
       >
         <Box
-          px={"4"}
-          pt="4"
+          px="4"
+          py="4"
           alignItems="center"
-          style={{ paddingBottom: bottom }}
+          style={[isIOS && { paddingBottom: bottom }]}
         >
           <RescheduleBookingIcon />
           <Text variant="text-lg-bold" mt="2" mb="2">
@@ -194,7 +241,7 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
             </Box>
             <Box flex={1}>
               <CButton
-                onPress={() => navigation.navigate("SignupScreen")}
+                onPress={handleOnConfirmReschedule}
                 text="Confirm"
               ></CButton>
             </Box>
@@ -205,7 +252,13 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
         name="actionSheet"
         bottomSheetModalRef={actionSheetRef}
       >
-        <Box px={"4"} pt="4" row gap="4" style={{ paddingBottom: bottom }}>
+        <Box
+          px={"4"}
+          py="4"
+          row
+          gap="4"
+          style={[isIOS && { paddingBottom: bottom }]}
+        >
           <Box flex={1}>
             <CButton
               variant={"default"}
@@ -219,6 +272,23 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
               text="Re-schedule"
             ></CButton>
           </Box>
+        </Box>
+      </DynamicBottomSheet>
+      <DynamicBottomSheet
+        name="reasonSheet"
+        bottomSheetModalRef={cancelReasonSheet}
+      >
+        <Box px="4">
+          {ReasonList.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => handleConfirmCancelBooking(item)}
+            >
+              <Box mb="4">
+                <Text>{item.comments}</Text>
+              </Box>
+            </TouchableOpacity>
+          ))}
         </Box>
       </DynamicBottomSheet>
     </SafeScreen>

@@ -31,11 +31,14 @@ export const getCenterServices = async (
   }
   return;
 };
-
+//  "item": {
+//             "invoice_id": "84001ebc-e9e8-4b3b-abc3-fe8c6001bf6e",
+//             "invoice_item_id":"a315dd1e-af8a-4d74-969c-2d7705d6208c"
+//           }
 export const createAppointment = async (req: Request, res: Response) => {
   try {
-    const { guestId, centerId, serviceId, date, countryCode } = req.body;
-    if (!centerId || !serviceId || !guestId || !date) {
+    const { guestId, centerId, serviceId, date, countryCode, invoiceId, invoiceItemId } = req.body;
+    if (!centerId || !guestId || !date) {
       res.status(403).json({ message: "Center id or country code or serviceId or date is missing" });
     }
     const data = await serviceBooking.createAppointment({
@@ -44,6 +47,8 @@ export const createAppointment = async (req: Request, res: Response) => {
       date,
       guestId,
       serviceId,
+      invoiceId,
+      invoiceItemId,
     });
     return res.json(data);
   } catch (error) {

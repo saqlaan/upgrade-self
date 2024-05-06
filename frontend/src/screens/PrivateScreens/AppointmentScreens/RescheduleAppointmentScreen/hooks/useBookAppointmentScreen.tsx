@@ -5,7 +5,13 @@ import { useServicesStore } from "@/store/servicesStore";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 import { getServices } from "@/services/firebaseApp/appointment";
 
-export const useBookAppointmentScreen = () => {
+type UseBookAppointmentScreenProps = {
+  isRescheduling?: boolean;
+};
+
+export const useBookAppointmentScreen = ({
+  isRescheduling = false,
+}: UseBookAppointmentScreenProps = {}) => {
   const { center } = useCenterStore();
   const { setServices, resetStore, setIsLoadingServices } = useServicesStore();
   const {
@@ -17,18 +23,15 @@ export const useBookAppointmentScreen = () => {
   const [isLoadingSlots, setIsLoadingSlots] = useState(false);
 
   useEffect(() => {
-    resetStore();
-    resetAppointmentStore({});
-    return () => {
+    if (!isRescheduling) {
       resetStore();
-      resetAppointmentStore({});
-    };
-  }, [resetAppointmentStore, resetStore]);
+      resetAppointmentStore();
+    }
+  }, [isRescheduling, resetAppointmentStore, resetStore]);
 
   const onStart = useCallback(async () => {
     if (selectedService) {
       setIsLoadingSlots(true);
-
       await loadSlots({
         service: selectedService,
         date: filters.date,

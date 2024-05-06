@@ -22,7 +22,7 @@ router.get("/user", (req: Request, res: Response) => {
 router.get("/centers", getAllCentersAsync);
 router.post("/payment", addPaymentAsync);
 router.get("/getServices", getCenterServices);
-router.post("/bookings", createAppointment); //  Create appointment
+router.post("/bookings", createAppointment);
 router.get("/bookings/:bookingId/slots", getSlots);
 router.post("/bookings/:bookingId/slots/reserve", reserveSlot);
 router.post("/bookings/:bookingId/slots/confirm", confirmBooking);

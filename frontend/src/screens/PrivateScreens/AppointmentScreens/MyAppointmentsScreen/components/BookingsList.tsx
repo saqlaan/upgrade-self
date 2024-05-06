@@ -10,6 +10,8 @@ import { GuestAppointmentType } from "@/types/zenoti/BookedAppointmentType";
 import { BookedAppointmentCard } from "@/components";
 import { spacing } from "@/theme";
 import { useCenterStore } from "@/store/centerStore";
+import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
+import { ZenotiService } from "@/types";
 
 const BookingList = React.memo(
   ({
@@ -28,6 +30,7 @@ const BookingList = React.memo(
     const { allCenters } = useCenterStore();
     const [refreshing, setRefreshing] = React.useState(false);
     const navigation = useNavigation();
+    const { setSelectedService } = useCreateAppointmentStore();
 
     const bookingsToSectionList = useCallback(() => {
       let filteredBookings = bookings;
@@ -79,12 +82,15 @@ const BookingList = React.memo(
 
     const handleOnPress = useCallback(
       (appointment: GuestAppointmentType, isPastBooking: boolean) => {
+        const service = appointment?.appointment_services[0]
+          ?.service as unknown as ZenotiService;
+        setSelectedService(service);
         navigation.navigate("MyAppointmentDetailScreen", {
           appointment,
           isPastBooking,
         });
       },
-      [navigation],
+      [navigation, setSelectedService],
     );
 
     const renderItem = useCallback(

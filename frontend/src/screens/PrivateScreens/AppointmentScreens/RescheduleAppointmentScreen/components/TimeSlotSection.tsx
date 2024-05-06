@@ -6,13 +6,8 @@ import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 import { formatHour } from "@/utils/functions";
 
 export function TimeSlotSection() {
-  const {
-    slots,
-    groupSlots,
-    filters,
-    updateAppointmentFilters,
-    selectedService,
-  } = useCreateAppointmentStore();
+  const { slots, groupSlots, filters, updateAppointmentFilters } =
+    useCreateAppointmentStore();
   const slotKeys = Object.keys(groupSlots || []).sort();
 
   const renderItem = ({ item, index }) => {
@@ -42,7 +37,7 @@ export function TimeSlotSection() {
       </Pressable>
     );
   };
-  if (!selectedService || slots.available.length === 0) return null;
+  if (slots.available.length === 0) return null;
   return (
     <Box>
       <FlatList

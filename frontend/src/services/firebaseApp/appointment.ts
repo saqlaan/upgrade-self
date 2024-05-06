@@ -30,12 +30,16 @@ export const createAppointment = async ({
   serviceId,
   guestId,
   date,
+  invoiceItemId,
+  invoiceId,
 }: {
   centerId?: string;
   countryCode?: string;
-  serviceId: string;
+  serviceId?: string;
   guestId: string;
   date: string;
+  invoiceItemId?: string;
+  invoiceId?: string;
 }): Promise<AppointmentType | null> => {
   try {
     const result = await axios.post("zenoti/bookings", {
@@ -44,6 +48,8 @@ export const createAppointment = async ({
       serviceId,
       guestId,
       date,
+      invoiceId,
+      invoiceItemId,
     });
     return result.data as AppointmentType;
   } catch (error) {
@@ -138,13 +144,25 @@ type CancelBookingResponse = {
 export const cancelBooking = async ({
   invoiceId,
   countryCode,
+  comments,
+  reasonId,
 }: {
   invoiceId: string;
   countryCode: string;
+  comments: string;
+  reasonId: string;
 }): Promise<CancelBookingResponse | null> => {
   try {
+    console.log({
+      invoiceId,
+      countryCode,
+    });
     const result = await axios.put(
       `zenoti/invoices/${invoiceId}/cancel?countryCode=${countryCode}`,
+      {
+        reason_id: reasonId,
+        comments: comments,
+      },
     );
     return result.data;
   } catch (error) {

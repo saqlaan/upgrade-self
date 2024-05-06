@@ -22,6 +22,7 @@ import {
   CellHealthAnalysisScreen,
   Welcome,
   MyAppointmentDetailsScreen,
+  RescheduleAppointmentScreen,
 } from "@/screens";
 import { ApplicationStackParamList } from "@/types/navigation";
 import { BottomTabBar } from "@/components";
@@ -133,6 +134,10 @@ const PrivateStackNavigator = () => {
       <ProfileStackNavigator.Screen
         name="MyAppointmentDetailScreen"
         component={MyAppointmentDetailsScreen}
+      />
+      <ProfileStackNavigator.Screen
+        name="RescheduleAppointmentScreen"
+        component={RescheduleAppointmentScreen}
       />
     </ProfileStackNavigator.Navigator>
   );

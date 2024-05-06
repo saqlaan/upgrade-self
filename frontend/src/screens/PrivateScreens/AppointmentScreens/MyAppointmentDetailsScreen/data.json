@@ -1,0 +1,12 @@
+[
+  { "reasonId": "299ba835-db03-433c-a207-8e58b6746799", "comments": "Personal" },
+  { "reasonId": "f9be903e-b6a9-4cca-9ca7-456b3afb5dc2", "comments": "Unsatisfied with previous service" },
+  { "reasonId": "1981f027-a172-4207-b6b4-517c24dda012", "comments": "Under medication" },
+  { "reasonId": "79324821-297a-4cdc-aa0d-5eb06b45c443", "comments": "Rescheduled" },
+  { "reasonId": "48637285-2c4e-4fae-97ef-52c52f8cebce", "comments": "Moved out of city" },
+  { "reasonId": "471042c8-65f4-499a-8675-8a00775cf462", "comments": "Therapist unavailable" },
+  { "reasonId": "db769779-ae85-4326-8128-96365cfb6452", "comments": "Duplicate/Incorrect appointment booked" },
+  { "reasonId": "06c70cd5-e805-48cd-991e-9fac234f78c5", "comments": "Stuck at work" },
+  { "reasonId": "ddcf9e98-741e-4011-9ef8-be4a6c6facf6", "comments": "Health issues" },
+  { "reasonId": "3ddf1907-457b-4b6c-b6d8-4bcafd25d6a8", "comments": "Taking service at another location" }
+]

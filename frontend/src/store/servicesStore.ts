@@ -24,6 +24,7 @@ export const useServicesStore = create<ServicesStore>((set, getState) => ({
     set({
       services: [],
       servicesFound: false,
+      isLoadingServices: false,
     }),
   servicesAvailable: () => {
     const state = getState();

@@ -1,6 +1,9 @@
 import { useMutation } from "@tanstack/react-query";
 import { useNavigation } from "@react-navigation/native";
 import { useCallback, useState } from "react";
+import { format } from "date-fns";
+
+import Snackbar from "react-native-snackbar";
 import {
   confrimSlotAsync,
   createAppointment,
@@ -16,17 +19,13 @@ import {
 import { getGuestPaymentMethods } from "@/services/firebaseApp/guests";
 import { getUserGuests } from "@/services/firebase/collections/guest";
 import { ZenotiService } from "@/types";
+import { colors } from "@/theme";
 
 export const useBookAppointmentMethods = () => {
   const { center } = useCenterStore();
   const navigation = useNavigation();
-  const {
-    appointment,
-    setSlots,
-    setGroupSlots,
-    setAppointment,
-    updateAppointmentFilters,
-  } = useCreateAppointmentStore();
+  const { appointment, setSlots, setGroupSlots, setAppointment } =
+    useCreateAppointmentStore();
   const [isBooking, setIsBooking] = useState(false);
   const [timeSelected, setTimeSelected] = useState("");
 
@@ -38,9 +37,11 @@ export const useBookAppointmentMethods = () => {
     setTimeSelected(time);
     setIsBooking(true);
     const hasMethod = await hasPaymentMethod();
+
     if (!hasMethod) {
       setIsBooking(false);
       navigation.navigate("PaymentScreen");
+      return null;
     }
     const reservedSlot = await reserveSlotMutation({
       appointmentId: appointment?.id || "",
@@ -48,7 +49,16 @@ export const useBookAppointmentMethods = () => {
       slotTime: time,
     });
     if (!reservedSlot?.is_reserved) {
-      console.log("Something went wrong in reserving slot");
+      setIsBooking(false);
+
+      Snackbar.show({
+        text: "Error",
+        duration: Snackbar.LENGTH_LONG,
+        action: {
+          text: "Issue reserving the slot. Try later",
+          textColor: colors.error,
+        },
+      });
       return;
     }
     const confirmSlot = await confrimSlotAsync({
@@ -56,6 +66,15 @@ export const useBookAppointmentMethods = () => {
       countryCode: center?.countryCode || "",
     });
     if (confirmSlot?.error) {
+      setIsBooking(false);
+      Snackbar.show({
+        text: "Error",
+        duration: Snackbar.LENGTH_SHORT,
+        action: {
+          text: "Issue confirming the slot. Try later",
+          textColor: colors.error,
+        },
+      });
       console.log("Something went wrong confirming the appointment");
       return;
     }
@@ -83,7 +102,17 @@ export const useBookAppointmentMethods = () => {
   };
 
   const loadSlots = useCallback(
-    async ({ service, date }: { service: ZenotiService; date: string }) => {
+    async ({
+      service,
+      date,
+      invoiceId,
+      invoiceItemId,
+    }: {
+      service?: ZenotiService;
+      date: string;
+      invoiceId?: string;
+      invoiceItemId?: string;
+    }) => {
       setSlots({ available: [], futureDay: null, nextAvailableDay: null });
       setGroupSlots({});
       const guests = await getUserGuests();
@@ -92,11 +121,13 @@ export const useBookAppointmentMethods = () => {
       );
       if (guestAccount) {
         const appointment = await createAppointment({
-          date: date,
+          date: format(date, "yyyy-MM-dd"),
           guestId: guestAccount.guestId,
-          serviceId: service.id,
+          serviceId: service?.id || undefined,
           centerId: center?.centerId,
           countryCode: guestAccount.countryCode,
+          invoiceId: invoiceId || undefined,
+          invoiceItemId: invoiceItemId || undefined,
         });
         if (appointment?.id) setAppointment(appointment);
         else return;
@@ -113,13 +144,7 @@ export const useBookAppointmentMethods = () => {
           futureDay: slots.future_days,
           nextAvailableDay: slots.next_available_day,
         });
-        const keys = Object.keys(groupSlotsTogether(slots.slots)).sort();
         setGroupSlots(groupSlotsTogether(slots.slots));
-        if (keys.length > 0) {
-          updateAppointmentFilters({
-            hour: keys[0],
-          });
-        }
       }
     },
     [
@@ -128,7 +153,6 @@ export const useBookAppointmentMethods = () => {
       setAppointment,
       setGroupSlots,
       setSlots,
-      updateAppointmentFilters,
     ],
   );
 

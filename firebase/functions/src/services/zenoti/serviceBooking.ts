@@ -30,12 +30,16 @@ export const createAppointment = async ({
   serviceId,
   guestId,
   date,
+  invoiceId,
+  invoiceItemId,
 }: {
   organization: Organization;
   centerId: string;
-  serviceId: string;
+  serviceId?: string;
   guestId: string;
   date: string; // Assuming date format is a string
+  invoiceId?: string;
+  invoiceItemId?: string;
 }) => {
   try {
     const response = await axios.post(
@@ -50,7 +54,8 @@ export const createAppointment = async ({
             items: [
               {
                 item: {
-                  id: serviceId,
+                  ...(serviceId && { id: serviceId }),
+                  ...(invoiceId && invoiceItemId && { invoice_id: invoiceId, invoice_item_id: invoiceItemId }),
                 },
               },
             ],
@@ -114,7 +119,6 @@ export const confirmBooking = async ({
   organization: Organization;
 }) => {
   try {
-    console.log({ bookingId, organization });
     const response = await axios.post(
       `bookings/${bookingId}/slots/confirm`,
       {},
