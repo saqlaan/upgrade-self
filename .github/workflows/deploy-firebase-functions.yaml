@@ -28,3 +28,5 @@ jobs:
       - name: Deploy Firebase Functions
         run: npm run deploy
         working-directory: firebase/functions
+        env:
+            FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN_STAGING }}
