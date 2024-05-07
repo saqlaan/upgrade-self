@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { addMinutes, format } from "date-fns";
 import { Box, Text } from "@/components/atoms";
@@ -22,8 +22,10 @@ const AppointmentDetailsCard = ({
   const { start_time } = appointmentService || {};
   const { invoice_status } = appointment || {};
   const center = allCenters.find(
-    (center) => center.id === appointment.center_id,
+    (center) => center.id === appointment.center_id
   );
+  const name = appointmentService?.service?.name || "";
+  const contactInfo = center?.contact_info || null;
 
   const invoiceStatusMap = {
     0: "Open",
@@ -56,11 +58,14 @@ const AppointmentDetailsCard = ({
           style={{ borderWidth: 0.5, height: "80%", backgroundColor: "#333" }}
         />
         <Box gap="1">
-          <StopWatchIcon />
-          <Text color="black-400" variant="text-sm-medium">
-            {format(start_time, "EEE MMM dd")}, {format(start_time, "hh:mm")} -{" "}
-            {format(addMinutes(start_time, duration), "hh:mm a")}
-          </Text>
+          <Text variant="text-lg-bold">{name}</Text>
+          <Box row gap="1">
+            <StopWatchIcon />
+            <Text color="black-400" variant="text-sm-medium">
+              {format(start_time, "EEE MMM dd")}, {format(start_time, "hh:mm")}{" "}
+              - {format(addMinutes(start_time, duration), "hh:mm a")}
+            </Text>
+          </Box>
         </Box>
       </Box>
       <Box>
@@ -86,12 +91,14 @@ const AppointmentDetailsCard = ({
           <Box row justifyContent="space-between">
             <Box>
               <Text variant="text-sm-regular">Contact</Text>
-              <Box row alignItems="center" gap="3" mt="2">
-                <CallIcon />
-                <Text color="black-400" variant="text-sm-semi-bold">
-                  TBD
-                </Text>
-              </Box>
+              {contactInfo && contactInfo.phone_1 && (
+                <Box row alignItems="center" gap="3" mt="2">
+                  <CallIcon />
+                  <Text color="black-400" variant="text-sm-semi-bold">
+                    {contactInfo.phone_1}
+                  </Text>
+                </Box>
+              )}
             </Box>
             <Box>
               <Text variant="text-sm-regular">Direction</Text>
