@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   ScrollView,
   StatusBar,
@@ -34,6 +34,7 @@ import { useCenterStore } from "@/store/centerStore";
 import { useServicesStore } from "@/store/servicesStore";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 import { isIOS } from "@/utils/functions";
+import { getServices } from "@/services/firebaseApp/appointment";
 
 function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
   const route = useRoute();
@@ -43,6 +44,24 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
   const { resetStore: resetServicesStore } = useServicesStore();
   const { resetStore: resetAppointmentStore, selectedService } =
     useCreateAppointmentStore();
+  const { services, setServices } = useServicesStore();
+  const appointmentService = appointment?.appointment_services[0];
+  const service = services?.find(
+    (service) => service.id === appointmentService?.service.id
+  );
+  const center = allCenters.find(
+    (center) => center.id === appointment.center_id,
+  );
+
+  useEffect(() => {
+    if (!center) return;
+    getServices({ centerId: center.id, countryCode: center.country.code }).then(
+      (res) => {
+        const services = res?.services || [];
+        setServices(services);
+      },
+    );
+  }, [center, setServices]);
 
   const { mutateAsync: cancelBookingAsync, isPending: isPendingCancelBooking } =
     useMutation({
@@ -83,7 +102,7 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
     async ({ reasonId, comments }) => {
       const invoiceId = appointment?.invoice_id || "";
       const center = allCenters.find(
-        (center) => center.id === appointment.center_id,
+        (center) => center.id === appointment.center_id
       );
       const result = await cancelBookingAsync({
         invoiceId,
@@ -114,7 +133,7 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
       closeCancelReasonSheet,
       closeCancelSheet,
       navigation,
-    ],
+    ]
   );
 
   const handleOpenCancelSheet = useCallback(() => {
@@ -174,7 +193,7 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
           <Box mt="4">
             <Text variant="text-lg-bold">About</Text>
             <Text mt="2" variant="text-md-regular">
-              TBD
+              {service?.description || "No description available"}
             </Text>
           </Box>
         </Box>
