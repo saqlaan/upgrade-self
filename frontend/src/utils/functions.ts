@@ -60,6 +60,11 @@ export function groupSlotsTogether(data: SlotType[]): GroupSlotsTogether {
         groupedData[hour] = []; // Initialize array if it doesn't exist
       }
       groupedData[hour].push(obj);
+    } else {
+      if (!groupedData[hour]) {
+        groupedData[hour] = []; // Initialize array if it doesn't exist
+      }
+      groupedData[hour].push(obj);
     }
   });
   return groupedData;
