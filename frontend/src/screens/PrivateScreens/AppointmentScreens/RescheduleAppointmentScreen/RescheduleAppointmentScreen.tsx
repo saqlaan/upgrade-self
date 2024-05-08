@@ -8,6 +8,7 @@ import type { ApplicationScreenProps } from "@/types/navigation";
 import { isIOS } from "@/utils/functions";
 import { colors } from "@/theme";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
+import { ZenotiService } from "@/types";
 
 function RescheduleAppointmentScreen({
   navigation,
@@ -23,8 +24,10 @@ function RescheduleAppointmentScreen({
       invoiceItemId: appointment?.appointment_services[0].invoice_item_id,
       invoiceId: appointment?.invoice_id,
       date: filters.date,
+      service: selectedService as ZenotiService,
     });
   }, [
+    appointment,
     appointment?.appointment_services,
     appointment?.invoice_id,
     filters.date,

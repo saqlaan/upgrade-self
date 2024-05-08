@@ -41,7 +41,7 @@ export const useBookAppointmentMethods = () => {
     if (!hasMethod) {
       setIsBooking(false);
       navigation.navigate("PaymentScreen");
-      return null;
+      return;
     }
     const reservedSlot = await reserveSlotMutation({
       appointmentId: appointment?.id || "",
