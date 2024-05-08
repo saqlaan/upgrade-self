@@ -82,7 +82,7 @@ function BottomFilterSheet({ onPressCancel }: BottomFilterSheetProps) {
           </Box>
         </Box>
       </Box>
-      <Box mt="4">
+      {/* <Box mt="4">
         <Text variant="text-sm-medium" color="black-300">
           Session
         </Text>
@@ -109,7 +109,7 @@ function BottomFilterSheet({ onPressCancel }: BottomFilterSheetProps) {
             />
           </Box>
         </Box>
-      </Box>
+      </Box> */}
       <Box mt="4">
         <Box row gap="4" mt="2">
           <Box flex={1}>
