@@ -95,7 +95,7 @@ const AppointmentDetailsCard = ({
                 <Box row alignItems="center" gap="3" mt="2">
                   <CallIcon />
                   <Text color="black-400" variant="text-sm-semi-bold">
-                    {contactInfo.phone_1}
+                    {contactInfo.phone_1.display_number}
                   </Text>
                 </Box>
               )}
