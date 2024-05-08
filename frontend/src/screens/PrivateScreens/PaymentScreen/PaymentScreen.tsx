@@ -2,11 +2,12 @@ import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useMutation } from "@tanstack/react-query";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Modal, Pressable, StyleSheet } from "react-native";
+import { Modal, Pressable, StatusBar, StyleSheet } from "react-native";
 import { ActivityIndicator, useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Snackbar from "react-native-snackbar";
 import WebView from "react-native-webview";
+import { useFocusEffect } from "@react-navigation/native";
 import { useBookAppointmentMethods } from "../AppointmentScreens/BookAppointmentScreen/hooks/useBookAppointmentMethods";
 import BottomPaymentCardItem from "./components/BottomSheetPaymentCardItem";
 import PaymentBottomSheetModal from "./components/PaymentBottomSheetModal";
@@ -20,7 +21,7 @@ import { addGuestPaymentAsync } from "@/services/firebaseApp/centers";
 import { SafeScreen } from "@/components/template";
 import { BackButton, Box, CButton, Text } from "@/components/atoms";
 import { useCenterStore } from "@/store/centerStore";
-import { getGuestAccountByCountry } from "@/utils/functions";
+import { getGuestAccountByCountry, isAndroid } from "@/utils/functions";
 
 const WebViewModal = ({
   visible,
@@ -83,6 +84,13 @@ function PaymentScreen({ navigation }: ApplicationScreenProps) {
   useEffect(() => {
     onLoad();
   }, []);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      StatusBar.setBarStyle("dark-content");
+      if (isAndroid) StatusBar.setBackgroundColor(colors.primary);
+    }, [colors.primary]),
+  );
 
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();

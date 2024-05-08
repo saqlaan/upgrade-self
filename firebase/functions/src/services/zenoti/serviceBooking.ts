@@ -45,18 +45,19 @@ export const createAppointment = async ({
     const response = await axios.post(
       `/bookings?is_double_booking_enabled=false`,
       {
-        is_only_catalog_employees: true,
+        is_only_catalog_employees: false,
         center_id: centerId,
         date,
         guests: [
           {
             id: guestId,
+            ...(invoiceId && { invoice_id: invoiceId }),
             items: [
               {
                 item: {
                   ...(serviceId && { id: serviceId }),
-                  ...(invoiceId && invoiceItemId && { invoice_id: invoiceId, invoice_item_id: invoiceItemId }),
                 },
+                ...(invoiceItemId && { invoice_item_id: invoiceItemId }),
               },
             ],
           },
