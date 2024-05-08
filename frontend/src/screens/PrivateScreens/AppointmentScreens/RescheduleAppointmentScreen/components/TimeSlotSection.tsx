@@ -8,7 +8,7 @@ import { formatHour } from "@/utils/functions";
 export function TimeSlotSection() {
   const { slots, groupSlots, filters, updateAppointmentFilters } =
     useCreateAppointmentStore();
-  const slotKeys = Object.keys(groupSlots || []).sort();
+  const slotKeys = Object.keys(groupSlots || []).sort((a, b) => a - b);
 
   const renderItem = ({ item, index }) => {
     const isSelected = item == filters.hour;
