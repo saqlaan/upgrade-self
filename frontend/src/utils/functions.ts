@@ -100,3 +100,10 @@ export const getNextSevenDays = () => {
   }
   return nextSevenDays;
 };
+
+// Input string = "(UTC-08:00) Pacific Time (US & Canada)";
+export const extractUTCHours = (inputString: string) => {
+  const offsetPattern = /UTC([-+]\d{2}):(\d{2})/;
+  const [, hours, minutes] = offsetPattern.exec(inputString) || [];
+  return parseInt(hours, 10) * 60 + parseInt(minutes, 10);
+};
