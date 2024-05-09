@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FlatList, Pressable, ScrollView, StatusBar } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
+import { Link, useFocusEffect } from "@react-navigation/native";
 import useMyAppointments from "../AppointmentScreens/MyAppointmentsScreen/useMyAppointments";
 import { HomeHeader } from "./components";
 import { AndroidScreenTopSpace, Box, Text } from "@/components/atoms";
@@ -65,6 +65,13 @@ const AppointmentData = [
   },
 ];
 
+type HomeScreenState = {
+  loading: boolean;
+  hasPastBookings: boolean;
+  hasUpcomingBookings: boolean;
+  hasStats: boolean;
+};
+
 function Home({ navigation }: ApplicationScreenProps) {
   const { top } = useSafeAreaInsets();
   const [brainUpgradeData, setBrainUpgradeData] = React.useState<
@@ -106,7 +113,7 @@ function Home({ navigation }: ApplicationScreenProps) {
     React.useCallback(() => {
       StatusBar.setBarStyle("dark-content");
       if (isAndroid) StatusBar.setBackgroundColor(colors["grey-400"]);
-    }, []),
+    }, [])
   );
 
   const renderAppointmentCardItem = useCallback(
@@ -120,18 +127,27 @@ function Home({ navigation }: ApplicationScreenProps) {
 
       return (
         <Box ml={index === 0 ? "4" : [0]} style={{ width: 280 }}>
-          <BookedAppointmentCard
-            title={name}
-            duration={duration}
-            dateTime={startTime}
-            location={center?.name || ""}
-            index={index}
-            isPastBooking={false}
-          />
+          <Pressable
+            onPress={() => {
+              navigation.navigate("MyAppointmentDetailScreen", {
+                appointment: item,
+                isPastBooking: false,
+              });
+            }}
+          >
+            <BookedAppointmentCard
+              title={name}
+              duration={duration}
+              dateTime={startTime}
+              location={center?.name || ""}
+              index={index}
+              isPastBooking={false}
+            />
+          </Pressable>
         </Box>
       );
     },
-    [allCenters],
+    [allCenters]
   );
 
   return (
@@ -148,8 +164,16 @@ function Home({ navigation }: ApplicationScreenProps) {
             <HealthScoreCard />
           </Box>
           {/* Activity cards */}
-          <Box pt={"4"}>
-            {activityData.length > 0 && (
+          {activityData.length > 0 && (
+            <Box pt={"4"}>
+              <Box row mx="4" mb="4" justifyContent="space-between">
+                <Text variant="text-lg-bold">Latest Stats</Text>
+                <Pressable onPress={() => navigation.navigate("StatsScreen")}>
+                  <Text color="black-300" variant="text-sm-medium">
+                    See stats
+                  </Text>
+                </Pressable>
+              </Box>
               <FlatList
                 horizontal
                 showsHorizontalScrollIndicator={false}
@@ -160,8 +184,8 @@ function Home({ navigation }: ApplicationScreenProps) {
                 )}
                 automaticallyAdjustContentInsets
               />
-            )}
-          </Box>
+            </Box>
+          )}
           {/* Upcoming schedule */}
           <Box mt="6">
             <Box px="4" row justifyContent="space-between" mb="4">
