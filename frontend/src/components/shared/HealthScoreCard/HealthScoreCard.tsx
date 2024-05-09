@@ -1,6 +1,12 @@
 import React from "react";
 import { useTheme } from "react-native-paper";
-import { ImageBackground, StyleSheet, View } from "react-native";
+import {
+  ImageBackground,
+  Linking,
+  Pressable,
+  StyleSheet,
+  View,
+} from "react-native";
 import { Svg, Circle, Text as SvgText } from "react-native-svg";
 import { Box, Text } from "@/components/atoms";
 import { AppTheme } from "@/types/theme";
@@ -70,7 +76,7 @@ const HealthScoreCard = () => {
 
   return (
     <ImageBackground style={styles.container} source={Images.HealthCardBg}>
-      <Box row>
+      {/* <Box row>
         <Box flex={1}>
           <Text color="white" variant="text-md-bold" mb="2">
             Your health score is good
@@ -88,6 +94,32 @@ const HealthScoreCard = () => {
         <Box>
           <CircularProgress size={100} strokeWidth={4} progress={84} />
         </Box>
+      </Box> */}
+      <Box row>
+        <Box flex={1}>
+          <Text color="white" variant="text-md-bold" mb="2">
+            Welcome to Upgrade Labs!
+          </Text>
+          <Text color="white" variant="text-md-regular" mb="4">
+            {/* Your score has gone up by 10 and considered good. */}
+            Start your journey with us.
+          </Text>
+          <Pressable
+            onPress={() => {
+              Linking.openURL("https://www.upgradelabs.com/");
+            }}
+          >
+            <Box row gap="2" alignItems="center">
+              <Text color="white" style={{ textDecorationLine: "underline" }}>
+                Learn more
+              </Text>
+              <InfoIconCircleOutlineIcon fill={colors.white} />
+            </Box>
+          </Pressable>
+        </Box>
+        {/* <Box>
+          <CircularProgress size={100} strokeWidth={4} progress={84} />
+        </Box> */}
       </Box>
     </ImageBackground>
   );
