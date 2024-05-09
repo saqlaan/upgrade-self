@@ -191,7 +191,7 @@ export default function Appointment({ navigation }: ApplicationScreenProps) {
               Brain Upgrade
             </Text>
           </View>
-          <Text variant="text-sm-semi-bold">Previous Session:</Text>
+          <Text variant="text-sm-semi-bold">Latest Session:</Text>
           {sessionTimeMinutes && (
             <Text variant="text-md-bold">
               {sessionTimeMinutes?.toFixed(0)} min

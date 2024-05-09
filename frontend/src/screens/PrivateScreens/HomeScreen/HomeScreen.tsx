@@ -180,7 +180,13 @@ function Home({ navigation }: ApplicationScreenProps) {
                 ItemSeparatorComponent={() => <Box px="2" />}
                 data={activityData}
                 renderItem={({ item, index }) => (
-                  <HealthActivityCard {...item} index={index} />
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("BrainUpgradeScreen");
+                    }}
+                  >
+                    <HealthActivityCard {...item} index={index} />
+                  </Pressable>
                 )}
                 automaticallyAdjustContentInsets
               />
