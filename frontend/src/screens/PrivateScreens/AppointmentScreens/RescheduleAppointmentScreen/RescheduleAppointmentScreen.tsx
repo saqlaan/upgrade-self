@@ -49,11 +49,6 @@ function RescheduleAppointmentScreen({
         />
       )}
       <BookAppointmentHeader />
-      {/* {isLoadingSlots && (
-        <Box flex={1} alignItems="center" justifyContent="center">
-          <ActivityIndicator size={spacing[6]} />
-        </Box>
-      )} */}
       <Box py="4" flex={1}>
         <Box mb="4">
           <TimeSlotSection />

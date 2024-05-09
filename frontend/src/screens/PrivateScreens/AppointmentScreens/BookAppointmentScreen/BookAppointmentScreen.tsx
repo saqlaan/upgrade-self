@@ -11,10 +11,12 @@ import { isIOS } from "@/utils/functions";
 import { colors, spacing } from "@/theme";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 
-function BookAppointment({ navigation }: ApplicationScreenProps) {
+function BookAppointment({ navigation, route }: ApplicationScreenProps) {
   const { servicesAvailable } = useServicesStore();
   const { selectedService } = useCreateAppointmentStore();
-  const { isLoadingSlots } = useBookAppointmentScreen();
+  const { isLoadingSlots } = useBookAppointmentScreen({
+    service: route?.params?.service || null,
+  });
 
   return (
     <Box flex={1} bgColor="white">
