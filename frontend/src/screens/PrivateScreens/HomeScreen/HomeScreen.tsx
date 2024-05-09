@@ -183,12 +183,12 @@ function Home({ navigation }: ApplicationScreenProps) {
               keyExtractor={(item) => item.invoice_id}
             />
           </Box>
-          <Box mt="6">
+          {/* <Box mt="6">
             <Box px="4" row justifyContent="space-between" mb="4">
               <Text variant="text-lg-bold">Recommended Activities:</Text>
             </Box>
             <ActivitiesCard index={0} />
-          </Box>
+          </Box> */}
         </Box>
       </ScrollView>
     </Box>
