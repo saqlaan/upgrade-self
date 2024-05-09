@@ -10,6 +10,7 @@ import {
 } from "@/theme/assets/icons";
 import { useCenterStore } from "@/store/centerStore";
 import { GuestAppointmentType } from "@/types/zenoti/BookedAppointmentType";
+import { Linking, Pressable } from "react-native";
 
 const AppointmentDetailsCard = ({
   appointment,
@@ -103,9 +104,22 @@ const AppointmentDetailsCard = ({
             <Box>
               <Text variant="text-sm-regular">Direction</Text>
               <Box row alignItems="center" gap="3" mt="2">
-                <Text color="black-400" variant="text-sm-semi-bold">
-                  Google map
-                </Text>
+                <Pressable
+                  onPress={() => {
+                    if (!center) return;
+                    const { address_1, address_2, city, state, zip } =
+                      center.address_info;
+                    const googleMapQuery = `${address_1} ${address_2} ${city} ${state} ${zip}`;
+                    const safeQuery = googleMapQuery.replace(/ /g, "+");
+                    Linking.openURL(
+                      `https://www.google.com/maps/search/?api=1&query=${safeQuery}`
+                    );
+                  }}
+                >
+                  <Text color="black-400" variant="text-sm-semi-bold">
+                    Open Map
+                  </Text>
+                </Pressable>
               </Box>
             </Box>
           </Box>
