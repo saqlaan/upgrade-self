@@ -50,7 +50,7 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
     (service) => service.id === appointmentService?.service.id
   );
   const center = allCenters.find(
-    (center) => center.id === appointment.center_id,
+    (center) => center.id === appointment.center_id
   );
 
   useEffect(() => {
@@ -59,7 +59,7 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
       (res) => {
         const services = res?.services || [];
         setServices(services);
-      },
+      }
     );
   }, [center, setServices]);
 
@@ -192,9 +192,11 @@ function MyAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
           <AppointmentDetailsCard appointment={appointment} />
           <Box mt="4">
             <Text variant="text-lg-bold">About</Text>
-            <Text mt="2" variant="text-md-regular">
-              {service?.description || "No description available"}
-            </Text>
+            {service && (
+              <Text mt="2" variant="text-md-regular">
+                {service?.description || "No description available"}
+              </Text>
+            )}
           </Box>
         </Box>
       </ScrollView>
