@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
 import { FlatList } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 import { useBookAppointmentMethods } from "../hooks/useBookAppointmentMethods";
 import { Box } from "@/components/atoms";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
@@ -12,7 +11,6 @@ export function SlotsSection() {
   const { groupSlots, selectedService, filters } = useCreateAppointmentStore();
   const { reserveSlot, isBooking, timeSelected } = useBookAppointmentMethods();
   const { center } = useCenterStore();
-  const navigation = useNavigation();
   const slotCards = groupSlots ? groupSlots[filters.hour] || [] : [];
 
   const handleBookSession = useCallback(

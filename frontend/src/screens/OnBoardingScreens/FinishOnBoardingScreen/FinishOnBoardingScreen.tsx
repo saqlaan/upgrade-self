@@ -3,7 +3,6 @@ import { useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import { ImageBackground, StatusBar, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import auth from "@react-native-firebase/auth";
 import { Box, CButton, Text } from "@/components/atoms";
 import { updateUser } from "@/services/firebase";
 import { CheckCircleIcon } from "@/theme/assets/icons";
@@ -22,11 +21,14 @@ function FinishOnBoarding({ navigation }: ApplicationScreenProps) {
   const _submit = useCallback(async () => {
     try {
       await mutateAsync({ onBoardingStep: 2, onboardingCompleted: true });
-      auth().signOut();
+      navigation.reset({
+        index: 0,
+        routes: [{ name: "MainTab" }],
+      });
     } catch {
       console.error(error);
     }
-  }, [error, mutateAsync]);
+  }, [error, mutateAsync, navigation]);
 
   return (
     <ImageBackground source={Images.primaryBgLines} style={{ flex: 1 }}>

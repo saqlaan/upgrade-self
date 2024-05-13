@@ -1,7 +1,8 @@
 import React from "react";
 import { ImageBackground, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { DateSelection } from "./SearchFilters";
+
+import DateSelection from "../../components/DatesSelection";
 import {
   AndroidScreenTopSpace,
   BackButton,

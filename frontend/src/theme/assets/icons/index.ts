@@ -43,3 +43,4 @@ export { default as VerticalDots } from "./vertical-dots.svg";
 export { default as RescheduleBookingIcon } from "./reschedule-booking.svg";
 export { default as CancelBookingIcon } from "./cancel-booking.svg";
 export { default as ViewStatsIcon } from "./view-stats.svg";
+export { default as StopWatchWhite } from "./stop-watch-white.svg";

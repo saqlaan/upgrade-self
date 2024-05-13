@@ -4,10 +4,10 @@ import { FlatList, Pressable, ScrollView, StatusBar } from "react-native";
 import { Link, useFocusEffect } from "@react-navigation/native";
 import useMyAppointments from "../AppointmentScreens/MyAppointmentsScreen/useMyAppointments";
 import { HomeHeader } from "./components";
+import RecommendedActivities from "./components/RecommendedActivities";
 import { AndroidScreenTopSpace, Box, Text } from "@/components/atoms";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import {
-  ActivitiesCard,
   BookedAppointmentCard,
   HealthActivityCard,
   HealthScoreCard,
@@ -37,40 +37,6 @@ const HealthActivityData = [
     value: 71,
   },
 ];
-
-const AppointmentData = [
-  {
-    title: "Meeting",
-    time: "10:00 AM",
-    date: "2024-04-04",
-    duration: 45,
-    location: "Conference Room A",
-    index: 1,
-  },
-  {
-    title: "Presentation",
-    time: "02:30 PM",
-    date: "2024-04-05",
-    duration: 30,
-    location: "Auditorium",
-    index: 2,
-  },
-  {
-    title: "Training",
-    time: "09:00 AM",
-    date: "2024-04-06",
-    duration: 60,
-    location: "Training Room",
-    index: 3,
-  },
-];
-
-type HomeScreenState = {
-  loading: boolean;
-  hasPastBookings: boolean;
-  hasUpcomingBookings: boolean;
-  hasStats: boolean;
-};
 
 function Home({ navigation }: ApplicationScreenProps) {
   const { top } = useSafeAreaInsets();
@@ -213,12 +179,9 @@ function Home({ navigation }: ApplicationScreenProps) {
               keyExtractor={(item) => item.invoice_id}
             />
           </Box>
-          {/* <Box mt="6">
-            <Box px="4" row justifyContent="space-between" mb="4">
-              <Text variant="text-lg-bold">Recommended Activities:</Text>
-            </Box>
-            <ActivitiesCard index={0} />
-          </Box> */}
+          <Box mt="6">
+            <RecommendedActivities />
+          </Box>
         </Box>
       </ScrollView>
     </Box>
