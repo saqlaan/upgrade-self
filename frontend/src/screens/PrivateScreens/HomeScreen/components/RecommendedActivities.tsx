@@ -1,18 +1,26 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Box, Text } from "@/components/atoms";
 import { ActivitiesCard } from "@/components";
-import { useServices } from "@/hooks";
 import { ZenotiService } from "@/types";
+import { getServices } from "@/services/firebaseApp/appointment";
+import { useCenterStore } from "@/store/centerStore";
 
 const RecommendedActivities = () => {
-  const { loadServices, services } = useServices();
+  // TODO: Use services from store
+  const { center } = useCenterStore();
+  const [services, setServices] = useState<ZenotiService[]>([]);
   const navigation = useNavigation();
 
   useEffect(() => {
-    loadServices();
-  }, [loadServices]);
+    if (!center) {
+      return;
+    }
+    getServices(center).then((services) => {
+      setServices(services?.services || []);
+    });
+  }, [center]);
 
   const handleOnPressBook = useCallback(
     (service: ZenotiService) => {
