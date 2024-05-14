@@ -1,8 +1,13 @@
 import * as functions from "firebase-functions";
 import secrets, { INBODY_API_KEY } from "./secrets";
 import axios from "../config/inbodyAxiosConfig";
+import { getFirestore, Timestamp } from "firebase-admin/firestore";
+// import * as admin from "firebase-admin";
+import moment from "moment";
 
-export const inBodyWebhook = functions.runWith({ secrets: secrets }).https.onRequest((req, res) => {
+const firestore = getFirestore();
+
+export const inBodyWebhook = functions.runWith({ secrets: secrets }).https.onRequest(async (req, res) => {
   const inbody_api_key = INBODY_API_KEY.value();
   const usertoken = req.body.TelHP;
   const datetimes = req.body.TestDatetimes;
@@ -16,10 +21,34 @@ export const inBodyWebhook = functions.runWith({ secrets: secrets }).https.onReq
       },
       { headers: { "API-KEY": inbody_api_key } },
     )
-    .then((response) => {
-      console.log(response.data);
+    .then(async (response) => {
+      const userRef = firestore.collection("users").where("inBodyIntegration.userToken", "==", usertoken);
+
+      const user = await userRef.get().then((querySnapshot) => {
+        if (querySnapshot.empty) {
+          console.log("No matching documents.");
+          return;
+        }
+        return querySnapshot.docs[0].data();
+      });
+
+      if (!user) {
+        console.error("No user found with usertoken:", usertoken);
+        res.send("No user found with usertoken");
+        return;
+      }
+
+      const inBodyData = firestore.collection("inBodyData").doc();
+
+      const timestamp = Timestamp.fromDate(moment(response.data.DATETIMES, "YYYYMMDDHHmmss").toDate());
+
+      inBodyData.set({
+        userId: user.uid,
+        timestamp: timestamp,
+        data: response.data,
+      });
+
       res.send(response.data);
-      // SAVE DATA TO FIRESTORE
     })
     .catch((error) => {
       console.error("Error calling function:", error);

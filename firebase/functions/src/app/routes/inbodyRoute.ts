@@ -1,7 +1,6 @@
 import express, { Request, Response } from "express";
 import { INBODY_API_KEY } from "../secrets";
 import axios from "../../config/inbodyAxiosConfig";
-// import * as admin from "firebase-admin";
 
 const router = express.Router();
 
