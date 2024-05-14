@@ -22,7 +22,6 @@ function BookAppointment({ navigation, route }: ApplicationScreenProps) {
   useFocusEffect(
     React.useCallback(() => {
       StatusBar.setBarStyle("light-content");
-      if (isAndroid) StatusBar.setBackgroundColor(colors.primary);
     }, []),
   );
 
