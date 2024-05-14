@@ -15,6 +15,7 @@ import colors from "@/theme/colors";
 import { TextVariants } from "@/theme/fonts";
 import { spacing } from "@/theme/spacing";
 import type { ApplicationScreenProps } from "@/types/navigation";
+import { forgotPassword } from "@/services/firebase/auth";
 
 interface ForgotPassworkFormValues {
   email: string;
