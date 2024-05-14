@@ -8,15 +8,14 @@ import {
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import BookingList from "./components/BookingsList";
-import useMyAppointments from "./useMyAppointments";
 import SearchItem from "./components/SearchItem";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { AndroidScreenTopSpace, Box, Text } from "@/components/atoms";
 import { colors } from "@/theme";
-import { useMyBookingStore } from "@/store/myBookingsStore";
-import { useServicesStore } from "@/store/servicesStore";
-import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 import { isAndroid } from "@/utils/functions";
+import { getUserGuests } from "@/services/firebase/collections/guest";
+import { getBookedAppointments } from "@/services/firebaseApp/guests";
+import { useCenterStore } from "@/store/centerStore";
 
 const FilterButton = ({
   title,
@@ -52,10 +51,59 @@ export enum BookingType {
 }
 
 function MyAppointmentsScreen({ navigation }: ApplicationScreenProps) {
-  const { silentRefresh } = useMyAppointments();
-  const { activeBookings, pastBookings, isLoading } = useMyBookingStore();
-  const { resetStore } = useServicesStore();
-  const { resetStore: resetAppointmentStore } = useCreateAppointmentStore();
+  const { allCenters } = useCenterStore();
+
+  const [bookings, setBookings] = React.useState<GuestAppointmentType[] | null>(
+    null,
+  );
+
+  useEffect(() => {
+    const loadBookings = async () => {
+      try {
+        const accounts = await getUserGuests();
+        const promises = accounts?.guestAccounts.map(async (guestAccount) => {
+          const data = await getBookedAppointments({
+            guestId: guestAccount?.guestId,
+            countryCode: guestAccount?.countryCode,
+          });
+          return data?.appointments || [];
+        });
+
+        if (!promises) return;
+
+        const data = await Promise.all(promises);
+        const allAppointments = data.flatMap((obj) => obj);
+
+        if (allAppointments.length === 0) return;
+
+
+        setBookings(allAppointments);
+      } catch (error) {
+        console.error("Error loading bookings:", error);
+        setBookings([]);
+      }
+    };
+    loadBookings();
+  }, [allCenters, navigation]);
+
+  const currentTime = Date.now();
+  const activeBookings = bookings?.filter((appointment) => {
+    const endTimeString = appointment?.appointment_services[0]?.end_time;
+    if (endTimeString) {
+      const endTime = new Date(endTimeString);
+      return endTime.getTime() >= currentTime;
+    }
+    return false;
+  });
+  const pastBookings = bookings?.filter((appointment) => {
+    const endTimeString = appointment?.appointment_services[0]?.end_time;
+    if (endTimeString) {
+      const endTime = new Date(endTimeString);
+      return endTime.getTime() < currentTime;
+    }
+    return false;
+  });
+
   const [filters, setFilters] = useState<{
     bookingType: BookingType;
     searchText: string;
@@ -69,15 +117,6 @@ function MyAppointmentsScreen({ navigation }: ApplicationScreenProps) {
       if (isAndroid) StatusBar.setBackgroundColor(colors["grey-200"]);
     }, [])
   );
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
-      silentRefresh();
-      resetStore();
-      resetAppointmentStore({});
-    });
-    return unsubscribe;
-  }, [navigation, resetAppointmentStore, resetStore, silentRefresh]);
 
   const handleOnPressButton = useCallback(
     (value: BookingType) => {
@@ -135,13 +174,13 @@ function MyAppointmentsScreen({ navigation }: ApplicationScreenProps) {
           <BookingList
             bookings={
               filters.bookingType === BookingType.MyBookings
-                ? activeBookings
-                : pastBookings
+                ? activeBookings || []
+                : pastBookings || []
             }
-            isLoading={isLoading}
+            isLoading={bookings === null}
             searchText={filters.searchText}
             bookingType={filters.bookingType}
-            refresh={silentRefresh}
+            refresh={() => {}}
           />
         </Box>
       </SafeAreaView>
