@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FlatList, Pressable, ScrollView, StatusBar } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import { HomeHeader } from "./components";
 import RecommendedActivities from "./components/RecommendedActivities";
 import { AndroidScreenTopSpace, Box, Text } from "@/components/atoms";
@@ -21,12 +21,14 @@ import { getBookedAppointments } from "@/services/firebaseApp/guests";
 
 function UpcomingSchedule({ navigation }) {
   const { allCenters } = useCenterStore();
+  const isFocused = useIsFocused();
 
   const [bookings, setBookings] = React.useState<GuestAppointmentType[] | null>(
     null,
   );
 
   useEffect(() => {
+    if (!isFocused) return;
     const loadBookings = async () => {
       try {
         const accounts = await getUserGuests();
@@ -62,7 +64,7 @@ function UpcomingSchedule({ navigation }) {
       }
     };
     loadBookings();
-  }, [allCenters, navigation]);
+  }, [allCenters, navigation, isFocused]);
 
   const renderAppointmentCardItem = useCallback(
     ({ item, index }: { item: GuestAppointmentType; index: number }) => {

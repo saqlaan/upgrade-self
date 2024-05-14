@@ -6,7 +6,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import BookingList from "./components/BookingsList";
 import SearchItem from "./components/SearchItem";
 import type { ApplicationScreenProps } from "@/types/navigation";
@@ -16,6 +16,7 @@ import { isAndroid } from "@/utils/functions";
 import { getUserGuests } from "@/services/firebase/collections/guest";
 import { getBookedAppointments } from "@/services/firebaseApp/guests";
 import { useCenterStore } from "@/store/centerStore";
+import { GuestAppointmentType } from "@/types/zenoti/BookedAppointmentType";
 
 const FilterButton = ({
   title,
@@ -57,7 +58,10 @@ function MyAppointmentsScreen({ navigation }: ApplicationScreenProps) {
     null,
   );
 
+  const isFocused = useIsFocused();
+
   useEffect(() => {
+    if (!isFocused) return;
     const loadBookings = async () => {
       try {
         const accounts = await getUserGuests();
@@ -84,7 +88,7 @@ function MyAppointmentsScreen({ navigation }: ApplicationScreenProps) {
       }
     };
     loadBookings();
-  }, [allCenters, navigation]);
+  }, [allCenters, navigation, isFocused]);
 
   const currentTime = Date.now();
   const activeBookings = bookings?.filter((appointment) => {
