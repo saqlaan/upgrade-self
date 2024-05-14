@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StatusBar, TouchableOpacity } from "react-native";
+import { StatusBar, TouchableOpacity, ScrollView } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import BookingList from "./components/BookingsList";
 import useMyAppointments from "./useMyAppointments";
@@ -12,7 +12,6 @@ import { useMyBookingStore } from "@/store/myBookingsStore";
 import { useServicesStore } from "@/store/servicesStore";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 import { isAndroid } from "@/utils/functions";
-import { ScrollView } from "react-native-gesture-handler";
 
 const FilterButton = ({
   title,
@@ -114,7 +113,17 @@ function MyAppointmentsScreen({ navigation }: ApplicationScreenProps) {
               selected={filters.bookingType === BookingType.PastBookings}
             />
           </Box>
-          <ScrollView keyboardShouldPersistTaps="handled">
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{
+              display: "flex",
+              width: "100%",
+              minWidth: "100%",
+              flexGrow: 1,
+              flex: 1,
+            }}
+          >
             <SearchItem
               placeholder={
                 filters.bookingType === BookingType.MyBookings
