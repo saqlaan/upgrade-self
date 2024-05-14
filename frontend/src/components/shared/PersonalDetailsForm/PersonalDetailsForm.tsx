@@ -69,10 +69,10 @@ function PersonalDetails({ isUpdating = false }: { isUpdating?: boolean }) {
             <DateAndTimeSelector
               label={t("profileSetup:dob")}
               onChangeText={handleChange("dob")}
-              value={values.dob}
+              value={values.dob || subYears(Date.now(), 18)}
               onBlur={handleBlur("dob")}
               error={touched.dob ? errors.dob : ""}
-              maximumDate={subYears(Date.now(), 16)}
+              maximumDate={subYears(Date.now(), 18)}
               minimumDate={subYears(Date.now(), 100)}
             />
           </Box>
