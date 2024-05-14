@@ -16,6 +16,7 @@ import { MapPointUnderlineIcon, StopWatchIcon } from "@/theme/assets/icons";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 import { useCenterStore } from "@/store/centerStore";
 import { SlotType, ZenotiService } from "@/types";
+import { useBookAppointmentMethods } from "../BookAppointmentScreen/hooks/useBookAppointmentMethods";
 
 const AppointmentCard = ({
   center,
@@ -47,10 +48,12 @@ const AppointmentCard = ({
         />
         <Box gap="1">
           <StopWatchIcon />
-          <Text color="black-400" variant="text-sm-medium">
-            {format(time, "EEE MMM dd")}, {format(time, "hh:mm")} -{" "}
-            {format(addMinutes(time, service.duration), "hh:mm a")}
-          </Text>
+          {service && (
+            <Text color="black-400" variant="text-sm-medium">
+              {format(time, "EEE MMM dd")}, {format(time, "hh:mm")} -{" "}
+              {format(addMinutes(time, service.duration), "hh:mm a")}
+            </Text>
+          )}
         </Box>
       </Box>
       <Box alignItems="center" row gap="3" mt="4">
@@ -69,8 +72,11 @@ function BookAppointmentDetailsScreen({ navigation }: ApplicationScreenProps) {
   const { selectedService } = useCreateAppointmentStore();
   const { center } = useCenterStore();
   const { slot } = route.params;
+  const { reserveSlot, isBooking, timeSelected } = useBookAppointmentMethods();
 
-  const handleBookSession = useCallback(() => {}, []);
+  const handleBookSession = async () => {
+    await reserveSlot(slot.Time);
+  };
 
   return (
     <Box flex={1} bgColor="white" style={{ paddingBottom: bottom }}>
