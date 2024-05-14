@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { BRAIN_UPGRADE_SERVICE_ACCOUNT_BASE64 } from "../secrets";
+import { BRAIN_UPGRADE_SERVICE_ACCOUNT_BASE64 } from "../../config/secrets";
 import * as admin from "firebase-admin";
 import axios from "axios";
 
