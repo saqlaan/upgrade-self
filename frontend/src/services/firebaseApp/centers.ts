@@ -20,7 +20,7 @@ export const fetchAllCentersData = async (): Promise<CenterType[] | null> => {
       console.error(error.request);
     } else {
       // Something happened in setting up the request that triggered an Error
-      console.error('Error', error.message);
+      console.error(error);
     }
     return null;
   }
