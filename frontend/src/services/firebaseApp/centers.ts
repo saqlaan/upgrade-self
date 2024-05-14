@@ -2,15 +2,11 @@ import axios from "../config/axiosConfig";
 import { Routes } from "./routes";
 import { CenterType } from "@/types";
 
-const API_URL = process.env.API_URL;
-
 export const fetchAllCentersData = async (): Promise<CenterType[] | null> => {
   try {
     const result = axios.get(Routes.centers);
     return (await result).data;
   } catch (error) {
-    console.log({ API_URL });
-    console.log({ error });
     if (error.response) {
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
