@@ -1,6 +1,11 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { StatusBar, TouchableOpacity, ScrollView } from "react-native";
+import {
+  StatusBar,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import BookingList from "./components/BookingsList";
 import useMyAppointments from "./useMyAppointments";
@@ -96,34 +101,27 @@ function MyAppointmentsScreen({ navigation }: ApplicationScreenProps) {
   );
 
   return (
-    <SafeAreaView edges={["top"]} style={{ flex: 1, backgroundColor: "white" }}>
-      <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
-      <AndroidScreenTopSpace />
-      <Box flex={1}>
-        <Box px="4" pb="4">
-          <Box row gap="4" mb="4">
-            <FilterButton
-              title="My bookings"
-              onPress={() => handleOnPressButton(BookingType.MyBookings)}
-              selected={filters.bookingType === BookingType.MyBookings}
-            />
-            <FilterButton
-              title="Past bookings"
-              onPress={() => handleOnPressButton(BookingType.PastBookings)}
-              selected={filters.bookingType === BookingType.PastBookings}
-            />
-          </Box>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{
-              display: "flex",
-              width: "100%",
-              minWidth: "100%",
-              flexGrow: 1,
-              flex: 1,
-            }}
-          >
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <SafeAreaView
+        edges={["top"]}
+        style={{ flex: 1, backgroundColor: "white" }}
+      >
+        <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
+        <AndroidScreenTopSpace />
+        <Box flex={1}>
+          <Box px="4" pb="4">
+            <Box row gap="4" mb="4">
+              <FilterButton
+                title="My bookings"
+                onPress={() => handleOnPressButton(BookingType.MyBookings)}
+                selected={filters.bookingType === BookingType.MyBookings}
+              />
+              <FilterButton
+                title="Past bookings"
+                onPress={() => handleOnPressButton(BookingType.PastBookings)}
+                selected={filters.bookingType === BookingType.PastBookings}
+              />
+            </Box>
             <SearchItem
               placeholder={
                 filters.bookingType === BookingType.MyBookings
@@ -133,21 +131,21 @@ function MyAppointmentsScreen({ navigation }: ApplicationScreenProps) {
               value={filters.searchText}
               onChangeText={handleOnChangeText}
             />
-          </ScrollView>
+          </Box>
+          <BookingList
+            bookings={
+              filters.bookingType === BookingType.MyBookings
+                ? activeBookings
+                : pastBookings
+            }
+            isLoading={isLoading}
+            searchText={filters.searchText}
+            bookingType={filters.bookingType}
+            refresh={silentRefresh}
+          />
         </Box>
-        <BookingList
-          bookings={
-            filters.bookingType === BookingType.MyBookings
-              ? activeBookings
-              : pastBookings
-          }
-          isLoading={isLoading}
-          searchText={filters.searchText}
-          bookingType={filters.bookingType}
-          refresh={silentRefresh}
-        />
-      </Box>
-    </SafeAreaView>
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
   );
 }
 
