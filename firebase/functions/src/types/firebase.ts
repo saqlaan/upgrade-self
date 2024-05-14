@@ -27,6 +27,7 @@ export type FirestoreUserType = UserInfo & {
   state: string | number;
   zipcode: number;
   dob: string;
+  heightCM: number;
   address1: string;
   address2: string;
   city: string;

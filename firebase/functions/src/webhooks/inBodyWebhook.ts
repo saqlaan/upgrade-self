@@ -1,8 +1,8 @@
 import * as functions from "firebase-functions";
-import secrets, { INBODY_API_KEY } from "./secrets";
+import secrets, { INBODY_API_KEY } from "../config/secrets";
 import axios from "../config/inbodyAxiosConfig";
 import { getFirestore, Timestamp } from "firebase-admin/firestore";
-// import * as admin from "firebase-admin";
+
 import moment from "moment";
 
 const firestore = getFirestore();

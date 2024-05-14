@@ -3,7 +3,7 @@ import cors from "cors";
 import express, { Request, Response } from "express";
 import { validateFirebaseIdToken } from "./middleware";
 import { zenotiRoutes, brainUpgradeRoutes, inbodyRoutes } from "./routes";
-import secrets from "./secrets";
+import secrets from "../config/secrets";
 import * as functions from "firebase-functions";
 const api = express();
 
