@@ -8,7 +8,7 @@ import { SlotsSection } from "./components/SlotsSection";
 import { Box, Text } from "@/components/atoms";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { useServicesStore } from "@/store/servicesStore";
-import { isIOS } from "@/utils/functions";
+import { isAndroid, isIOS } from "@/utils/functions";
 import { colors, spacing } from "@/theme";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 

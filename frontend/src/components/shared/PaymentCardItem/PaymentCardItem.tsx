@@ -1,9 +1,20 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { Pressable, StyleSheet } from "react-native";
 import { Box, Text } from "@/components/atoms";
 import { spacing } from "@/theme";
+import { GuestPaymentMethod } from "@/services/firebaseApp/guests";
 
-function PaymentCardItem() {
+function PaymentCardItem({
+  paymentMethod,
+  isDefault,
+  onRemoveCard,
+  onMakeDefault,
+}: {
+  paymentMethod: GuestPaymentMethod;
+  isDefault: boolean;
+  onRemoveCard: () => void;
+  onMakeDefault: () => void;
+}) {
   return (
     <Box
       style={styles.cardWrapper}
@@ -14,24 +25,43 @@ function PaymentCardItem() {
     >
       <Box row justifyContent="space-between">
         <Text variant="text-md-bold" color="white">
-          Visa
+          {paymentMethod.card_logo}
         </Text>
-        <Text variant="text-md-bold" color="white">
-          Remove Card
-        </Text>
+        {/* <Pressable
+          onPress={() => {
+            onRemoveCard();
+          }}
+        >
+          <Text variant="text-md-bold" color="white">
+            Remove Card
+          </Text>
+        </Pressable> */}
       </Box>
       <Box justifyContent="space-between">
         <Box>
           <Text variant="text-md-bold" mb="1" color="white">
-            Card number
+            Card info
           </Text>
           <Box row justifyContent="space-between" alignItems="flex-end">
-            <Text variant="text-xs-medium" color="white">
-              **** 2310
-            </Text>
-            <Text variant="text-md-bold" color="white">
-              Make default
-            </Text>
+            <Box row gap="4">
+              <Text variant="text-xs-medium" color="white">
+                **** {paymentMethod.last_four}
+              </Text>
+              <Text variant="text-xs-medium" color="white">
+                Expires: {paymentMethod.expiry_on}
+              </Text>
+            </Box>
+            {/* {isDefault === false && (
+              <Pressable
+                onPress={() => {
+                  onMakeDefault();
+                }}
+              >
+                <Text variant="text-md-bold" color="white">
+                  Make default
+                </Text>
+              </Pressable>
+            )} */}
           </Box>
         </Box>
       </Box>

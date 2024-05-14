@@ -125,7 +125,7 @@ const BookingList = React.memo(
           <Text>
             You currently have no{" "}
             {bookingType === BookingType.MyBookings
-              ? "my bookings"
+              ? "upcoming bookings"
               : "past bookings"}
           </Text>
         </Box>

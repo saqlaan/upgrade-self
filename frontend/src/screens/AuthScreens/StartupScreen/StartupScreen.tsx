@@ -61,7 +61,7 @@ function Startup({ navigation }: ApplicationScreenProps) {
                 style={[styles.headingText, { color: colors["black-300"] }]}
                 variant={TextVariants["text-md-medium"]}
               >
-                Engage with the Biohacking Experience
+                Start your Biohacking Journey
               </Text>
             </View>
           </LinearGradient>
