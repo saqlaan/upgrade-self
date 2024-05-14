@@ -40,6 +40,7 @@ export const mapFirebaseUserToZenotiGuest = (user: FirestoreUserType): Omit<Gues
   if (!user.email || !user.firstName || !user.lastName || !user.dob || !user.centers) {
     throw new Error("Missing required user data");
   }
+
   const data = {
     personal_info: {
       email: user.email,

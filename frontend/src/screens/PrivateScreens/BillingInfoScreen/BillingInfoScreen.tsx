@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Dimensions,
   Pressable,
@@ -20,12 +20,56 @@ import { SafeScreen } from "@/components/template";
 import { colors, spacing } from "@/theme";
 import { PlusIcon } from "@/theme/assets/icons";
 import { usePayment } from "@/hooks";
+import { getUser } from "@/services/firebase";
+import { getUserGuests } from "@/services/firebase/collections/guest";
+import {
+  GuestPaymentMethod,
+  getGuestPaymentMethods,
+} from "@/services/firebaseApp/guests";
 
 function BillingInfoScreen({ navigation }: ApplicationScreenProps) {
   const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
   const { addPaymentMethod } = usePayment();
   const [paymentUrl, setPaymentUrl] = useState();
   const [isPaymentLoading, setIsPaymentLoading] = useState(false);
+  const [paymentMethods, setPaymentMethods] = useState<
+    GuestPaymentMethod[] | null
+  >(null);
+
+  useEffect(() => {
+    const run = async () => {
+      const user = await getUser();
+      const { centers } = user;
+      const center = centers[0];
+      const guestInfo = await getUserGuests();
+      if (!guestInfo) {
+        console.error("Guest info not found");
+        return;
+      }
+      // TODO: this should be based on org id
+      const guestAccount = guestInfo.guestAccounts.find(
+        (guestAccount) => guestAccount.countryCode == center.countryCode
+      );
+      if (!guestAccount) {
+        console.error("Guest account not found");
+        return;
+      }
+      const { guestId, centerId, countryCode } = guestAccount;
+      const paymentMethods = await getGuestPaymentMethods({
+        guestId,
+        centerId,
+        countryCode,
+      });
+      if (!paymentMethods) {
+        return;
+      }
+      if (paymentMethods.error) {
+        return;
+      }
+      setPaymentMethods(paymentMethods.accounts);
+    };
+    run();
+  }, []);
 
   const handleOnCloseModal = useCallback(() => {
     setIsPaymentModalVisible(false);
@@ -41,8 +85,20 @@ function BillingInfoScreen({ navigation }: ApplicationScreenProps) {
     setIsPaymentLoading(false);
   }, [addPaymentMethod, setPaymentUrl]);
 
-  const _renderItem = () => {
-    return <PaymentCardItem />;
+  const _renderItem = ({ index, item }) => {
+    const paymentMethod = item as GuestPaymentMethod;
+    return (
+      <PaymentCardItem
+        paymentMethod={paymentMethod}
+        isDefault={index == 0}
+        onMakeDefault={() => {
+          console.log(`Make default card ${paymentMethod.account_id}`);
+        }}
+        onRemoveCard={() => {
+          console.log(`Remove card ${paymentMethod.account_id}`);
+        }}
+      />
+    );
   };
 
   return (
@@ -67,16 +123,32 @@ function BillingInfoScreen({ navigation }: ApplicationScreenProps) {
           }
         />
         <Box mb="6">
-          <Carousel
-            data={[0, 1, 2]}
-            renderItem={_renderItem}
-            sliderWidth={Dimensions.get("window").width}
-            itemHeight={180}
-            itemWidth={Dimensions.get("window").width - spacing[12] * 2}
-            removeClippedSubviews={false}
-          />
+          {!paymentMethods && (
+            <Box px="5" mt="4" alignItems="center">
+              <Text color="black-400" variant="text-lg-bold">
+                Loading payment methods...
+              </Text>
+            </Box>
+          )}
+          {paymentMethods && paymentMethods.length === 0 && (
+            <Box px="5" mt="4" alignItems="center">
+              <Text color="black-400" variant="text-lg-bold">
+                No payment methods added
+              </Text>
+            </Box>
+          )}
+          {paymentMethods && paymentMethods.length > 0 && (
+            <Carousel
+              data={paymentMethods}
+              renderItem={_renderItem}
+              sliderWidth={Dimensions.get("window").width}
+              itemHeight={180}
+              itemWidth={Dimensions.get("window").width - spacing[12] * 2}
+              removeClippedSubviews={false}
+            />
+          )}
         </Box>
-        <Box px="5" mb="4">
+        {/* <Box px="5" mb="4">
           <Text color="black-400" variant="text-lg-bold">
             Transactions
           </Text>
@@ -93,7 +165,7 @@ function BillingInfoScreen({ navigation }: ApplicationScreenProps) {
             <TransactionBox />
             <TransactionBox />
           </Box>
-        </ScrollView>
+        </ScrollView> */}
       </Box>
       <WebViewModal
         onClose={handleOnCloseModal}

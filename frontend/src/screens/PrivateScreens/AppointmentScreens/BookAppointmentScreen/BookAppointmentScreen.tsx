@@ -1,13 +1,14 @@
 import React from "react";
 import { StatusBar } from "react-native";
 import { ActivityIndicator } from "react-native-paper";
+import { useFocusEffect } from "@react-navigation/native";
 import { BookAppointmentHeader, TimeSlotSection } from "./components";
 import { useBookAppointmentScreen } from "./hooks/useBookAppointmentScreen";
 import { SlotsSection } from "./components/SlotsSection";
 import { Box, Text } from "@/components/atoms";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { useServicesStore } from "@/store/servicesStore";
-import { isIOS } from "@/utils/functions";
+import { isAndroid, isIOS } from "@/utils/functions";
 import { colors, spacing } from "@/theme";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 
@@ -17,6 +18,12 @@ function BookAppointment({ navigation, route }: ApplicationScreenProps) {
   const { isLoadingSlots } = useBookAppointmentScreen({
     service: route?.params?.service || null,
   });
+
+  useFocusEffect(
+    React.useCallback(() => {
+      StatusBar.setBarStyle("light-content");
+    }, []),
+  );
 
   return (
     <Box flex={1} bgColor="white">

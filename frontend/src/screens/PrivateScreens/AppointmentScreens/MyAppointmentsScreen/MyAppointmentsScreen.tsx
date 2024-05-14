@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StatusBar, TouchableOpacity } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import BookingList from "./components/BookingsList";
 import useMyAppointments from "./useMyAppointments";
 import SearchItem from "./components/SearchItem";
@@ -10,6 +11,7 @@ import { colors } from "@/theme";
 import { useMyBookingStore } from "@/store/myBookingsStore";
 import { useServicesStore } from "@/store/servicesStore";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
+import { isAndroid } from "@/utils/functions";
 
 const FilterButton = ({
   title,
@@ -56,6 +58,12 @@ function MyAppointmentsScreen({ navigation }: ApplicationScreenProps) {
     bookingType: BookingType.MyBookings,
     searchText: "",
   });
+  useFocusEffect(
+    React.useCallback(() => {
+      StatusBar.setBarStyle("light-content");
+      if (isAndroid) StatusBar.setBackgroundColor(colors["grey-200"]);
+    }, []),
+  );
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {

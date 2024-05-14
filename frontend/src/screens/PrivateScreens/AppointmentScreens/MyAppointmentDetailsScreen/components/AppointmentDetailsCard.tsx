@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { addMinutes, format } from "date-fns";
 import { Box, Text } from "@/components/atoms";
@@ -10,6 +10,7 @@ import {
 } from "@/theme/assets/icons";
 import { useCenterStore } from "@/store/centerStore";
 import { GuestAppointmentType } from "@/types/zenoti/BookedAppointmentType";
+import { Linking, Platform, Pressable } from "react-native";
 
 const AppointmentDetailsCard = ({
   appointment,
@@ -22,8 +23,10 @@ const AppointmentDetailsCard = ({
   const { start_time } = appointmentService || {};
   const { invoice_status } = appointment || {};
   const center = allCenters.find(
-    (center) => center.id === appointment.center_id,
+    (center) => center.id === appointment.center_id
   );
+  const name = appointmentService?.service?.name || "";
+  const contactInfo = center?.contact_info || null;
 
   const invoiceStatusMap = {
     0: "Open",
@@ -56,11 +59,14 @@ const AppointmentDetailsCard = ({
           style={{ borderWidth: 0.5, height: "80%", backgroundColor: "#333" }}
         />
         <Box gap="1">
-          <StopWatchIcon />
-          <Text color="black-400" variant="text-sm-medium">
-            {format(start_time, "EEE MMM dd")}, {format(start_time, "hh:mm")} -{" "}
-            {format(addMinutes(start_time, duration), "hh:mm a")}
-          </Text>
+          <Text variant="text-lg-bold">{name}</Text>
+          <Box row gap="1">
+            <StopWatchIcon />
+            <Text color="black-400" variant="text-sm-medium">
+              {format(start_time, "EEE MMM dd")}, {format(start_time, "hh:mm")}{" "}
+              - {format(addMinutes(start_time, duration), "hh:mm a")}
+            </Text>
+          </Box>
         </Box>
       </Box>
       <Box>
@@ -86,19 +92,45 @@ const AppointmentDetailsCard = ({
           <Box row justifyContent="space-between">
             <Box>
               <Text variant="text-sm-regular">Contact</Text>
-              <Box row alignItems="center" gap="3" mt="2">
-                <CallIcon />
-                <Text color="black-400" variant="text-sm-semi-bold">
-                  TBD
-                </Text>
-              </Box>
+              {contactInfo && contactInfo.phone_1 && (
+                <Pressable
+                  onPress={() => {
+                    if (!contactInfo.phone_1) return;
+                    Linking.openURL(
+                      `tel:${contactInfo.phone_1.display_number}`
+                    );
+                  }}
+                >
+                  <Box row alignItems="center" gap="3" mt="2">
+                    <CallIcon />
+                    <Text color="black-400" variant="text-sm-semi-bold">
+                      {contactInfo.phone_1.display_number}
+                    </Text>
+                  </Box>
+                </Pressable>
+              )}
             </Box>
             <Box>
               <Text variant="text-sm-regular">Direction</Text>
               <Box row alignItems="center" gap="3" mt="2">
-                <Text color="black-400" variant="text-sm-semi-bold">
-                  Google map
-                </Text>
+                <Pressable
+                  onPress={() => {
+                    if (!center) return;
+                    const { address_1, address_2, city, state, zip } =
+                      center.address_info;
+                    const googleMapQuery = `${address_1} ${address_2} ${city} ${state} ${zip}`;
+                    const fullAddress = googleMapQuery.replace(/ /g, "+");
+                    const url = Platform.select({
+                      ios: `maps:0,0?q=${fullAddress}`,
+                      android: `geo:0,0?q=${fullAddress}`,
+                    });
+                    Linking.openURL(url);
+                  }}
+                >
+                  <Text color="black-400" variant="text-sm-semi-bold">
+                    Open Map
+                  </Text>
+                </Pressable>
               </Box>
             </Box>
           </Box>

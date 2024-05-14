@@ -69,12 +69,13 @@ const BookedAppointmentCard = ({
           {location}
         </Text>
       </Box>
-      {isPastBooking && (
+      {/* TODO: Re-enable */}
+      {/* {isPastBooking && (
         <TouchableOpacity style={styles.viewStatsButton}>
           <Text variant={"text-md-semi-bold"}>View Stats</Text>
           <ViewStatsIcon />
         </TouchableOpacity>
-      )}
+      )} */}
     </Box>
   );
 };

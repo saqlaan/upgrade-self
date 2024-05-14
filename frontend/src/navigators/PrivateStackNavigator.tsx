@@ -18,6 +18,8 @@ import {
   ProfileSetup,
   QuestionStep,
   StatsScreen,
+  BrainUpgradeScreen,
+  CellHealthAnalysisScreen,
   Welcome,
   MyAppointmentDetailsScreen,
   RescheduleAppointmentScreen,
@@ -120,6 +122,14 @@ const PrivateStackNavigator = () => {
       <ProfileStackNavigator.Screen
         name="FinishOnBoardingScreen"
         component={FinishOnBoarding}
+      />
+      <ProfileStackNavigator.Screen
+        name="BrainUpgradeScreen"
+        component={BrainUpgradeScreen}
+      />
+      <ProfileStackNavigator.Screen
+        name="CellHealthAnalysisScreen"
+        component={CellHealthAnalysisScreen}
       />
       <ProfileStackNavigator.Screen
         name="MyAppointmentDetailScreen"

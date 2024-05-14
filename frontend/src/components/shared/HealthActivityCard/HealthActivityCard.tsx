@@ -1,13 +1,9 @@
 import React, { ReactNode } from "react";
-import { StyleSheet } from "react-native";
+import { ImageBackground, StyleSheet } from "react-native";
 import { Box, Text } from "@/components/atoms";
-import {
-  BrainIcon,
-  CaloriesIcon,
-  HeartIcon,
-  TimeIcon,
-} from "@/theme/assets/icons";
+import { BrainIcon, CaloriesIcon, TimeIcon } from "@/theme/assets/icons";
 import { spacing } from "@/theme";
+import { Images } from "@/theme/assets/images";
 
 type VariantsType = {
   [key in "brain" | "heart" | "calories" | "weight"]: {
@@ -19,27 +15,27 @@ type VariantsType = {
 };
 const Variants: VariantsType = {
   brain: {
-    title: "Brain\nActivity",
+    title: "My\nScore",
     color: "#73D485",
-    valueType: "BHI",
+    valueType: "",
     icon: BrainIcon,
   },
   heart: {
-    title: "Heart Rate",
+    title: "Session\nAlpha",
     color: "#E43C40",
-    valueType: "bpm",
-    icon: HeartIcon,
+    valueType: "min",
+    icon: TimeIcon,
   },
   calories: {
-    title: "Calories",
+    title: "EC\nWeight",
     color: "#EE862A",
-    valueType: "Kcal",
+    valueType: "lbs",
     icon: CaloriesIcon,
   },
   weight: {
-    title: "Weight",
+    title: "TC\nWeight",
     color: "#AC9AF6",
-    valueType: "Kg",
+    valueType: "lbs",
     icon: TimeIcon,
   },
 };
@@ -61,7 +57,21 @@ const HealthActivityCard = ({
       px="4"
       py="4"
       style={[styles.container, { marginLeft: addMargin ? spacing[4] : 0 }]}
+      justifyContent="space-between"
     >
+      <ImageBackground
+        source={Images.HealthActivityCardBg}
+        style={{
+          width: "100%",
+          height: "100%",
+          borderRadius: spacing[3],
+          overflow: "hidden",
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+        }}
+      ></ImageBackground>
       <Box mb="2" row gap="2">
         <Box px="2" py="2" bgColor={"white"} radius="2">
           <Icon />
@@ -70,9 +80,9 @@ const HealthActivityCard = ({
           {title}
         </Text>
       </Box>
-      <Box row alignItems="flex-end" gap="1">
-        <Text variant="text-xl-bold" color="black-500">
-          {value}
+      <Box row alignItems="baseline" gap="1">
+        <Text variant="display-md-semi-bold" color="black-500">
+          {value.toFixed(0)}
         </Text>
         <Text variant="text-sm-medium" color="black-300">
           {valueType}
@@ -89,5 +99,7 @@ const styles = StyleSheet.create({
     height: 180,
     width: 150,
     borderRadius: spacing[3],
+    position: "relative",
+    overflow: "hidden",
   },
 });

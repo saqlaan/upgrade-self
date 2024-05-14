@@ -1,7 +1,7 @@
-import React, { useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FlatList, Pressable, ScrollView, StatusBar } from "react-native";
-import { useFocusEffect } from "@react-navigation/native";
+import { Link, useFocusEffect } from "@react-navigation/native";
 import useMyAppointments from "../AppointmentScreens/MyAppointmentsScreen/useMyAppointments";
 import { HomeHeader } from "./components";
 import RecommendedActivities from "./components/RecommendedActivities";
@@ -13,6 +13,7 @@ import {
   HealthScoreCard,
 } from "@/components";
 import { colors } from "@/theme";
+import { getBrainUpgradeUserReports } from "@/services/firebaseApp/brainUpgrade";
 import { useMyBookingStore } from "@/store/myBookingsStore";
 import { useCenterStore } from "@/store/centerStore";
 import { GuestAppointmentType } from "@/types/zenoti/BookedAppointmentType";
@@ -39,6 +40,37 @@ const HealthActivityData = [
 
 function Home({ navigation }: ApplicationScreenProps) {
   const { top } = useSafeAreaInsets();
+  const [brainUpgradeData, setBrainUpgradeData] = React.useState<
+    | {
+        variant: "brain" | "heart" | "calories" | "weight";
+        value: number;
+      }[]
+    | null
+  >(null);
+
+  useEffect(() => {
+    getBrainUpgradeUserReports({ limit: 1 })
+      .then((data) => {
+        if (!data || data.length === 0) {
+          return;
+        }
+        setBrainUpgradeData([
+          {
+            variant: "brain",
+            value: data[0].alphaScore,
+          },
+          {
+            variant: "heart",
+            value: data[0].alphaTime,
+          },
+        ]);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  const activityData = brainUpgradeData || [];
   const { activeBookings } = useMyBookingStore();
   const { allCenters } = useCenterStore();
   useMyAppointments();
@@ -47,7 +79,7 @@ function Home({ navigation }: ApplicationScreenProps) {
     React.useCallback(() => {
       StatusBar.setBarStyle("dark-content");
       if (isAndroid) StatusBar.setBackgroundColor(colors["grey-400"]);
-    }, []),
+    }, [])
   );
 
   const renderAppointmentCardItem = useCallback(
@@ -61,18 +93,27 @@ function Home({ navigation }: ApplicationScreenProps) {
 
       return (
         <Box ml={index === 0 ? "4" : [0]} style={{ width: 280 }}>
-          <BookedAppointmentCard
-            title={name}
-            duration={duration}
-            dateTime={startTime}
-            location={center?.name || ""}
-            index={index}
-            isPastBooking={false}
-          />
+          <Pressable
+            onPress={() => {
+              navigation.navigate("MyAppointmentDetailScreen", {
+                appointment: item,
+                isPastBooking: false,
+              });
+            }}
+          >
+            <BookedAppointmentCard
+              title={name}
+              duration={duration}
+              dateTime={startTime}
+              location={center?.name || ""}
+              index={index}
+              isPastBooking={false}
+            />
+          </Pressable>
         </Box>
       );
     },
-    [allCenters],
+    [allCenters]
   );
 
   return (
@@ -89,18 +130,34 @@ function Home({ navigation }: ApplicationScreenProps) {
             <HealthScoreCard />
           </Box>
           {/* Activity cards */}
-          <Box pt={"4"}>
-            <FlatList
-              horizontal
-              showsHorizontalScrollIndicator={false}
-              ItemSeparatorComponent={() => <Box px="2" />}
-              data={HealthActivityData}
-              renderItem={({ item, index }) => (
-                <HealthActivityCard {...item} index={index} />
-              )}
-              automaticallyAdjustContentInsets
-            />
-          </Box>
+          {activityData.length > 0 && (
+            <Box pt={"4"}>
+              <Box row mx="4" mb="4" justifyContent="space-between">
+                <Text variant="text-lg-bold">Latest Stats</Text>
+                <Pressable onPress={() => navigation.navigate("StatsScreen")}>
+                  <Text color="black-300" variant="text-sm-medium">
+                    See stats
+                  </Text>
+                </Pressable>
+              </Box>
+              <FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                ItemSeparatorComponent={() => <Box px="2" />}
+                data={activityData}
+                renderItem={({ item, index }) => (
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("BrainUpgradeScreen");
+                    }}
+                  >
+                    <HealthActivityCard {...item} index={index} />
+                  </Pressable>
+                )}
+                automaticallyAdjustContentInsets
+              />
+            </Box>
+          )}
           {/* Upcoming schedule */}
           <Box mt="6">
             <Box px="4" row justifyContent="space-between" mb="4">
