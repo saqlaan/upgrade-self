@@ -114,7 +114,7 @@ function MyAppointmentsScreen({ navigation }: ApplicationScreenProps) {
               selected={filters.bookingType === BookingType.PastBookings}
             />
           </Box>
-          <ScrollView>
+          <ScrollView keyboardShouldPersistTaps="handled">
             <SearchItem
               placeholder={
                 filters.bookingType === BookingType.MyBookings
