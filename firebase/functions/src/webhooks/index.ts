@@ -1,2 +1,2 @@
-import { inBodyWebhook } from "./inbody";
+import { inBodyWebhook } from "./inBodyWebhook";
 export { inBodyWebhook };
