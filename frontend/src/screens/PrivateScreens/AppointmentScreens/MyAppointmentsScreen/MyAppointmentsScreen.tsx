@@ -1,11 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {
-  StatusBar,
-  TouchableOpacity,
-  Keyboard,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { StatusBar, TouchableOpacity } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import BookingList from "./components/BookingsList";
 import useMyAppointments from "./useMyAppointments";
@@ -17,6 +12,7 @@ import { useMyBookingStore } from "@/store/myBookingsStore";
 import { useServicesStore } from "@/store/servicesStore";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 import { isAndroid } from "@/utils/functions";
+import { ScrollView } from "react-native-gesture-handler";
 
 const FilterButton = ({
   title,
@@ -102,48 +98,46 @@ function MyAppointmentsScreen({ navigation }: ApplicationScreenProps) {
 
   return (
     <SafeAreaView edges={["top"]} style={{ flex: 1, backgroundColor: "white" }}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <>
-          <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
-          <AndroidScreenTopSpace />
-          <Box flex={1}>
-            <Box px="4" pb="4">
-              <Box row gap="4" mb="4">
-                <FilterButton
-                  title="My bookings"
-                  onPress={() => handleOnPressButton(BookingType.MyBookings)}
-                  selected={filters.bookingType === BookingType.MyBookings}
-                />
-                <FilterButton
-                  title="Past bookings"
-                  onPress={() => handleOnPressButton(BookingType.PastBookings)}
-                  selected={filters.bookingType === BookingType.PastBookings}
-                />
-              </Box>
-              <SearchItem
-                placeholder={
-                  filters.bookingType === BookingType.MyBookings
-                    ? "Search booked session"
-                    : "Search past sessions"
-                }
-                value={filters.searchText}
-                onChangeText={handleOnChangeText}
-              />
-            </Box>
-            <BookingList
-              bookings={
-                filters.bookingType === BookingType.MyBookings
-                  ? activeBookings
-                  : pastBookings
-              }
-              isLoading={isLoading}
-              searchText={filters.searchText}
-              bookingType={filters.bookingType}
-              refresh={silentRefresh}
+      <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
+      <AndroidScreenTopSpace />
+      <Box flex={1}>
+        <Box px="4" pb="4">
+          <Box row gap="4" mb="4">
+            <FilterButton
+              title="My bookings"
+              onPress={() => handleOnPressButton(BookingType.MyBookings)}
+              selected={filters.bookingType === BookingType.MyBookings}
+            />
+            <FilterButton
+              title="Past bookings"
+              onPress={() => handleOnPressButton(BookingType.PastBookings)}
+              selected={filters.bookingType === BookingType.PastBookings}
             />
           </Box>
-        </>
-      </TouchableWithoutFeedback>
+          <ScrollView>
+            <SearchItem
+              placeholder={
+                filters.bookingType === BookingType.MyBookings
+                  ? "Search booked session"
+                  : "Search past sessions"
+              }
+              value={filters.searchText}
+              onChangeText={handleOnChangeText}
+            />
+          </ScrollView>
+        </Box>
+        <BookingList
+          bookings={
+            filters.bookingType === BookingType.MyBookings
+              ? activeBookings
+              : pastBookings
+          }
+          isLoading={isLoading}
+          searchText={filters.searchText}
+          bookingType={filters.bookingType}
+          refresh={silentRefresh}
+        />
+      </Box>
     </SafeAreaView>
   );
 }
