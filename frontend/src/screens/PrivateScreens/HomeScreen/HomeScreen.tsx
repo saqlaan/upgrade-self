@@ -19,25 +19,6 @@ import { useCenterStore } from "@/store/centerStore";
 import { GuestAppointmentType } from "@/types/zenoti/BookedAppointmentType";
 import { isAndroid } from "@/utils/functions";
 
-const HealthActivityData = [
-  {
-    variant: "brain",
-    value: 78,
-  },
-  {
-    variant: "heart",
-    value: 81,
-  },
-  {
-    variant: "calories",
-    value: 98,
-  },
-  {
-    variant: "weight",
-    value: 71,
-  },
-];
-
 function Home({ navigation }: ApplicationScreenProps) {
   const { top } = useSafeAreaInsets();
   const [brainUpgradeData, setBrainUpgradeData] = React.useState<
