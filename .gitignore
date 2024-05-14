@@ -867,3 +867,5 @@ build-iPhoneSimulator/
 # .rubocop-https?--*
 
 # End of https://www.toptal.com/developers/gitignore/api/node,reactnative,webstorm+all,macos,windows,linux,androidstudio,xcode,ruby
+/firebase/functions/.firestore-cache/
+/.local/
