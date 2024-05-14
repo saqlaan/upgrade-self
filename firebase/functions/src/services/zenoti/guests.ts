@@ -43,6 +43,7 @@ export const addGuestPayment = async ({ countryCode, guestId, centerId }: AddGue
     `/guests/${guestId}/accounts`,
     {
       center_id: centerId,
+      source: "5",
     },
     {
       headers: requestHeaders[countryCode],
