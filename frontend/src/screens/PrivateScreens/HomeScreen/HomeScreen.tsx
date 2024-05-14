@@ -1,8 +1,7 @@
 import React, { useEffect, useCallback } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FlatList, Pressable, ScrollView, StatusBar } from "react-native";
-import { Link, useFocusEffect } from "@react-navigation/native";
-import useMyAppointments from "../AppointmentScreens/MyAppointmentsScreen/useMyAppointments";
+import { useFocusEffect } from "@react-navigation/native";
 import { HomeHeader } from "./components";
 import RecommendedActivities from "./components/RecommendedActivities";
 import { AndroidScreenTopSpace, Box, Text } from "@/components/atoms";
@@ -14,15 +13,56 @@ import {
 } from "@/components";
 import { colors } from "@/theme";
 import { getBrainUpgradeUserReports } from "@/services/firebaseApp/brainUpgrade";
-import { useMyBookingStore } from "@/store/myBookingsStore";
 import { useCenterStore } from "@/store/centerStore";
 import { GuestAppointmentType } from "@/types/zenoti/BookedAppointmentType";
 import { isAndroid } from "@/utils/functions";
-import { useServices } from "@/hooks";
+import { getUserGuests } from "@/services/firebase/collections/guest";
+import { getBookedAppointments } from "@/services/firebaseApp/guests";
 
 function UpcomingSchedule({ navigation }) {
-  const { activeBookings } = useMyBookingStore();
   const { allCenters } = useCenterStore();
+
+  const [bookings, setBookings] = React.useState<GuestAppointmentType[] | null>(
+    null,
+  );
+
+  useEffect(() => {
+    const loadBookings = async () => {
+      try {
+        const accounts = await getUserGuests();
+        const promises = accounts?.guestAccounts.map(async (guestAccount) => {
+          const data = await getBookedAppointments({
+            guestId: guestAccount?.guestId,
+            countryCode: guestAccount?.countryCode,
+          });
+          return data?.appointments || [];
+        });
+
+        if (!promises) return;
+
+        const data = await Promise.all(promises);
+        const allAppointments = data.flatMap((obj) => obj);
+
+        if (allAppointments.length === 0) return;
+
+        const currentTime = Date.now();
+        const activeBookings = allAppointments.filter((appointment) => {
+          const endTimeString = appointment?.appointment_services[0]?.end_time;
+          if (endTimeString) {
+            const endTime = new Date(endTimeString);
+            return endTime.getTime() > currentTime;
+          }
+          return false;
+        });
+
+        setBookings(activeBookings);
+      } catch (error) {
+        console.error("Error loading bookings:", error);
+        setBookings([]);
+      }
+    };
+    loadBookings();
+  }, [allCenters, navigation]);
 
   const renderAppointmentCardItem = useCallback(
     ({ item, index }: { item: GuestAppointmentType; index: number }) => {
@@ -55,7 +95,7 @@ function UpcomingSchedule({ navigation }) {
         </Box>
       );
     },
-    [allCenters]
+    [allCenters, navigation]
   );
 
   return (
@@ -69,7 +109,7 @@ function UpcomingSchedule({ navigation }) {
         </Pressable>
       </Box>
       <FlatList
-        data={activeBookings}
+        data={bookings || []}
         horizontal
         showsHorizontalScrollIndicator={false}
         ItemSeparatorComponent={() => <Box px="2" />}
