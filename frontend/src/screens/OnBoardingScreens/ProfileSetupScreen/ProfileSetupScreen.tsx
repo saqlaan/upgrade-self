@@ -88,46 +88,45 @@ function ProfileSetup({ navigation }: ApplicationScreenProps) {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <SafeScreen>
-        {navigation.canGoBack() && (
-          <Box px="5" pt="5" row>
-            <BackButton color={colors.primary} />
-          </Box>
-        )}
-        <StatusBar barStyle={"dark-content"} />
-        <Formik<ProfileFormValuesType>
-          initialValues={handleGetInitialValues()}
-          validationSchema={signupDetailsSchema}
-          onSubmit={_onSubmit}
-        >
-          {({ handleSubmit, isSubmitting, isValid, touched }) => (
-            <>
-              <ScrollView>
-                <Box flex={1} style={{ paddingBottom: keyboardHeight }}>
-                  <PersonalDetailsForm />
-                  <ContactDetailsForm />
-                </Box>
-              </ScrollView>
-              <Box px="5" py="5">
-                <CButton
-                  disabled={
-                    Object.keys(touched).length > 0 &&
-                    (!isValid || isSubmitting)
-                  }
-                  onPress={handleSubmit}
-                  loading={isPending}
-                >
-                  <Text color={colors.white} variant="text-md-semi-bold">
-                    {t("common:appName.next")}
-                  </Text>
-                </CButton>
+    // <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+    <SafeScreen>
+      {navigation.canGoBack() && (
+        <Box px="5" pt="5" row>
+          <BackButton color={colors.primary} />
+        </Box>
+      )}
+      <StatusBar barStyle={"dark-content"} />
+      <Formik<ProfileFormValuesType>
+        initialValues={handleGetInitialValues()}
+        validationSchema={signupDetailsSchema}
+        onSubmit={_onSubmit}
+      >
+        {({ handleSubmit, isSubmitting, isValid, touched }) => (
+          <>
+            <ScrollView>
+              <Box flex={1} style={{ paddingBottom: keyboardHeight }}>
+                <PersonalDetailsForm />
+                <ContactDetailsForm />
               </Box>
-            </>
-          )}
-        </Formik>
-      </SafeScreen>
-    </TouchableWithoutFeedback>
+            </ScrollView>
+            <Box px="5" py="5">
+              <CButton
+                disabled={
+                  Object.keys(touched).length > 0 && (!isValid || isSubmitting)
+                }
+                onPress={handleSubmit}
+                loading={isPending}
+              >
+                <Text color={colors.white} variant="text-md-semi-bold">
+                  {t("common:appName.next")}
+                </Text>
+              </CButton>
+            </Box>
+          </>
+        )}
+      </Formik>
+    </SafeScreen>
+    // </TouchableWithoutFeedback>
   );
 }
 
