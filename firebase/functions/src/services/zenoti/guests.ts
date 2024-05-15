@@ -2,6 +2,7 @@ import axios from "../../config/axiosConfig";
 import { Organization, requestHeaders } from "../../config/zenotiConfig";
 import { GuestType } from "../../types";
 import { CountryCodes } from "../../types/enums/countryCode";
+import { PAYMENT_REDIRECT_URL } from "../../config/secrets";
 
 export const guestSignup = async (user: Omit<GuestType, "center_name">, organization: CountryCodes) => {
   return axios.post("/guests", user, {
@@ -44,7 +45,7 @@ export const addGuestPayment = async ({ countryCode, guestId, centerId }: AddGue
     {
       center_id: centerId,
       source: "5",
-      redirect_uri: "https://www.google.com",
+      redirect_uri: PAYMENT_REDIRECT_URL.value(),
     },
     {
       headers: requestHeaders[countryCode],

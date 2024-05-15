@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import {
+  Alert,
   Dimensions,
   Pressable,
   ScrollView,
@@ -33,12 +34,13 @@ function BillingInfoScreen({ navigation }: ApplicationScreenProps) {
   const { addPaymentMethod } = usePayment();
   const [paymentUrl, setPaymentUrl] = useState();
   const [isPaymentLoading, setIsPaymentLoading] = useState(false);
+  const [isFetchingPaymentUrl, setIsFetchingPaymentUrl] = useState(false);
   const [paymentMethods, setPaymentMethods] = useState<
     GuestPaymentMethod[] | null
   >(null);
   const { center } = useCenterStore();
 
-  useEffect(() => {
+  const refreshPaymentMethods = () => {
     const run = async () => {
       if (!center) {
         return;
@@ -48,7 +50,7 @@ function BillingInfoScreen({ navigation }: ApplicationScreenProps) {
         console.error("Guest info not found");
         return;
       }
-      // TODO: this should be based on org id
+
       const guestAccount = guestInfo.guestAccounts.find(
         (guestAccount) => guestAccount.countryCode == center.countryCode
       );
@@ -71,19 +73,34 @@ function BillingInfoScreen({ navigation }: ApplicationScreenProps) {
       setPaymentMethods(paymentMethods.accounts);
     };
     run();
+  };
+
+  useEffect(() => {
+    refreshPaymentMethods();
   }, [center]);
 
   const handleOnCloseModal = useCallback(() => {
     setIsPaymentModalVisible(false);
   }, []);
 
-  const handleOnPressAddPayment = useCallback(async () => {
-    setIsPaymentLoading(true);
+  const fetchPaymentUrl = async () => {
+    if (isFetchingPaymentUrl) {
+      return;
+    }
+    setIsFetchingPaymentUrl(true);
+    console.log("Fetching Payment URL");
     const url = await addPaymentMethod();
+    console.log(url);
     if (url) {
       setPaymentUrl(url);
       setIsPaymentModalVisible(true);
     }
+    setIsFetchingPaymentUrl(false);
+  };
+
+  const handleOnPressAddPayment = useCallback(async () => {
+    setIsPaymentLoading(true);
+    await fetchPaymentUrl();
     setIsPaymentLoading(false);
   }, [addPaymentMethod, setPaymentUrl]);
 
@@ -150,34 +167,27 @@ function BillingInfoScreen({ navigation }: ApplicationScreenProps) {
             />
           )}
         </Box>
-        {/* <Box px="5" mb="4">
-          <Text color="black-400" variant="text-lg-bold">
-            Transactions
-          </Text>
-        </Box>
-        <ScrollView>
-          <Box px="5" flex={1}>
-            <TransactionBox />
-            <TransactionBox />
-            <TransactionBox />
-            <TransactionBox />
-            <TransactionBox />
-            <TransactionBox />
-            <TransactionBox />
-            <TransactionBox />
-            <TransactionBox />
-          </Box>
-        </ScrollView> */}
       </Box>
       <WebViewModal
         onClose={handleOnCloseModal}
         visible={isPaymentModalVisible}
         url={paymentUrl || ""}
         onSuccess={(message) => {
-          console.log("Success:", message);
+          setIsPaymentModalVisible(false);
+          refreshPaymentMethods();
+          Alert.alert("Success", "Card successfully added");
         }}
         onFailure={(message) => {
-          console.log("Failure:", message);
+          setIsPaymentModalVisible(false);
+          // handleOnPressAddPayment();
+          console.log("Failure: ", message);
+
+          if (message === "card exists") {
+            Alert.alert("Error", "Card already exists");
+          }
+          if (message === "card declined") {
+            Alert.alert("Error", "Card declined");
+          }
         }}
       />
     </SafeScreen>

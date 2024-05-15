@@ -29,6 +29,7 @@ export const usePayment = () => {
         const request = await mutateAsync(guestAccount);
 
         if (request?.data?.error) {
+          console.error(request?.data);
           Snackbar.show({
             text: "Error",
             duration: Snackbar.LENGTH_SHORT,
