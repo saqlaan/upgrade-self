@@ -76,48 +76,47 @@ function EditProfileScreen({ navigation }: ApplicationScreenProps) {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <SafeScreen edges={["top"]}>
-        <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
-        <Formik<ProfileFormValuesType>
-          initialValues={initialValues}
-          validationSchema={signupDetailsSchema}
-          onSubmit={_onSubmit}
-          alignItems="center"
-        >
-          {({ handleSubmit, isSubmitting, isValid, touched }) => (
+    // <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+    <SafeScreen edges={["top"]}>
+      <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
+      <Formik<ProfileFormValuesType>
+        initialValues={initialValues}
+        validationSchema={signupDetailsSchema}
+        onSubmit={_onSubmit}
+        alignItems="center"
+      >
+        {({ handleSubmit, isSubmitting, isValid, touched }) => (
+          <Box flex={1}>
             <Box flex={1}>
-              <Box flex={1}>
-                <AndroidScreenTopSpace />
-                <ProfileScreenHeader title="Edit profile" />
-                <ScrollView
-                  contentContainerStyle={{ paddingBottom: keyboardHeight }}
-                >
-                  <Box flex={1}>
-                    <PersonalDetailsForm isUpdating={true} />
-                    <ContactDetailsForm isUpdating={true} />
-                  </Box>
-                </ScrollView>
-              </Box>
-              <Box px="5" py="5">
-                <CButton
-                  disabled={
-                    Object.keys(touched).length > 0 &&
-                    (!isValid || isSubmitting)
-                  }
-                  onPress={handleSubmit}
-                  loading={isPending}
-                >
-                  <Text color={colors.white} variant="text-md-semi-bold">
-                    Save Changes
-                  </Text>
-                </CButton>
-              </Box>
+              <AndroidScreenTopSpace />
+              <ProfileScreenHeader title="Edit profile" />
+              <ScrollView
+                contentContainerStyle={{ paddingBottom: keyboardHeight }}
+              >
+                <Box flex={1}>
+                  <PersonalDetailsForm isUpdating={true} />
+                  <ContactDetailsForm isUpdating={true} />
+                </Box>
+              </ScrollView>
             </Box>
-          )}
-        </Formik>
-      </SafeScreen>
-    </TouchableWithoutFeedback>
+            <Box px="5" py="5">
+              <CButton
+                disabled={
+                  Object.keys(touched).length > 0 && (!isValid || isSubmitting)
+                }
+                onPress={handleSubmit}
+                loading={isPending}
+              >
+                <Text color={colors.white} variant="text-md-semi-bold">
+                  Save Changes
+                </Text>
+              </CButton>
+            </Box>
+          </Box>
+        )}
+      </Formik>
+    </SafeScreen>
+    // </TouchableWithoutFeedback>
   );
 }
 
