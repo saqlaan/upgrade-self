@@ -1,7 +1,12 @@
 import React from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Formik, FormikHelpers, FormikValues } from "formik";
-import { ScrollView, StatusBar } from "react-native";
+import {
+  Keyboard,
+  ScrollView,
+  StatusBar,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { useTheme } from "react-native-paper";
 import _ from "lodash";
 import { AppTheme } from "@/types/theme";
@@ -35,7 +40,7 @@ function EditProfileScreen({ navigation }: ApplicationScreenProps) {
 
   const _onSubmit = async (
     values: FormikValues,
-    { setFieldError, setSubmitting }: FormikHelpers<ProfileFormValuesType>,
+    { setFieldError, setSubmitting }: FormikHelpers<ProfileFormValuesType>
   ) => {
     if (values.phone.length !== 12) {
       setSubmitting(false);
@@ -45,6 +50,7 @@ function EditProfileScreen({ navigation }: ApplicationScreenProps) {
       return null;
     }
 
+    // TODO: Review
     const phoneNumber = values.phone.split(`+${values.phoneNumberCode}`)[1];
     try {
       mutateAsync({
@@ -70,45 +76,48 @@ function EditProfileScreen({ navigation }: ApplicationScreenProps) {
   };
 
   return (
-    <SafeScreen edges={["top"]}>
-      <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
-      <Formik<ProfileFormValuesType>
-        initialValues={initialValues}
-        validationSchema={signupDetailsSchema}
-        onSubmit={_onSubmit}
-        alignItems="center"
-      >
-        {({ handleSubmit, isSubmitting, isValid, touched }) => (
-          <Box flex={1}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <SafeScreen edges={["top"]}>
+        <StatusBar barStyle={"dark-content"} backgroundColor={"white"} />
+        <Formik<ProfileFormValuesType>
+          initialValues={initialValues}
+          validationSchema={signupDetailsSchema}
+          onSubmit={_onSubmit}
+          alignItems="center"
+        >
+          {({ handleSubmit, isSubmitting, isValid, touched }) => (
             <Box flex={1}>
-              <AndroidScreenTopSpace />
-              <ProfileScreenHeader title="Edit profile" />
-              <ScrollView
-                contentContainerStyle={{ paddingBottom: keyboardHeight }}
-              >
-                <Box flex={1}>
-                  <PersonalDetailsForm isUpdating={true} />
-                  <ContactDetailsForm isUpdating={true} />
-                </Box>
-              </ScrollView>
+              <Box flex={1}>
+                <AndroidScreenTopSpace />
+                <ProfileScreenHeader title="Edit profile" />
+                <ScrollView
+                  contentContainerStyle={{ paddingBottom: keyboardHeight }}
+                >
+                  <Box flex={1}>
+                    <PersonalDetailsForm isUpdating={true} />
+                    <ContactDetailsForm isUpdating={true} />
+                  </Box>
+                </ScrollView>
+              </Box>
+              <Box px="5" py="5">
+                <CButton
+                  disabled={
+                    Object.keys(touched).length > 0 &&
+                    (!isValid || isSubmitting)
+                  }
+                  onPress={handleSubmit}
+                  loading={isPending}
+                >
+                  <Text color={colors.white} variant="text-md-semi-bold">
+                    Save Changes
+                  </Text>
+                </CButton>
+              </Box>
             </Box>
-            <Box px="5" py="5">
-              <CButton
-                disabled={
-                  Object.keys(touched).length > 0 && (!isValid || isSubmitting)
-                }
-                onPress={handleSubmit}
-                loading={isPending}
-              >
-                <Text color={colors.white} variant="text-md-semi-bold">
-                  Save Changes
-                </Text>
-              </CButton>
-            </Box>
-          </Box>
-        )}
-      </Formik>
-    </SafeScreen>
+          )}
+        </Formik>
+      </SafeScreen>
+    </TouchableWithoutFeedback>
   );
 }
 

@@ -3,7 +3,12 @@ import { useKeyboard } from "@react-native-community/hooks";
 import { useMutation } from "@tanstack/react-query";
 import { Formik, FormikHelpers, FormikValues } from "formik";
 import { useTranslation } from "react-i18next";
-import { ScrollView, StatusBar } from "react-native";
+import {
+  Keyboard,
+  ScrollView,
+  StatusBar,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { useTheme } from "react-native-paper";
 import _ from "lodash";
 import { AppTheme } from "@/types/theme";
@@ -45,7 +50,7 @@ function ProfileSetup({ navigation }: ApplicationScreenProps) {
 
   const _onSubmit = async (
     values: FormikValues,
-    { setFieldError, setSubmitting }: FormikHelpers<ProfileFormValuesType>,
+    { setFieldError, setSubmitting }: FormikHelpers<ProfileFormValuesType>
   ) => {
     if (values.phone.length !== 12) {
       setSubmitting(false);
@@ -83,43 +88,46 @@ function ProfileSetup({ navigation }: ApplicationScreenProps) {
   };
 
   return (
-    <SafeScreen>
-      {navigation.canGoBack() && (
-        <Box px="5" pt="5" row>
-          <BackButton color={colors.primary} />
-        </Box>
-      )}
-      <StatusBar barStyle={"dark-content"} />
-      <Formik<ProfileFormValuesType>
-        initialValues={handleGetInitialValues()}
-        validationSchema={signupDetailsSchema}
-        onSubmit={_onSubmit}
-      >
-        {({ handleSubmit, isSubmitting, isValid, touched }) => (
-          <>
-            <ScrollView>
-              <Box flex={1} style={{ paddingBottom: keyboardHeight }}>
-                <PersonalDetailsForm />
-                <ContactDetailsForm />
-              </Box>
-            </ScrollView>
-            <Box px="5" py="5">
-              <CButton
-                disabled={
-                  Object.keys(touched).length > 0 && (!isValid || isSubmitting)
-                }
-                onPress={handleSubmit}
-                loading={isPending}
-              >
-                <Text color={colors.white} variant="text-md-semi-bold">
-                  {t("common:appName.next")}
-                </Text>
-              </CButton>
-            </Box>
-          </>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <SafeScreen>
+        {navigation.canGoBack() && (
+          <Box px="5" pt="5" row>
+            <BackButton color={colors.primary} />
+          </Box>
         )}
-      </Formik>
-    </SafeScreen>
+        <StatusBar barStyle={"dark-content"} />
+        <Formik<ProfileFormValuesType>
+          initialValues={handleGetInitialValues()}
+          validationSchema={signupDetailsSchema}
+          onSubmit={_onSubmit}
+        >
+          {({ handleSubmit, isSubmitting, isValid, touched }) => (
+            <>
+              <ScrollView>
+                <Box flex={1} style={{ paddingBottom: keyboardHeight }}>
+                  <PersonalDetailsForm />
+                  <ContactDetailsForm />
+                </Box>
+              </ScrollView>
+              <Box px="5" py="5">
+                <CButton
+                  disabled={
+                    Object.keys(touched).length > 0 &&
+                    (!isValid || isSubmitting)
+                  }
+                  onPress={handleSubmit}
+                  loading={isPending}
+                >
+                  <Text color={colors.white} variant="text-md-semi-bold">
+                    {t("common:appName.next")}
+                  </Text>
+                </CButton>
+              </Box>
+            </>
+          )}
+        </Formik>
+      </SafeScreen>
+    </TouchableWithoutFeedback>
   );
 }
 
