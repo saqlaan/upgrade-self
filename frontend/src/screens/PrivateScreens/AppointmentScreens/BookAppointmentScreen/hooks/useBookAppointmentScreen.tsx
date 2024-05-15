@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useBookAppointmentMethods } from "./useBookAppointmentMethods";
 import { useCenterStore } from "@/store/centerStore";
 import { useServicesStore } from "@/store/servicesStore";
@@ -19,7 +19,6 @@ export const useBookAppointmentScreen = (
     filters,
   } = useCreateAppointmentStore();
   const { loadSlots } = useBookAppointmentMethods();
-  const [isLoadingSlots, setIsLoadingSlots] = useState(false);
 
   useEffect(() => {
     resetAppointmentStore({ selectedService: params?.service || null });
@@ -30,12 +29,10 @@ export const useBookAppointmentScreen = (
 
   const onStart = useCallback(async () => {
     if (selectedService) {
-      setIsLoadingSlots(true);
       await loadSlots({
         service: selectedService,
         date: filters.date,
       });
-      setIsLoadingSlots(false);
     }
   }, [filters.date, loadSlots, selectedService]);
 
@@ -54,7 +51,5 @@ export const useBookAppointmentScreen = (
     loadServices();
   }, []);
 
-  return {
-    isLoadingSlots,
-  };
+  return {};
 };

@@ -20,10 +20,12 @@ interface CreateAppointmentStore {
   selectedService: ZenotiService | null;
   appointment: AppointmentType | null;
   slots: SlotsDataType;
+  isSlotsLoading: boolean;
   groupSlots: GroupSlotsType | null;
   setSelectedService: (services: ZenotiService) => void;
   setAppointment: (appointment: AppointmentType) => void;
   setSlots: (slotsData: SlotsDataType) => void;
+  setIsSlotsLoading: (isLoading: boolean) => void;
   setGroupSlots: (groupSlots: GroupSlotsType) => void;
   resetStore: ({
     selectedService,
@@ -37,6 +39,7 @@ interface CreateAppointmentStore {
 const initialState: CreateAppointmentStore = {
   selectedService: null,
   appointment: null,
+  isSlotsLoading: false,
   slots: {
     futureDay: null,
     nextAvailableDay: null,
@@ -63,6 +66,8 @@ export const useCreateAppointmentStore = create<CreateAppointmentStore>(
       set(() => ({ appointment })),
     setSlots: (slots: SlotsDataType) => set(() => ({ slots })),
     setGroupSlots: (groupSlots: GroupSlotsType) => set(() => ({ groupSlots })),
+    setIsSlotsLoading: (isLoading: boolean) =>
+      set(() => ({ isSlotsLoading: isLoading })),
     updateAppointmentFilters: (filters: { date?: string; hour?: string }) =>
       set((state) => ({
         filters: {

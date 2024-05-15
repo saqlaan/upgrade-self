@@ -1,6 +1,5 @@
 import React from "react";
 import { StatusBar } from "react-native";
-import { ActivityIndicator } from "react-native-paper";
 import { useFocusEffect } from "@react-navigation/native";
 import { BookAppointmentHeader, TimeSlotSection } from "./components";
 import { useBookAppointmentScreen } from "./hooks/useBookAppointmentScreen";
@@ -8,14 +7,14 @@ import { SlotsSection } from "./components/SlotsSection";
 import { Box, Text } from "@/components/atoms";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { useServicesStore } from "@/store/servicesStore";
-import { isAndroid, isIOS } from "@/utils/functions";
-import { colors, spacing } from "@/theme";
+import { isIOS } from "@/utils/functions";
+import { colors } from "@/theme";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 
 function BookAppointment({ navigation, route }: ApplicationScreenProps) {
   const { servicesAvailable } = useServicesStore();
   const { selectedService } = useCreateAppointmentStore();
-  const { isLoadingSlots } = useBookAppointmentScreen({
+  useBookAppointmentScreen({
     service: route?.params?.service || null,
   });
 
@@ -41,12 +40,6 @@ function BookAppointment({ navigation, route }: ApplicationScreenProps) {
           <Text variant="text-sm-regular">Please select service</Text>
         </Box>
       )}
-      {isLoadingSlots && (
-        <Box flex={1} alignItems="center" justifyContent="center">
-          <ActivityIndicator size={spacing[6]} />
-        </Box>
-      )}
-
       {servicesAvailable() ? (
         <Box py="4" flex={1}>
           <Box mb="4">
