@@ -32,7 +32,7 @@ function Appointment({ navigation }: ApplicationScreenProps) {
     React.useCallback(() => {
       StatusBar.setBarStyle("dark-content");
       if (isAndroid) StatusBar.setBackgroundColor(colors["grey-400"]);
-    }, []),
+    }, [])
   );
   return (
     <SafeScreen>
@@ -65,7 +65,7 @@ function Appointment({ navigation }: ApplicationScreenProps) {
                   <Text color="success">Connected</Text>
                 )}
                 {brainUpgradeConnected === false && (
-                  <Text color="error">(Not Connected)</Text>
+                  <Text color="info">(No BrainUpgrade profile found)</Text>
                 )}
                 {brainUpgradeConnected === null && <Text>Loading...</Text>}
               </Box>
