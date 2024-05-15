@@ -217,7 +217,8 @@ export default function Appointment({ navigation }: ApplicationScreenProps) {
         {/* Filter Menu */}
         <Box row justifyContent="space-between" alignItems="baseline">
           <Text variant="text-xl-bold">Metric</Text>
-          <Text>Filter</Text>
+          {/* TODO */}
+          {/* <Text>Filter</Text> */}
         </Box>
         <ScrollView
           style={{
