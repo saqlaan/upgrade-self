@@ -10,9 +10,9 @@ import { GuestAppointmentType } from "@/types/zenoti/BookedAppointmentType";
 import { BookedAppointmentCard } from "@/components";
 import { spacing } from "@/theme";
 import { useCenterStore } from "@/store/centerStore";
-import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 import { ZenotiService } from "@/types";
 
+import { useRescheduleAppointment } from "@/store/rescheduleAppointmentStore";
 const BookingList = React.memo(
   ({
     bookings,
@@ -30,7 +30,7 @@ const BookingList = React.memo(
     const { allCenters } = useCenterStore();
     const [refreshing, setRefreshing] = React.useState(false);
     const navigation = useNavigation();
-    const { setSelectedService } = useCreateAppointmentStore();
+    const { setSelectedService } = useRescheduleAppointment();
 
     const bookingsToSectionList = useCallback(() => {
       let filteredBookings = bookings;

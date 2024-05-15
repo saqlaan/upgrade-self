@@ -8,10 +8,11 @@ import { useCenterStore } from "@/store/centerStore";
 import { SlotType } from "@/types";
 import { AppointmentCardWithActions } from "@/components";
 import { spacing } from "@/theme";
+import { useRescheduleAppointment } from "@/store/rescheduleAppointmentStore";
 
 export function SlotsSection() {
-  const { groupSlots, selectedService, filters, isSlotsLoading } =
-    useCreateAppointmentStore();
+  const { groupSlots, filters, isSlotsLoading } = useCreateAppointmentStore();
+  const { selectedService } = useRescheduleAppointment();
   const { reserveSlot, isBooking, timeSelected } = useBookAppointmentMethods();
   const { center } = useCenterStore();
   const slotCards = groupSlots ? groupSlots[filters.hour] || [] : [];

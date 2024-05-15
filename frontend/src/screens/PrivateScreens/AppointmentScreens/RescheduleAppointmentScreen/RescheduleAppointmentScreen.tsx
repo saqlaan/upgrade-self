@@ -9,6 +9,7 @@ import { isIOS } from "@/utils/functions";
 import { colors } from "@/theme";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 import { ZenotiService } from "@/types";
+import { useRescheduleAppointment } from "@/store/rescheduleAppointmentStore";
 
 function RescheduleAppointmentScreen({
   navigation,
@@ -16,8 +17,8 @@ function RescheduleAppointmentScreen({
 }: ApplicationScreenProps) {
   const appointment = route.params?.appointment;
 
-  const { filters, selectedService, setSelectedService } =
-    useCreateAppointmentStore();
+  const { filters } = useCreateAppointmentStore();
+  const { setSelectedService, selectedService } = useRescheduleAppointment();
   const { loadSlots } = useBookAppointmentMethods();
 
   useEffect(() => {
