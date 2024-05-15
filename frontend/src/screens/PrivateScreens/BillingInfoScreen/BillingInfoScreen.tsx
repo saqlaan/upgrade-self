@@ -171,6 +171,12 @@ function BillingInfoScreen({ navigation }: ApplicationScreenProps) {
         onClose={handleOnCloseModal}
         visible={isPaymentModalVisible}
         url={paymentUrl || ""}
+        onSuccess={(message) => {
+          console.log("Success:", message);
+        }}
+        onFailure={(message) => {
+          console.log("Failure:", message);
+        }}
       />
     </SafeScreen>
   );

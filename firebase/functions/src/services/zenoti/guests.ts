@@ -44,6 +44,7 @@ export const addGuestPayment = async ({ countryCode, guestId, centerId }: AddGue
     {
       center_id: centerId,
       source: "5",
+      redirect_uri: "https://www.google.com",
     },
     {
       headers: requestHeaders[countryCode],
