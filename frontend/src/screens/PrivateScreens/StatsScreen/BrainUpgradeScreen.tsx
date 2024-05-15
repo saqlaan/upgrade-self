@@ -111,6 +111,7 @@ export default function Appointment({ navigation }: ApplicationScreenProps) {
     BrainUpgradeUserReport[] | null
   >(null);
   const [myScore, setMyScore] = React.useState<number | null>(null);
+  const isLoading = reportData === null;
   const [sessionAlpha, setSessionAlpha] = React.useState<number | null>(null);
   const [baseline, setBaseline] = React.useState<number | null>(null);
   const [sessionTimeMinutes, setSessionTimeMinutes] = React.useState<
@@ -197,7 +198,7 @@ export default function Appointment({ navigation }: ApplicationScreenProps) {
               {sessionTimeMinutes?.toFixed(0)} min
             </Text>
           )}
-          {!sessionTimeMinutes && <Text>Loading...</Text>}
+          {isLoading && <Text>Loading...</Text>}
           <Box
             style={{
               maxHeight: 200,
