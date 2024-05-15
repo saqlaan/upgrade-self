@@ -26,6 +26,7 @@ import {
   GuestPaymentMethod,
   getGuestPaymentMethods,
 } from "@/services/firebaseApp/guests";
+import { useCenterStore } from "@/store/centerStore";
 
 function BillingInfoScreen({ navigation }: ApplicationScreenProps) {
   const [isPaymentModalVisible, setIsPaymentModalVisible] = useState(false);
@@ -35,12 +36,13 @@ function BillingInfoScreen({ navigation }: ApplicationScreenProps) {
   const [paymentMethods, setPaymentMethods] = useState<
     GuestPaymentMethod[] | null
   >(null);
+  const { center } = useCenterStore();
 
   useEffect(() => {
     const run = async () => {
-      const user = await getUser();
-      const { centers } = user;
-      const center = centers[0];
+      if (!center) {
+        return;
+      }
       const guestInfo = await getUserGuests();
       if (!guestInfo) {
         console.error("Guest info not found");
@@ -69,7 +71,7 @@ function BillingInfoScreen({ navigation }: ApplicationScreenProps) {
       setPaymentMethods(paymentMethods.accounts);
     };
     run();
-  }, []);
+  }, [center]);
 
   const handleOnCloseModal = useCallback(() => {
     setIsPaymentModalVisible(false);
