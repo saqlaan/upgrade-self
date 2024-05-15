@@ -1,11 +1,9 @@
 import express, { Request, Response } from "express";
-import { BRAIN_UPGRADE_SERVICE_ACCOUNT_BASE64 } from "../../config/secrets";
+import { BRAIN_UPGRADE_SERVICE_ACCOUNT_BASE64, BRAIN_UPGRADE_API_URL } from "../../config/secrets";
 import * as admin from "firebase-admin";
 import axios from "axios";
 
 const router = express.Router();
-
-const BRAIN_UPGRADE_API_URL = "https://api-by67lu2b2q-uc.a.run.app";
 
 let brainUpgradeApp: admin.app.App | null = null;
 const getBrainUpgradeApp = () => {
@@ -40,7 +38,7 @@ const getBrainUpgradeUserFromEmail = async (token: string, email: string) => {
   try {
     const response = await axios({
       method: "get", // or 'post', 'put', etc.
-      url: `${BRAIN_UPGRADE_API_URL}/users?email=${encodeURIComponent(email)}`,
+      url: `${BRAIN_UPGRADE_API_URL.value()}/users?email=${encodeURIComponent(email)}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -54,7 +52,7 @@ const getBrainUpgradeUserFromEmail = async (token: string, email: string) => {
 
 const getBrainUpgradeReports = async (token: string, userId: string, limit: number | null = null) => {
   try {
-    const url = `${BRAIN_UPGRADE_API_URL}/user/${userId}/reports` + (limit ? `?limit=${limit}` : "");
+    const url = `${BRAIN_UPGRADE_API_URL.value()}/user/${userId}/reports` + (limit ? `?limit=${limit}` : "");
     const response = await axios({
       method: "get", // or 'post', 'put', etc.
       url,
