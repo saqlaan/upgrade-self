@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
-import { ScrollView, Image, View } from "react-native";
+import { ScrollView, Image, View, Alert } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
 import { Svg, Path, Line, Circle, Text as SvgText } from "react-native-svg";
 import { BackButton, Box, Text } from "@/components/atoms";
 import { SafeScreen } from "@/components/template";
 import type { ApplicationScreenProps } from "@/types/navigation";
 import { Images } from "@/theme/assets/images";
 import { BrainIcon, TimeIcon } from "@/theme/assets/icons";
+
 import {
   getBrainUpgradeUserReports,
   BrainUpgradeUserReport,
@@ -106,11 +108,12 @@ const BarChart = ({ data }: { data: { value: number; label: string }[] }) => {
   );
 };
 
-export default function Appointment({ navigation }: ApplicationScreenProps) {
+export default function Page({ navigation }: ApplicationScreenProps) {
   const [reportData, setReportData] = React.useState<
     BrainUpgradeUserReport[] | null
   >(null);
   const [myScore, setMyScore] = React.useState<number | null>(null);
+  const isLoading = reportData === null;
   const [sessionAlpha, setSessionAlpha] = React.useState<number | null>(null);
   const [baseline, setBaseline] = React.useState<number | null>(null);
   const [sessionTimeMinutes, setSessionTimeMinutes] = React.useState<
@@ -121,18 +124,35 @@ export default function Appointment({ navigation }: ApplicationScreenProps) {
   >(null);
   const [bestSession, setBestSession] = React.useState<number | null>(null);
   const [totalPoints, setTotalPoints] = React.useState<number | null>(null);
+  const isFocused = useIsFocused();
   useEffect(() => {
+    if (!isFocused) return;
     getBrainUpgradeUserReports({ limit: 12 })
       .then((data) => {
         if (data) {
           data.reverse();
           setReportData(data);
+        } else {
+          Alert.alert(
+            "No data yet...",
+            "Complete your first BrainUpgrade session to see your stats.",
+            [
+              {
+                text: "OK",
+                onPress: () => {
+                  navigation.goBack();
+                },
+              },
+            ]
+          );
+          setReportData([]);
         }
       })
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [isFocused]);
+
   useEffect(() => {
     if (reportData && reportData.length > 0) {
       const myScore = reportData[reportData.length - 1].alphaScore;
@@ -197,7 +217,7 @@ export default function Appointment({ navigation }: ApplicationScreenProps) {
               {sessionTimeMinutes?.toFixed(0)} min
             </Text>
           )}
-          {!sessionTimeMinutes && <Text>Loading...</Text>}
+          {isLoading && <Text>Loading...</Text>}
           <Box
             style={{
               maxHeight: 200,
