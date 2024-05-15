@@ -54,7 +54,7 @@ const BookingList = React.memo(
         {},
       );
       const sortedDates = Object.keys(groupedAppointments).sort((a, b) => {
-        return parseISO(b).getTime() - parseISO(a).getTime();
+        return parseISO(a).getTime() - parseISO(b).getTime();
       });
       const sections = sortedDates.map((date) => ({
         title: date,
