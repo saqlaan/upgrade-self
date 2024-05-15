@@ -40,9 +40,7 @@ const WebViewModal = ({
       return;
     }
 
-    if (newUrl.includes("google.com")) {
-      this.webview.stopLoading();
-
+    if (newUrl.includes("empty.html")) {
       const urlParams = parseUrlParams(newUrl);
 
       if (urlParams.success === "0") {
