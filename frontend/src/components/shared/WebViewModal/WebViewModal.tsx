@@ -41,6 +41,8 @@ const WebViewModal = ({
     }
 
     if (newUrl.includes("google.com")) {
+      this.webview.stopLoading();
+
       const urlParams = parseUrlParams(newUrl);
 
       if (urlParams.success === "0") {
@@ -55,9 +57,6 @@ const WebViewModal = ({
       } else {
         onSuccess("card added");
       }
-
-      const redirectTo = 'window.location = "' + url + '"';
-      this.webview.injectJavaScript(redirectTo);
     }
   };
   return (

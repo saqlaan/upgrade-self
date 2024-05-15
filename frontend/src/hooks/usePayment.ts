@@ -20,13 +20,14 @@ export const usePayment = () => {
       if (guestInfo) {
         const { guestAccounts } = guestInfo;
         const guestAccount = guestAccounts.find(
-          (guestAccount) => guestAccount.centerId == center.centerId,
+          (guestAccount) => guestAccount.centerId == center.centerId
         );
         if (!guestAccount) {
           console.log("Account not availble");
           return;
         }
         const request = await mutateAsync(guestAccount);
+
         if (request?.data?.error) {
           Snackbar.show({
             text: "Error",
