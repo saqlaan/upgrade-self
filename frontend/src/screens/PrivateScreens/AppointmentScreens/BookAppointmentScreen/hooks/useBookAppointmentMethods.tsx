@@ -26,6 +26,7 @@ export const useBookAppointmentMethods = () => {
     setGroupSlots,
     setAppointment,
     updateAppointmentFilters,
+    setIsSlotsLoading,
   } = useCreateAppointmentStore();
   const [isBooking, setIsBooking] = useState(false);
   const [timeSelected, setTimeSelected] = useState("");
@@ -85,8 +86,8 @@ export const useBookAppointmentMethods = () => {
 
   const loadSlots = useCallback(
     async ({ service, date }: { service: ZenotiService; date: string }) => {
+      setIsSlotsLoading(true);
       setSlots({ available: [], futureDay: null, nextAvailableDay: null });
-      setGroupSlots({});
       const guests = await getUserGuests();
       const guestAccount = guests?.guestAccounts.find(
         (guest) => guest.countryCode === center?.countryCode,
@@ -121,6 +122,7 @@ export const useBookAppointmentMethods = () => {
             hour: keys[0],
           });
         }
+        setIsSlotsLoading(false);
       }
     },
     [
@@ -128,6 +130,7 @@ export const useBookAppointmentMethods = () => {
       center?.countryCode,
       setAppointment,
       setGroupSlots,
+      setIsSlotsLoading,
       setSlots,
       updateAppointmentFilters,
     ],

@@ -27,7 +27,7 @@ export function BookAppointmentHeader() {
         <AndroidScreenTopSpace />
         <Box row alignItems="center" justifyContent="space-between">
           <BackButton />
-          <Box style={styles.title}>
+          <Box ml="5" style={styles.title}>
             <Text variant="text-xl-bold" color="white">
               Reschedule appointment
             </Text>

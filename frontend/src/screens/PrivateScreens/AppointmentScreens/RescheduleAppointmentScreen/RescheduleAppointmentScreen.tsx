@@ -16,12 +16,13 @@ function RescheduleAppointmentScreen({
 }: ApplicationScreenProps) {
   const appointment = route.params?.appointment;
 
-  const { filters, selectedService, setSelectedService } = useCreateAppointmentStore();
+  const { filters, selectedService, setSelectedService } =
+    useCreateAppointmentStore();
   const { loadSlots } = useBookAppointmentMethods();
 
   useEffect(() => {
     setSelectedService(appointment?.appointment_services[0].service);
-  }, [appointment, setSelectedService])
+  }, [appointment, setSelectedService]);
 
   useEffect(() => {
     loadSlots({

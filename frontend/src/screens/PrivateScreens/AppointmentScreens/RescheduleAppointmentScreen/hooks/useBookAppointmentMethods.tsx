@@ -29,6 +29,7 @@ export const useBookAppointmentMethods = () => {
     setGroupSlots,
     setAppointment,
     updateAppointmentFilters,
+    setIsSlotsLoading,
   } = useCreateAppointmentStore();
   const [isBooking, setIsBooking] = useState(false);
   const [timeSelected, setTimeSelected] = useState("");
@@ -117,8 +118,8 @@ export const useBookAppointmentMethods = () => {
       invoiceId?: string;
       invoiceItemId?: string;
     }) => {
+      setIsSlotsLoading(true);
       setSlots({ available: [], futureDay: null, nextAvailableDay: null });
-      setGroupSlots({});
       const guests = await getUserGuests();
       const guestAccount = guests?.guestAccounts.find(
         (guest) => guest.countryCode === center?.countryCode,
@@ -155,6 +156,7 @@ export const useBookAppointmentMethods = () => {
           });
         }
         setGroupSlots(groupSlotsTogether(slots.slots));
+        setIsSlotsLoading(false);
       }
     },
     [
@@ -162,6 +164,7 @@ export const useBookAppointmentMethods = () => {
       center?.countryCode,
       setAppointment,
       setGroupSlots,
+      setIsSlotsLoading,
       setSlots,
       updateAppointmentFilters,
     ],

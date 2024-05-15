@@ -1,15 +1,18 @@
 import React, { useCallback } from "react";
 import { FlatList } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { ActivityIndicator } from "react-native-paper";
 import { useBookAppointmentMethods } from "../hooks/useBookAppointmentMethods";
-import { Box } from "@/components/atoms";
+import { Box, Text } from "@/components/atoms";
 import { useCreateAppointmentStore } from "@/store/createAppointmentStore";
 import { AppointmentCardWithActions } from "@/components";
 import { useCenterStore } from "@/store/centerStore";
 import { SlotType } from "@/types";
+import { spacing } from "@/theme";
 
 export function SlotsSection() {
-  const { groupSlots, selectedService, filters } = useCreateAppointmentStore();
+  const { groupSlots, selectedService, filters, isSlotsLoading } =
+    useCreateAppointmentStore();
   const { reserveSlot, isBooking, timeSelected } = useBookAppointmentMethods();
   const { center } = useCenterStore();
   const navigation = useNavigation();
@@ -42,7 +45,24 @@ export function SlotsSection() {
     );
   };
 
-  if (!slotCards) return null;
+  if (isSlotsLoading) {
+    return (
+      <Box flex={1} alignItems="center" justifyContent="center">
+        <ActivityIndicator size={spacing[6]} />
+      </Box>
+    );
+  }
+
+  if (!isSlotsLoading && groupSlots !== null && slotCards.length === 0) {
+    return (
+      <Box alignItems="center" justifyContent="center">
+        <Text variant="text-sm-regular">
+          No slots available today, please check alternate day.
+        </Text>
+      </Box>
+    );
+  }
+
   return (
     <Box>
       <FlatList
